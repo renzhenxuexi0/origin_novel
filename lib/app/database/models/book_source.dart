@@ -2,7 +2,7 @@ part of 'models.dart';
 
 @Freezed(fromJson: false, toJson: false)
 @collection
-class BookSource with _$BookSource {
+class BookSource with _$BookSource implements Comparable<BookSource> {
   const factory BookSource({
     required int id,
     required String bookSourceName,
@@ -65,4 +65,23 @@ class BookSource with _$BookSource {
     /// 是否启用
     @Default(true) bool enabled,
   }) = _BookSource;
+
+  const BookSource._();
+
+  @override
+  int compareTo(BookSource other) {
+    // 如果是没启用那就是最后的
+    // 然后根据权重去比较如果一样就根据名称去比较
+    if (enabled == other.enabled) {
+      final thisWeight = weight ?? 0;
+      final otherWeight = other.weight ?? 0;
+      if (thisWeight != otherWeight) {
+        return otherWeight.compareTo(thisWeight);
+      } else {
+        return bookSourceName.compareTo(other.bookSourceName);
+      }
+    } else {
+      return enabled ? -1 : 1;
+    }
+  }
 }

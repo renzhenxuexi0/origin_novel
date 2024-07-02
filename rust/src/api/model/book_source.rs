@@ -14,6 +14,12 @@ pub struct BookSource {
     pub book_source_type: Option<i64>,
     /// 书源地址，包括 http/https
     pub book_source_url: Option<String>,
+    // 详情页url正则
+    pub book_url_pattern: Option<String>,
+    // 请求头
+    pub header: Option<String>,
+    // 登录地址
+    pub login_url: Option<String>,
     /// 手动排序编号
     pub custom_order: Option<i64>,
     /// 是否启用

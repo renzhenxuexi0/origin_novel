@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app/l10n/generated/l10n.dart';
+import '../../widget/gap.dart';
 import 'logic.dart';
 
 const _searchHeight = 30.0;
@@ -15,22 +16,34 @@ class BookSourcePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).bookSource(1))),
+      appBar: AppBar(
+        title: Text(
+          S.of(context).bookSource(1),
+        ),
+        actions: [
+          // 刷新书源
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: logic.initBookSourcesFormNet,
+          ),
+        ],
+      ),
       body: Column(
         children: [
           // 筛选栏
           Row(
             children: [
+              // 全部、启用、禁用
               TextButton(
-                onPressed: () {},
+                onPressed: logic.showAllBookSources,
                 child: Text(S.of(context).all),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: logic.showEnabledBookSources,
                 child: Text(S.of(context).enabled),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: logic.showDisabledBookSources,
                 child: Text(S.of(context).disabled),
               ),
             ],
@@ -56,7 +69,7 @@ class BookSourcePage extends StatelessWidget {
           Expanded(
             child: GetBuilder<BookSourceLogic>(builder: (logic) {
               return ListView.builder(
-                itemBuilder: itemBuilder,
+                itemBuilder: bookSourceItemBuilder,
                 itemCount: state.showBookSources.length,
               );
             }),
@@ -66,25 +79,52 @@ class BookSourcePage extends StatelessWidget {
     );
   }
 
-  Widget itemBuilder(BuildContext context, int index) {
+  Widget bookSourceItemBuilder(BuildContext context, int index) {
+    final bookSource = state.showBookSources[index];
     return ListTile(
       title: Row(
         children: [
-          Text(state.showBookSources[index].bookSourceName),
+          Text(bookSource.bookSourceName),
           const Spacer(),
+          // 置顶、启用/禁用、删除
           Row(
             children: [
+              // 置顶
               TextButton(
-                onPressed: () {},
-                child: Text(S.of(context).topping),
+                onPressed: () => logic.topBookSource(bookSource),
+                child: Row(
+                  children: [
+                    const Icon(Icons.arrow_upward),
+                    const Gap.hs(),
+                    Text(S.of(context).topping),
+                  ],
+                ),
               ),
+              // 启用/禁用
               TextButton(
-                onPressed: () {},
-                child: Text(S.of(context).disabled),
+                onPressed: () => logic.enableOrDisableBookSource(bookSource),
+                child: Row(
+                  children: [
+                    Icon(bookSource.enabled
+                        ? Icons.visibility
+                        : Icons.visibility_off),
+                    const Gap.hs(),
+                    Text(bookSource.enabled
+                        ? S.of(context).disabled
+                        : S.of(context).enabled),
+                  ],
+                ),
               ),
+              // 删除
               TextButton(
-                onPressed: () {},
-                child: Text(S.of(context).delete),
+                onPressed: () => logic.deleteBookSource(bookSource),
+                child: Row(
+                  children: [
+                    const Icon(Icons.delete),
+                    const Gap.hs(),
+                    Text(S.of(context).delete),
+                  ],
+                ),
               ),
             ],
           )

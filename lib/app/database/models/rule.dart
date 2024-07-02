@@ -2,105 +2,208 @@ part of 'models.dart';
 
 /// 书籍信息页规则结构定义
 @embedded
-class RuleBookInfo {
-  String? author;
-  String? coverUrl;
-  String? init;
-  String? intro;
-  String? kind;
-  String? lastChapter;
-  String? name;
-  String? tocUrl;
-  String? wordCount;
-  String? downloadUrl;
-  String? canReName;
+class RuleBookInfo extends rust_model.RuleBookInfo {
+  RuleBookInfo({
+    super.author,
+    super.coverUrl,
+    super.init,
+    super.intro,
+    super.kind,
+    super.lastChapter,
+    super.name,
+    super.tocUrl,
+    super.wordCount,
+    super.downloadUrl,
+    super.canReName,
+  });
+
+  // 父类转子类
+  factory RuleBookInfo.fromRustModel(rust_model.RuleBookInfo? ruleBookInfo) {
+    if (ruleBookInfo == null) {
+      return RuleBookInfo();
+    }
+    return RuleBookInfo(
+      wordCount: ruleBookInfo.wordCount,
+      tocUrl: ruleBookInfo.tocUrl,
+      name: ruleBookInfo.name,
+      lastChapter: ruleBookInfo.lastChapter,
+      kind: ruleBookInfo.kind,
+      intro: ruleBookInfo.intro,
+      init: ruleBookInfo.init,
+      coverUrl: ruleBookInfo.coverUrl,
+      author: ruleBookInfo.author,
+      downloadUrl: ruleBookInfo.downloadUrl,
+      canReName: ruleBookInfo.canReName,
+    );
+  }
 }
 
 /// 正文页规则结构定义
 @embedded
-class RuleContent {
-  String? content;
-  String? replaceRegex;
-  String? title;
-  String? nextContentUrl;
-  String? webJs;
-  String? sourceRegex;
-  String? imageStyle;
-  String? payAction;
+class RuleContent extends rust_model.RuleContent {
+  RuleContent({
+    super.content,
+    super.replaceRegex,
+    super.title,
+    super.nextContentUrl,
+    super.webJs,
+    super.sourceRegex,
+    super.imageStyle,
+    super.payAction,
+  });
+
+  // 父类转子类
+  factory RuleContent.fromRustModel(rust_model.RuleContent? ruleContent) {
+    if (ruleContent == null) {
+      return RuleContent();
+    }
+    return RuleContent(
+      content: ruleContent.content,
+      replaceRegex: ruleContent.replaceRegex,
+      title: ruleContent.title,
+      nextContentUrl: ruleContent.nextContentUrl,
+      webJs: ruleContent.webJs,
+      sourceRegex: ruleContent.sourceRegex,
+      imageStyle: ruleContent.imageStyle,
+      payAction: ruleContent.payAction,
+    );
+  }
 }
 
 /// 发现规则结构定义
 @embedded
-class RuleExplore {
-  String? author;
-  String? bookList;
-  String? bookUrl;
-  String? coverUrl;
-  String? lastChapter;
-  String? intro;
-  String? name;
-  String? wordCount;
-  String? kind;
+class RuleExplore extends rust_model.RuleExplore {
+  RuleExplore({
+    super.author,
+    super.bookList,
+    super.bookUrl,
+    super.coverUrl,
+    super.lastChapter,
+    super.intro,
+    super.name,
+    super.wordCount,
+    super.kind,
+  });
+
+  // 父类转子类
+  factory RuleExplore.fromRustModel(rust_model.RuleExplore? ruleExplore) {
+    if (ruleExplore == null) {
+      return RuleExplore();
+    }
+    return RuleExplore(
+      wordCount: ruleExplore.wordCount,
+      name: ruleExplore.name,
+      intro: ruleExplore.intro,
+      lastChapter: ruleExplore.lastChapter,
+      coverUrl: ruleExplore.coverUrl,
+      bookUrl: ruleExplore.bookUrl,
+      bookList: ruleExplore.bookList,
+      author: ruleExplore.author,
+      kind: ruleExplore.kind,
+    );
+  }
 }
 
 /// 段评规则结构定义
 @embedded
-class RuleReview {
-  /// 段评URL
-  String? reviewUrl;
+class RuleReview extends rust_model.RuleReview {
+  RuleReview({
+    super.reviewUrl,
+    super.avatarRule,
+    super.contentRule,
+    super.postTimeRule,
+    super.reviewQuoteUrl,
+    super.voteUpUrl,
+    super.voteDownUrl,
+    super.postReviewUrl,
+    super.postQuoteUrl,
+    super.deleteUrl,
+  });
 
-  /// 段评发布者头像规则
-  String? avatarRule;
-
-  /// 段评内容规则
-  String? contentRule;
-
-  /// 段评发布时间规则
-  String? postTimeRule;
-
-  /// 获取段评回复URL
-  String? reviewQuoteUrl;
-
-  /// 点赞URL
-  String? voteUpUrl;
-
-  /// 点踩URL
-  String? voteDownUrl;
-
-  /// 发送回复URL
-  String? postReviewUrl;
-
-  /// 发送回复段评URL
-  String? postQuoteUrl;
-
-  /// 删除段评URL
-  String? deleteUrl;
+  // 父类转子类
+  factory RuleReview.fromRustModel(rust_model.RuleReview? ruleReview) {
+    if (ruleReview == null) {
+      return RuleReview();
+    }
+    return RuleReview(
+      reviewUrl: ruleReview.reviewUrl,
+      avatarRule: ruleReview.avatarRule,
+      contentRule: ruleReview.contentRule,
+      postTimeRule: ruleReview.postTimeRule,
+      reviewQuoteUrl: ruleReview.reviewQuoteUrl,
+      voteUpUrl: ruleReview.voteUpUrl,
+      voteDownUrl: ruleReview.voteDownUrl,
+      postReviewUrl: ruleReview.postReviewUrl,
+      postQuoteUrl: ruleReview.postQuoteUrl,
+      deleteUrl: ruleReview.deleteUrl,
+    );
+  }
 }
 
 /// 搜索规则结构定义
 @embedded
-class RuleSearch {
-  String? author;
-  String? bookList;
-  String? bookUrl;
-  String? coverUrl;
-  String? intro;
-  String? name;
-  String? wordCount;
-  String? kind;
+class RuleSearch extends rust_model.RuleSearch {
+  RuleSearch({
+    super.author,
+    super.bookList,
+    super.bookUrl,
+    super.coverUrl,
+    super.intro,
+    super.name,
+    super.wordCount,
+    super.kind,
+  });
+
+  // 父类转子类
+  factory RuleSearch.fromRustModel(rust_model.RuleSearch? ruleSearch) {
+    if (ruleSearch == null) {
+      return RuleSearch();
+    }
+    return RuleSearch(
+      wordCount: ruleSearch.wordCount,
+      name: ruleSearch.name,
+      intro: ruleSearch.intro,
+      coverUrl: ruleSearch.coverUrl,
+      bookUrl: ruleSearch.bookUrl,
+      bookList: ruleSearch.bookList,
+      kind: ruleSearch.kind,
+      author: ruleSearch.author,
+    );
+  }
 }
 
 /// 目录页规则结构定义
 @embedded
-class RuleToc {
-  String? chapterList;
-  String? chapterName;
-  String? chapterUrl;
-  String? isVolume;
-  String? preUpdateJson;
-  String? formatJs;
-  String? isVip;
-  String? isPay;
-  String? nextTocUrl;
-  String? updateTime;
+class RuleToc extends rust_model.RuleToc {
+  RuleToc({
+    super.chapterList,
+    super.chapterName,
+    super.chapterUrl,
+    super.isVolume,
+    super.preUpdateJson,
+    super.formatJs,
+    super.isVip,
+    super.isPay,
+    super.nextTocUrl,
+    super.updateTime,
+  });
+
+  // 父类转子类
+  factory RuleToc.fromRustModel(rust_model.RuleToc? ruleToc) {
+    if (ruleToc == null) {
+      return RuleToc();
+    }
+    return RuleToc(
+      chapterList: ruleToc.chapterList,
+      chapterName: ruleToc.chapterName,
+      chapterUrl: ruleToc.chapterUrl,
+      isVolume: ruleToc.isVolume,
+      preUpdateJson: ruleToc.preUpdateJson,
+      formatJs: ruleToc.formatJs,
+      isVip: ruleToc.isVip,
+      isPay: ruleToc.isPay,
+      nextTocUrl: ruleToc.nextTocUrl,
+      updateTime: ruleToc.updateTime,
+    );
+  }
 }

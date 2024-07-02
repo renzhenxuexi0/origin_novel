@@ -24,6 +24,9 @@ class BookSource {
 
   /// 书源地址，包括 http/https
   final String? bookSourceUrl;
+  final String? bookUrlPattern;
+  final String? header;
+  final String? loginUrl;
 
   /// 手动排序编号
   final PlatformInt64? customOrder;
@@ -76,6 +79,9 @@ class BookSource {
     this.bookSourceName,
     this.bookSourceType,
     this.bookSourceUrl,
+    this.bookUrlPattern,
+    this.header,
+    this.loginUrl,
     this.customOrder,
     this.enabled,
     this.enabledCookieJar,
@@ -100,6 +106,9 @@ class BookSource {
       bookSourceName.hashCode ^
       bookSourceType.hashCode ^
       bookSourceUrl.hashCode ^
+      bookUrlPattern.hashCode ^
+      header.hashCode ^
+      loginUrl.hashCode ^
       customOrder.hashCode ^
       enabled.hashCode ^
       enabledCookieJar.hashCode ^
@@ -126,6 +135,9 @@ class BookSource {
           bookSourceName == other.bookSourceName &&
           bookSourceType == other.bookSourceType &&
           bookSourceUrl == other.bookSourceUrl &&
+          bookUrlPattern == other.bookUrlPattern &&
+          header == other.header &&
+          loginUrl == other.loginUrl &&
           customOrder == other.customOrder &&
           enabled == other.enabled &&
           enabledCookieJar == other.enabledCookieJar &&

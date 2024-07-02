@@ -147,29 +147,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BookSource dco_decode_book_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 20)
-      throw Exception('unexpected arr length: expect 20 but see ${arr.length}');
+    if (arr.length != 23)
+      throw Exception('unexpected arr length: expect 23 but see ${arr.length}');
     return BookSource(
       bookSourceComment: dco_decode_opt_String(arr[0]),
       bookSourceGroup: dco_decode_opt_String(arr[1]),
       bookSourceName: dco_decode_opt_String(arr[2]),
       bookSourceType: dco_decode_opt_box_autoadd_i_64(arr[3]),
       bookSourceUrl: dco_decode_opt_String(arr[4]),
-      customOrder: dco_decode_opt_box_autoadd_i_64(arr[5]),
-      enabled: dco_decode_opt_box_autoadd_bool(arr[6]),
-      enabledCookieJar: dco_decode_opt_box_autoadd_bool(arr[7]),
-      enabledExplore: dco_decode_opt_box_autoadd_bool(arr[8]),
-      exploreUrl: dco_decode_opt_String(arr[9]),
-      lastUpdateTime: dco_decode_opt_box_autoadd_i_64(arr[10]),
-      respondTime: dco_decode_opt_box_autoadd_i_64(arr[11]),
-      ruleBookInfo: dco_decode_opt_box_autoadd_rule_book_info(arr[12]),
-      ruleContent: dco_decode_opt_box_autoadd_rule_content(arr[13]),
-      ruleExplore: dco_decode_opt_box_autoadd_rule_explore(arr[14]),
-      ruleReview: dco_decode_opt_box_autoadd_rule_review(arr[15]),
-      ruleSearch: dco_decode_opt_box_autoadd_rule_search(arr[16]),
-      ruleToc: dco_decode_opt_box_autoadd_rule_toc(arr[17]),
-      searchUrl: dco_decode_opt_String(arr[18]),
-      weight: dco_decode_opt_box_autoadd_i_64(arr[19]),
+      bookUrlPattern: dco_decode_opt_String(arr[5]),
+      header: dco_decode_opt_String(arr[6]),
+      loginUrl: dco_decode_opt_String(arr[7]),
+      customOrder: dco_decode_opt_box_autoadd_i_64(arr[8]),
+      enabled: dco_decode_opt_box_autoadd_bool(arr[9]),
+      enabledCookieJar: dco_decode_opt_box_autoadd_bool(arr[10]),
+      enabledExplore: dco_decode_opt_box_autoadd_bool(arr[11]),
+      exploreUrl: dco_decode_opt_String(arr[12]),
+      lastUpdateTime: dco_decode_opt_box_autoadd_i_64(arr[13]),
+      respondTime: dco_decode_opt_box_autoadd_i_64(arr[14]),
+      ruleBookInfo: dco_decode_opt_box_autoadd_rule_book_info(arr[15]),
+      ruleContent: dco_decode_opt_box_autoadd_rule_content(arr[16]),
+      ruleExplore: dco_decode_opt_box_autoadd_rule_explore(arr[17]),
+      ruleReview: dco_decode_opt_box_autoadd_rule_review(arr[18]),
+      ruleSearch: dco_decode_opt_box_autoadd_rule_search(arr[19]),
+      ruleToc: dco_decode_opt_box_autoadd_rule_toc(arr[20]),
+      searchUrl: dco_decode_opt_String(arr[21]),
+      weight: dco_decode_opt_box_autoadd_i_64(arr[22]),
     );
   }
 
@@ -460,6 +463,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_bookSourceName = sse_decode_opt_String(deserializer);
     var var_bookSourceType = sse_decode_opt_box_autoadd_i_64(deserializer);
     var var_bookSourceUrl = sse_decode_opt_String(deserializer);
+    var var_bookUrlPattern = sse_decode_opt_String(deserializer);
+    var var_header = sse_decode_opt_String(deserializer);
+    var var_loginUrl = sse_decode_opt_String(deserializer);
     var var_customOrder = sse_decode_opt_box_autoadd_i_64(deserializer);
     var var_enabled = sse_decode_opt_box_autoadd_bool(deserializer);
     var var_enabledCookieJar = sse_decode_opt_box_autoadd_bool(deserializer);
@@ -482,6 +488,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         bookSourceName: var_bookSourceName,
         bookSourceType: var_bookSourceType,
         bookSourceUrl: var_bookSourceUrl,
+        bookUrlPattern: var_bookUrlPattern,
+        header: var_header,
+        loginUrl: var_loginUrl,
         customOrder: var_customOrder,
         enabled: var_enabled,
         enabledCookieJar: var_enabledCookieJar,
@@ -881,6 +890,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.bookSourceName, serializer);
     sse_encode_opt_box_autoadd_i_64(self.bookSourceType, serializer);
     sse_encode_opt_String(self.bookSourceUrl, serializer);
+    sse_encode_opt_String(self.bookUrlPattern, serializer);
+    sse_encode_opt_String(self.header, serializer);
+    sse_encode_opt_String(self.loginUrl, serializer);
     sse_encode_opt_box_autoadd_i_64(self.customOrder, serializer);
     sse_encode_opt_box_autoadd_bool(self.enabled, serializer);
     sse_encode_opt_box_autoadd_bool(self.enabledCookieJar, serializer);
