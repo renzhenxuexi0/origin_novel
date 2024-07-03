@@ -30,6 +30,7 @@ dependencies:
   cached_network_image: ^3.3.1
   flutter_zoom_drawer: ^3.2.0
   window_manager: ^0.3.9
+  chinese_font_library: ^1.2.0
   rust_lib_origin_novel:
     path: rust_builder
 
@@ -49,29 +50,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  fonts:
-    - family: AlibabaSans Nornal
-      fonts:
-        - asset: fonts/AlibabaSans Nornal/AlibabaSans-Black.otf
-        - asset: fonts/AlibabaSans Nornal/AlibabaSans-Bold.otf
-        - asset: fonts/AlibabaSans Nornal/AlibabaSans-Heavy.otf
-        - asset: fonts/AlibabaSans Nornal/AlibabaSans-Light.otf
-        - asset: fonts/AlibabaSans Nornal/AlibabaSans-Medium.otf
-        - asset: fonts/AlibabaSans Nornal/AlibabaSans-Regular.otf
-    - family: AlibabaSans Nornal ltalics
-      fonts:
-        - asset: fonts/AlibabaSans Nornal ltalics/AlibabaSans-BoldItalic.otf
-        - asset: fonts/AlibabaSans Nornal ltalics/AlibabaSans-HeavyItalic.otf
-        - asset: fonts/AlibabaSans Nornal ltalics/AlibabaSans-Italic.otf
-        - asset: fonts/AlibabaSans Nornal ltalics/AlibabaSans-LightItalic.otf
-        - asset: fonts/AlibabaSans Nornal ltalics/AlibabaSans-MediumItalic.otf
-    - family: 阿里巴巴普惠体
-      fonts:
-        - asset: fonts/阿里巴巴普惠体/Alibaba-PuHuiTi-Bold.ttf
-        - asset: fonts/阿里巴巴普惠体/Alibaba-PuHuiTi-Heavy.ttf
-        - asset: fonts/阿里巴巴普惠体/Alibaba-PuHuiTi-Light.ttf
-        - asset: fonts/阿里巴巴普惠体/Alibaba-PuHuiTi-Medium.ttf
-        - asset: fonts/阿里巴巴普惠体/Alibaba-PuHuiTi-Regular.ttf
   assets:
     - assets/image/default/
     - assets/

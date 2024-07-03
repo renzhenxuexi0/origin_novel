@@ -1,7 +1,6 @@
+import 'package:chinese_font_library/chinese_font_library.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-
-import 'fonts.dart';
 
 // 浅色主题
 final appLightTheme = FlexThemeData.light(
@@ -26,7 +25,7 @@ final appLightTheme = FlexThemeData.light(
   textTheme: const TextTheme(
     titleLarge: TextStyle(fontSize: 18.0),
   ),
-  fontFamily: Fonts.alibabaPuHuiTi,
+  fontFamily: SystemChineseFont.systemFont,
   visualDensity: FlexColorScheme.comfortablePlatformDensity,
   useMaterial3: true,
   swapLegacyOnMaterial3: true,
@@ -54,7 +53,7 @@ final appDarkTheme = FlexThemeData.dark(
   textTheme: const TextTheme(
     titleLarge: TextStyle(fontSize: 18.0),
   ),
-  fontFamily: Fonts.alibabaPuHuiTi,
+  fontFamily: SystemChineseFont.systemFont,
   visualDensity: FlexColorScheme.comfortablePlatformDensity,
   useMaterial3: true,
   swapLegacyOnMaterial3: true,
