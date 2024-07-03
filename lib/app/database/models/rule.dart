@@ -2,7 +2,7 @@ part of 'models.dart';
 
 /// 书籍信息页规则结构定义
 @embedded
-class RuleBookInfo extends rust_model.RuleBookInfo {
+class RuleBookInfo extends rust_rule_book_info.RuleBookInfo {
   RuleBookInfo({
     super.author,
     super.coverUrl,
@@ -18,7 +18,8 @@ class RuleBookInfo extends rust_model.RuleBookInfo {
   });
 
   // 父类转子类
-  factory RuleBookInfo.fromRustModel(rust_model.RuleBookInfo? ruleBookInfo) {
+  factory RuleBookInfo.fromRustModel(
+      rust_rule_book_info.RuleBookInfo? ruleBookInfo) {
     if (ruleBookInfo == null) {
       return RuleBookInfo();
     }
@@ -40,7 +41,7 @@ class RuleBookInfo extends rust_model.RuleBookInfo {
 
 /// 正文页规则结构定义
 @embedded
-class RuleContent extends rust_model.RuleContent {
+class RuleContent extends rust_rule_content.RuleContent {
   RuleContent({
     super.content,
     super.replaceRegex,
@@ -53,7 +54,8 @@ class RuleContent extends rust_model.RuleContent {
   });
 
   // 父类转子类
-  factory RuleContent.fromRustModel(rust_model.RuleContent? ruleContent) {
+  factory RuleContent.fromRustModel(
+      rust_rule_content.RuleContent? ruleContent) {
     if (ruleContent == null) {
       return RuleContent();
     }
@@ -72,7 +74,7 @@ class RuleContent extends rust_model.RuleContent {
 
 /// 发现规则结构定义
 @embedded
-class RuleExplore extends rust_model.RuleExplore {
+class RuleExplore extends rust_rule_explore.RuleExplore {
   RuleExplore({
     super.author,
     super.bookList,
@@ -86,7 +88,8 @@ class RuleExplore extends rust_model.RuleExplore {
   });
 
   // 父类转子类
-  factory RuleExplore.fromRustModel(rust_model.RuleExplore? ruleExplore) {
+  factory RuleExplore.fromRustModel(
+      rust_rule_explore.RuleExplore? ruleExplore) {
     if (ruleExplore == null) {
       return RuleExplore();
     }
@@ -106,7 +109,7 @@ class RuleExplore extends rust_model.RuleExplore {
 
 /// 段评规则结构定义
 @embedded
-class RuleReview extends rust_model.RuleReview {
+class RuleReview extends rust_rule_view.RuleReview {
   RuleReview({
     super.reviewUrl,
     super.avatarRule,
@@ -121,7 +124,7 @@ class RuleReview extends rust_model.RuleReview {
   });
 
   // 父类转子类
-  factory RuleReview.fromRustModel(rust_model.RuleReview? ruleReview) {
+  factory RuleReview.fromRustModel(rust_rule_view.RuleReview? ruleReview) {
     if (ruleReview == null) {
       return RuleReview();
     }
@@ -142,7 +145,7 @@ class RuleReview extends rust_model.RuleReview {
 
 /// 搜索规则结构定义
 @embedded
-class RuleSearch extends rust_model.RuleSearch {
+class RuleSearch extends rust_rule_search.RuleSearch {
   RuleSearch({
     super.author,
     super.bookList,
@@ -155,7 +158,7 @@ class RuleSearch extends rust_model.RuleSearch {
   });
 
   // 父类转子类
-  factory RuleSearch.fromRustModel(rust_model.RuleSearch? ruleSearch) {
+  factory RuleSearch.fromRustModel(rust_rule_search.RuleSearch? ruleSearch) {
     if (ruleSearch == null) {
       return RuleSearch();
     }
@@ -174,7 +177,7 @@ class RuleSearch extends rust_model.RuleSearch {
 
 /// 目录页规则结构定义
 @embedded
-class RuleToc extends rust_model.RuleToc {
+class RuleToc extends rust_rule_toc.RuleToc {
   RuleToc({
     super.chapterList,
     super.chapterName,
@@ -189,7 +192,7 @@ class RuleToc extends rust_model.RuleToc {
   });
 
   // 父类转子类
-  factory RuleToc.fromRustModel(rust_model.RuleToc? ruleToc) {
+  factory RuleToc.fromRustModel(rust_rule_toc.RuleToc? ruleToc) {
     if (ruleToc == null) {
       return RuleToc();
     }

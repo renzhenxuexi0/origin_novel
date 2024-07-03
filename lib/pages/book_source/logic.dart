@@ -7,7 +7,7 @@ import 'package:origin_novel/util/dialog/dialog_utils.dart';
 import 'package:origin_novel/util/log_utils.dart';
 
 import '../../backend/rust/api/model/book_source.dart' as rust_model;
-import '../../backend/rust/api/parse_book_source.dart';
+import '../../backend/rust/api/parse_book_source_api.dart';
 import 'state.dart';
 
 class BookSourceLogic extends GetxController {
