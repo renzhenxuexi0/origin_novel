@@ -18,6 +18,7 @@ pub struct RuleBookInfo {
     pub word_count: Option<String>,
     pub download_url: Option<String>,
     pub can_re_name: Option<String>,
+    #[serde(skip)]
     pub rule_type: Option<RuleType>,
 }
 

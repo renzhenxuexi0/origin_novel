@@ -15,6 +15,7 @@ pub struct RuleSearch {
     pub name: Option<String>,
     pub word_count: Option<String>,
     pub kind: Option<String>,
+    #[serde(skip)]
     pub rule_type: Option<RuleType>,
 }
 

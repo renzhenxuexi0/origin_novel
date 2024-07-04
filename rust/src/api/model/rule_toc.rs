@@ -17,6 +17,7 @@ pub struct RuleToc {
     pub is_pay: Option<String>,
     pub next_toc_url: Option<String>,
     pub update_time: Option<String>,
+    #[serde(skip)]
     pub rule_type: Option<RuleType>,
 }
 

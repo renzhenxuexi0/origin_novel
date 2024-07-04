@@ -28,6 +28,7 @@ pub struct RuleReview {
     pub post_quote_url: Option<String>,
     /// 删除段评URL
     pub delete_url: Option<String>,
+    #[serde(skip)]
     pub rule_type: Option<RuleType>,
 }
 

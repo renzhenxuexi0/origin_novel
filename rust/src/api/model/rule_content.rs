@@ -19,6 +19,7 @@ pub struct RuleContent {
     pub image_style: Option<String>,
     // 购买操作, js 或者包含 {{js}} 的 url
     pub pay_action: Option<String>,
+    #[serde(skip)]
     pub rule_type: Option<RuleType>,
 }
 
