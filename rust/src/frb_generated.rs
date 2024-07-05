@@ -169,13 +169,6 @@ impl SseDecode for bool {
     }
 }
 
-impl SseDecode for i32 {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        deserializer.cursor.read_i32::<NativeEndian>().unwrap()
-    }
-}
-
 impl SseDecode for i64 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -320,19 +313,6 @@ impl SseDecode for Option<crate::api::model::rule_toc::RuleToc> {
     }
 }
 
-impl SseDecode for Option<crate::api::model::rule_type::RuleType> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::model::rule_type::RuleType>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
 impl SseDecode for crate::api::model::rule_book_info::RuleBookInfo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -347,8 +327,6 @@ impl SseDecode for crate::api::model::rule_book_info::RuleBookInfo {
         let mut var_wordCount = <Option<String>>::sse_decode(deserializer);
         let mut var_downloadUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_canReName = <Option<String>>::sse_decode(deserializer);
-        let mut var_ruleType =
-            <Option<crate::api::model::rule_type::RuleType>>::sse_decode(deserializer);
         return crate::api::model::rule_book_info::RuleBookInfo {
             author: var_author,
             cover_url: var_coverUrl,
@@ -361,7 +339,6 @@ impl SseDecode for crate::api::model::rule_book_info::RuleBookInfo {
             word_count: var_wordCount,
             download_url: var_downloadUrl,
             can_re_name: var_canReName,
-            rule_type: var_ruleType,
         };
     }
 }
@@ -377,8 +354,6 @@ impl SseDecode for crate::api::model::rule_content::RuleContent {
         let mut var_sourceRegex = <Option<String>>::sse_decode(deserializer);
         let mut var_imageStyle = <Option<String>>::sse_decode(deserializer);
         let mut var_payAction = <Option<String>>::sse_decode(deserializer);
-        let mut var_ruleType =
-            <Option<crate::api::model::rule_type::RuleType>>::sse_decode(deserializer);
         return crate::api::model::rule_content::RuleContent {
             content: var_content,
             replace_regex: var_replaceRegex,
@@ -388,7 +363,6 @@ impl SseDecode for crate::api::model::rule_content::RuleContent {
             source_regex: var_sourceRegex,
             image_style: var_imageStyle,
             pay_action: var_payAction,
-            rule_type: var_ruleType,
         };
     }
 }
@@ -405,8 +379,6 @@ impl SseDecode for crate::api::model::rule_explore::RuleExplore {
         let mut var_name = <Option<String>>::sse_decode(deserializer);
         let mut var_wordCount = <Option<String>>::sse_decode(deserializer);
         let mut var_kind = <Option<String>>::sse_decode(deserializer);
-        let mut var_ruleType =
-            <Option<crate::api::model::rule_type::RuleType>>::sse_decode(deserializer);
         return crate::api::model::rule_explore::RuleExplore {
             author: var_author,
             book_list: var_bookList,
@@ -417,7 +389,6 @@ impl SseDecode for crate::api::model::rule_explore::RuleExplore {
             name: var_name,
             word_count: var_wordCount,
             kind: var_kind,
-            rule_type: var_ruleType,
         };
     }
 }
@@ -435,8 +406,6 @@ impl SseDecode for crate::api::model::rule_view::RuleReview {
         let mut var_postReviewUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_postQuoteUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_deleteUrl = <Option<String>>::sse_decode(deserializer);
-        let mut var_ruleType =
-            <Option<crate::api::model::rule_type::RuleType>>::sse_decode(deserializer);
         return crate::api::model::rule_view::RuleReview {
             review_url: var_reviewUrl,
             avatar_rule: var_avatarRule,
@@ -448,7 +417,6 @@ impl SseDecode for crate::api::model::rule_view::RuleReview {
             post_review_url: var_postReviewUrl,
             post_quote_url: var_postQuoteUrl,
             delete_url: var_deleteUrl,
-            rule_type: var_ruleType,
         };
     }
 }
@@ -464,8 +432,6 @@ impl SseDecode for crate::api::model::rule_search::RuleSearch {
         let mut var_name = <Option<String>>::sse_decode(deserializer);
         let mut var_wordCount = <Option<String>>::sse_decode(deserializer);
         let mut var_kind = <Option<String>>::sse_decode(deserializer);
-        let mut var_ruleType =
-            <Option<crate::api::model::rule_type::RuleType>>::sse_decode(deserializer);
         return crate::api::model::rule_search::RuleSearch {
             author: var_author,
             book_list: var_bookList,
@@ -475,7 +441,6 @@ impl SseDecode for crate::api::model::rule_search::RuleSearch {
             name: var_name,
             word_count: var_wordCount,
             kind: var_kind,
-            rule_type: var_ruleType,
         };
     }
 }
@@ -493,8 +458,6 @@ impl SseDecode for crate::api::model::rule_toc::RuleToc {
         let mut var_isPay = <Option<String>>::sse_decode(deserializer);
         let mut var_nextTocUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_updateTime = <Option<String>>::sse_decode(deserializer);
-        let mut var_ruleType =
-            <Option<crate::api::model::rule_type::RuleType>>::sse_decode(deserializer);
         return crate::api::model::rule_toc::RuleToc {
             chapter_list: var_chapterList,
             chapter_name: var_chapterName,
@@ -506,24 +469,6 @@ impl SseDecode for crate::api::model::rule_toc::RuleToc {
             is_pay: var_isPay,
             next_toc_url: var_nextTocUrl,
             update_time: var_updateTime,
-            rule_type: var_ruleType,
-        };
-    }
-}
-
-impl SseDecode for crate::api::model::rule_type::RuleType {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner = <i32>::sse_decode(deserializer);
-        return match inner {
-            0 => crate::api::model::rule_type::RuleType::JsonPath,
-            1 => crate::api::model::rule_type::RuleType::Regex,
-            2 => crate::api::model::rule_type::RuleType::JsoupDefault,
-            3 => crate::api::model::rule_type::RuleType::JsoupCss,
-            4 => crate::api::model::rule_type::RuleType::Js,
-            5 => crate::api::model::rule_type::RuleType::XPath,
-            6 => crate::api::model::rule_type::RuleType::Unknown,
-            _ => unreachable!("Invalid variant for RuleType: {}", inner),
         };
     }
 }
@@ -532,6 +477,13 @@ impl SseDecode for u8 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_u8().unwrap()
+    }
+}
+
+impl SseDecode for i32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_i32::<NativeEndian>().unwrap()
     }
 }
 
@@ -625,7 +577,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_book_info::RuleBo
             self.word_count.into_into_dart().into_dart(),
             self.download_url.into_into_dart().into_dart(),
             self.can_re_name.into_into_dart().into_dart(),
-            self.rule_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -653,7 +604,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_content::RuleCont
             self.source_regex.into_into_dart().into_dart(),
             self.image_style.into_into_dart().into_dart(),
             self.pay_action.into_into_dart().into_dart(),
-            self.rule_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -682,7 +632,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_explore::RuleExpl
             self.name.into_into_dart().into_dart(),
             self.word_count.into_into_dart().into_dart(),
             self.kind.into_into_dart().into_dart(),
-            self.rule_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -712,7 +661,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_view::RuleReview 
             self.post_review_url.into_into_dart().into_dart(),
             self.post_quote_url.into_into_dart().into_dart(),
             self.delete_url.into_into_dart().into_dart(),
-            self.rule_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -740,7 +688,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_search::RuleSearc
             self.name.into_into_dart().into_dart(),
             self.word_count.into_into_dart().into_dart(),
             self.kind.into_into_dart().into_dart(),
-            self.rule_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -770,7 +717,6 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_toc::RuleToc {
             self.is_pay.into_into_dart().into_dart(),
             self.next_toc_url.into_into_dart().into_dart(),
             self.update_time.into_into_dart().into_dart(),
-            self.rule_type.into_into_dart().into_dart(),
         ]
         .into_dart()
     }
@@ -783,32 +729,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_toc::RuleToc>
     for crate::api::model::rule_toc::RuleToc
 {
     fn into_into_dart(self) -> crate::api::model::rule_toc::RuleToc {
-        self
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_type::RuleType {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        match self {
-            Self::JsonPath => 0.into_dart(),
-            Self::Regex => 1.into_dart(),
-            Self::JsoupDefault => 2.into_dart(),
-            Self::JsoupCss => 3.into_dart(),
-            Self::Js => 4.into_dart(),
-            Self::XPath => 5.into_dart(),
-            Self::Unknown => 6.into_dart(),
-            _ => unreachable!(),
-        }
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::model::rule_type::RuleType
-{
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_type::RuleType>
-    for crate::api::model::rule_type::RuleType
-{
-    fn into_into_dart(self) -> crate::api::model::rule_type::RuleType {
         self
     }
 }
@@ -875,13 +795,6 @@ impl SseEncode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_u8(self as _).unwrap();
-    }
-}
-
-impl SseEncode for i32 {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
     }
 }
 
@@ -1002,16 +915,6 @@ impl SseEncode for Option<crate::api::model::rule_toc::RuleToc> {
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_type::RuleType> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <bool>::sse_encode(self.is_some(), serializer);
-        if let Some(value) = self {
-            <crate::api::model::rule_type::RuleType>::sse_encode(value, serializer);
-        }
-    }
-}
-
 impl SseEncode for crate::api::model::rule_book_info::RuleBookInfo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -1026,7 +929,6 @@ impl SseEncode for crate::api::model::rule_book_info::RuleBookInfo {
         <Option<String>>::sse_encode(self.word_count, serializer);
         <Option<String>>::sse_encode(self.download_url, serializer);
         <Option<String>>::sse_encode(self.can_re_name, serializer);
-        <Option<crate::api::model::rule_type::RuleType>>::sse_encode(self.rule_type, serializer);
     }
 }
 
@@ -1041,7 +943,6 @@ impl SseEncode for crate::api::model::rule_content::RuleContent {
         <Option<String>>::sse_encode(self.source_regex, serializer);
         <Option<String>>::sse_encode(self.image_style, serializer);
         <Option<String>>::sse_encode(self.pay_action, serializer);
-        <Option<crate::api::model::rule_type::RuleType>>::sse_encode(self.rule_type, serializer);
     }
 }
 
@@ -1057,7 +958,6 @@ impl SseEncode for crate::api::model::rule_explore::RuleExplore {
         <Option<String>>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.word_count, serializer);
         <Option<String>>::sse_encode(self.kind, serializer);
-        <Option<crate::api::model::rule_type::RuleType>>::sse_encode(self.rule_type, serializer);
     }
 }
 
@@ -1074,7 +974,6 @@ impl SseEncode for crate::api::model::rule_view::RuleReview {
         <Option<String>>::sse_encode(self.post_review_url, serializer);
         <Option<String>>::sse_encode(self.post_quote_url, serializer);
         <Option<String>>::sse_encode(self.delete_url, serializer);
-        <Option<crate::api::model::rule_type::RuleType>>::sse_encode(self.rule_type, serializer);
     }
 }
 
@@ -1089,7 +988,6 @@ impl SseEncode for crate::api::model::rule_search::RuleSearch {
         <Option<String>>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.word_count, serializer);
         <Option<String>>::sse_encode(self.kind, serializer);
-        <Option<crate::api::model::rule_type::RuleType>>::sse_encode(self.rule_type, serializer);
     }
 }
 
@@ -1106,28 +1004,6 @@ impl SseEncode for crate::api::model::rule_toc::RuleToc {
         <Option<String>>::sse_encode(self.is_pay, serializer);
         <Option<String>>::sse_encode(self.next_toc_url, serializer);
         <Option<String>>::sse_encode(self.update_time, serializer);
-        <Option<crate::api::model::rule_type::RuleType>>::sse_encode(self.rule_type, serializer);
-    }
-}
-
-impl SseEncode for crate::api::model::rule_type::RuleType {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <i32>::sse_encode(
-            match self {
-                crate::api::model::rule_type::RuleType::JsonPath => 0,
-                crate::api::model::rule_type::RuleType::Regex => 1,
-                crate::api::model::rule_type::RuleType::JsoupDefault => 2,
-                crate::api::model::rule_type::RuleType::JsoupCss => 3,
-                crate::api::model::rule_type::RuleType::Js => 4,
-                crate::api::model::rule_type::RuleType::XPath => 5,
-                crate::api::model::rule_type::RuleType::Unknown => 6,
-                _ => {
-                    unimplemented!("");
-                }
-            },
-            serializer,
-        );
     }
 }
 
@@ -1135,6 +1011,13 @@ impl SseEncode for u8 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         serializer.cursor.write_u8(self).unwrap();
+    }
+}
+
+impl SseEncode for i32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_i32::<NativeEndian>(self).unwrap();
     }
 }
 

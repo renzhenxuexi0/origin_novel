@@ -1,7 +1,4 @@
-use flutter_rust_bridge::frb;
 use serde::{Deserialize, Serialize};
-
-use crate::api::model::rule_type::{RuleType, set_rule_type_for_field};
 
 /// 段评规则结构定义
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -28,15 +25,4 @@ pub struct RuleReview {
     pub post_quote_url: Option<String>,
     /// 删除段评URL
     pub delete_url: Option<String>,
-    #[serde(skip)]
-    pub rule_type: Option<RuleType>,
-}
-
-impl RuleReview {
-    #[frb(ignore)]
-    pub fn set_rule_type(&mut self) {
-        if let Some(str) = &self.review_url {
-            set_rule_type_for_field(&mut self.rule_type, str.to_string());
-        }
-    }
 }

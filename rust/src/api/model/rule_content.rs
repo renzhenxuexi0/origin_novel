@@ -1,7 +1,4 @@
-use flutter_rust_bridge::frb;
 use serde::{Deserialize, Serialize};
-
-use crate::api::model::rule_type::{RuleType, set_rule_type_for_field};
 
 /// 正文页规则结构定义
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -19,15 +16,4 @@ pub struct RuleContent {
     pub image_style: Option<String>,
     // 购买操作, js 或者包含 {{js}} 的 url
     pub pay_action: Option<String>,
-    #[serde(skip)]
-    pub rule_type: Option<RuleType>,
-}
-
-impl RuleContent {
-    #[frb(ignore)]
-    pub fn set_rule_type(&mut self) {
-        if let Some(str) = &self.content {
-            set_rule_type_for_field(&mut self.rule_type, str.to_string());
-        }
-    }
 }

@@ -21,35 +21,55 @@ pub enum RuleType {
 
 /// 规则特征
 #[frb(ignore)]
-pub struct RuleCharacteristic {
-    pub prefix: String,
-    pub rule_type: RuleType,
+struct RuleCharacteristic {
+    prefix: String,
+    match_method: MatchingMethod,
+    rule_type: RuleType,
 }
 
+enum MatchingMethod {
+    StartsWith,
+    Contains,
+}
+
+/// 规则特征获取
 #[frb(ignore)]
-pub fn set_rule_type_for_field(rule_type_field: &mut Option<RuleType>, value: String) {
+pub fn get_rule_type(rule: String) -> RuleType {
+    let rule = rule.trim();
+    let mut rule_type = RuleType::Unknown;
     for characteristic in RULE_CHARACTERISTICS.iter() {
-        if value.starts_with(characteristic.prefix.as_str()) {
-            *rule_type_field = characteristic.rule_type.clone().into();
-            break; // Exit the loop once a match is found
+        match characteristic.match_method {
+            MatchingMethod::StartsWith => {
+                if rule.starts_with(&characteristic.prefix) {
+                    rule_type = characteristic.rule_type.clone();
+                    break;
+                }
+            }
+            MatchingMethod::Contains => {
+                if rule.contains(&characteristic.prefix) {
+                    rule_type = characteristic.rule_type.clone();
+                    break;
+                }
+            }
         }
     }
+    rule_type
 }
 
 /// 创建一个惰性静态变量，用于存储所有的规则特征
 #[frb(ignore)]
 pub static RULE_CHARACTERISTICS: Lazy<Vec<RuleCharacteristic>> = Lazy::new(|| {
     vec![
-        RuleCharacteristic { prefix: "$.".to_string(), rule_type: RuleType::JsonPath },
-        RuleCharacteristic { prefix: "@json:".to_string(), rule_type: RuleType::JsonPath },
-        RuleCharacteristic { prefix: "@js".to_string(), rule_type: RuleType::Js },
-        RuleCharacteristic { prefix: "<js>".to_string(), rule_type: RuleType::Js },
-        RuleCharacteristic { prefix: "class.".to_string(), rule_type: RuleType::JsoupDefault },
-        RuleCharacteristic { prefix: "id.".to_string(), rule_type: RuleType::JsoupDefault },
-        // Add other characteristics here...
-        RuleCharacteristic { prefix: "@css:".to_string(), rule_type: RuleType::JsoupCss },
-        RuleCharacteristic { prefix: "@XPath:".to_string(), rule_type: RuleType::XPath },
-        RuleCharacteristic { prefix: "//".to_string(), rule_type: RuleType::XPath },
-        RuleCharacteristic { prefix: ":".to_string(), rule_type: RuleType::Regex },
+        RuleCharacteristic { prefix: "$.".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsonPath },
+        RuleCharacteristic { prefix: "@json:".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsonPath },
+        RuleCharacteristic { prefix: "@js".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::Js },
+        RuleCharacteristic { prefix: "<js>".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::Js },
+        RuleCharacteristic { prefix: "class.".to_string(), match_method: MatchingMethod::Contains, rule_type: RuleType::JsoupDefault },
+        RuleCharacteristic { prefix: "tag.".to_string(), match_method: MatchingMethod::Contains, rule_type: RuleType::JsoupDefault },
+        RuleCharacteristic { prefix: "id.".to_string(), match_method: MatchingMethod::Contains, rule_type: RuleType::JsoupDefault },
+        RuleCharacteristic { prefix: "@css:".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsoupCss },
+        RuleCharacteristic { prefix: "@XPath:".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::XPath },
+        RuleCharacteristic { prefix: "//".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::XPath },
+        RuleCharacteristic { prefix: ":".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::Regex },
     ]
 });

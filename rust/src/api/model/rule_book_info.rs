@@ -1,7 +1,4 @@
-use flutter_rust_bridge::frb;
 use serde::{Deserialize, Serialize};
-
-use crate::api::model::rule_type::{RuleType, set_rule_type_for_field};
 
 /// 书籍信息页规则结构定义
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -18,15 +15,4 @@ pub struct RuleBookInfo {
     pub word_count: Option<String>,
     pub download_url: Option<String>,
     pub can_re_name: Option<String>,
-    #[serde(skip)]
-    pub rule_type: Option<RuleType>,
-}
-
-impl RuleBookInfo {
-    #[frb(ignore)]
-    pub fn set_rule_type(&mut self) {
-        if let Some(str) = &self.name {
-            set_rule_type_for_field(&mut self.rule_type, str.clone());
-        }
-    }
 }

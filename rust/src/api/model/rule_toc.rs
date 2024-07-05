@@ -1,7 +1,4 @@
-use flutter_rust_bridge::frb;
 use serde::{Deserialize, Serialize};
-
-use crate::api::model::rule_type::{RuleType, set_rule_type_for_field};
 
 /// 目录页规则结构定义
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -17,15 +14,4 @@ pub struct RuleToc {
     pub is_pay: Option<String>,
     pub next_toc_url: Option<String>,
     pub update_time: Option<String>,
-    #[serde(skip)]
-    pub rule_type: Option<RuleType>,
-}
-
-impl RuleToc {
-    #[frb(ignore)]
-    pub fn set_rule_type(&mut self) {
-        if let Some(str) = &self.chapter_name {
-            set_rule_type_for_field(&mut self.rule_type, str.to_string());
-        }
-    }
 }

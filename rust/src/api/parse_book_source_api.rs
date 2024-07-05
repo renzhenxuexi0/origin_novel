@@ -13,7 +13,7 @@ pub async fn parse_book_source_from_url(url: &str) -> Result<Vec<BookSource>, re
 #[cfg(test)]
 mod tests {
     use crate::api::parse_book_source_api::parse_book_source_from_url;
-    use crate::api::regex_helper::keys_regex;
+    use crate::api::util::regex_util::keys_regex;
 
     #[tokio::test]
     async fn test_parse_json() -> Result<(), reqwest::Error> {
