@@ -5,8 +5,10 @@
 
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'rule_type.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 书籍信息页规则结构定义
 class RuleBookInfo {
@@ -21,6 +23,7 @@ class RuleBookInfo {
   final String? wordCount;
   final String? downloadUrl;
   final String? canReName;
+  final Map<String, RuleType> ruleTypes;
 
   const RuleBookInfo({
     this.author,
@@ -34,6 +37,7 @@ class RuleBookInfo {
     this.wordCount,
     this.downloadUrl,
     this.canReName,
+    required this.ruleTypes,
   });
 
   @override
@@ -48,7 +52,8 @@ class RuleBookInfo {
       tocUrl.hashCode ^
       wordCount.hashCode ^
       downloadUrl.hashCode ^
-      canReName.hashCode;
+      canReName.hashCode ^
+      ruleTypes.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -65,5 +70,6 @@ class RuleBookInfo {
           tocUrl == other.tocUrl &&
           wordCount == other.wordCount &&
           downloadUrl == other.downloadUrl &&
-          canReName == other.canReName;
+          canReName == other.canReName &&
+          ruleTypes == other.ruleTypes;
 }

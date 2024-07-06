@@ -5,8 +5,10 @@
 
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'rule_type.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 段评规则结构定义
 class RuleReview {
@@ -39,6 +41,7 @@ class RuleReview {
 
   /// 删除段评URL
   final String? deleteUrl;
+  final Map<String, RuleType> ruleTypes;
 
   const RuleReview({
     this.reviewUrl,
@@ -51,6 +54,7 @@ class RuleReview {
     this.postReviewUrl,
     this.postQuoteUrl,
     this.deleteUrl,
+    required this.ruleTypes,
   });
 
   @override
@@ -64,7 +68,8 @@ class RuleReview {
       voteDownUrl.hashCode ^
       postReviewUrl.hashCode ^
       postQuoteUrl.hashCode ^
-      deleteUrl.hashCode;
+      deleteUrl.hashCode ^
+      ruleTypes.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -80,5 +85,6 @@ class RuleReview {
           voteDownUrl == other.voteDownUrl &&
           postReviewUrl == other.postReviewUrl &&
           postQuoteUrl == other.postQuoteUrl &&
-          deleteUrl == other.deleteUrl;
+          deleteUrl == other.deleteUrl &&
+          ruleTypes == other.ruleTypes;
 }

@@ -5,8 +5,10 @@
 
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'rule_type.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 搜索规则结构定义
 class RuleSearch {
@@ -18,6 +20,7 @@ class RuleSearch {
   final String? name;
   final String? wordCount;
   final String? kind;
+  final Map<String, RuleType> ruleTypes;
 
   const RuleSearch({
     this.author,
@@ -28,6 +31,7 @@ class RuleSearch {
     this.name,
     this.wordCount,
     this.kind,
+    required this.ruleTypes,
   });
 
   @override
@@ -39,7 +43,8 @@ class RuleSearch {
       intro.hashCode ^
       name.hashCode ^
       wordCount.hashCode ^
-      kind.hashCode;
+      kind.hashCode ^
+      ruleTypes.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -53,5 +58,6 @@ class RuleSearch {
           intro == other.intro &&
           name == other.name &&
           wordCount == other.wordCount &&
-          kind == other.kind;
+          kind == other.kind &&
+          ruleTypes == other.ruleTypes;
 }

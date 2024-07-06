@@ -5,8 +5,10 @@
 
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'rule_type.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 正文页规则结构定义
 class RuleContent {
@@ -18,6 +20,7 @@ class RuleContent {
   final String? sourceRegex;
   final String? imageStyle;
   final String? payAction;
+  final Map<String, RuleType> ruleTypes;
 
   const RuleContent({
     this.content,
@@ -28,6 +31,7 @@ class RuleContent {
     this.sourceRegex,
     this.imageStyle,
     this.payAction,
+    required this.ruleTypes,
   });
 
   @override
@@ -39,7 +43,8 @@ class RuleContent {
       webJs.hashCode ^
       sourceRegex.hashCode ^
       imageStyle.hashCode ^
-      payAction.hashCode;
+      payAction.hashCode ^
+      ruleTypes.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -53,5 +58,6 @@ class RuleContent {
           webJs == other.webJs &&
           sourceRegex == other.sourceRegex &&
           imageStyle == other.imageStyle &&
-          payAction == other.payAction;
+          payAction == other.payAction &&
+          ruleTypes == other.ruleTypes;
 }

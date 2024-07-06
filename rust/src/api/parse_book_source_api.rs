@@ -1,7 +1,7 @@
 pub use crate::api::model::book_source::BookSource;
 
 /// 从URL解析书源
-async fn parse_book_source_from_url(url: &str) -> Result<Vec<BookSource>, reqwest::Error> {
+pub async fn parse_book_source_from_url(url: &str) -> Result<Vec<BookSource>, reqwest::Error> {
     let vec = reqwest::get(url)
         .await?
         .json::<Vec<BookSource>>()

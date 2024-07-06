@@ -10,10 +10,11 @@ import 'model/rule_content.dart';
 import 'model/rule_explore.dart';
 import 'model/rule_search.dart';
 import 'model/rule_toc.dart';
+import 'model/rule_type.dart';
 import 'model/rule_view.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `parse_book_source_from_url`
-
-Future<List<BookSource>> getBookSource() =>
-    RustLib.instance.api.crateApiParseBookSourceApiGetBookSource();
+/// 从URL解析书源
+Future<List<BookSource>> parseBookSourceFromUrl({required String url}) =>
+    RustLib.instance.api
+        .crateApiParseBookSourceApiParseBookSourceFromUrl(url: url);

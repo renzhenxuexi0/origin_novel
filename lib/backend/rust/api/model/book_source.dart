@@ -10,10 +10,11 @@ import 'rule_content.dart';
 import 'rule_explore.dart';
 import 'rule_search.dart';
 import 'rule_toc.dart';
+import 'rule_type.dart';
 import 'rule_view.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
-// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `filter_book_source`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `filter_book_source`, `set_rule_types`
 
 /// 书源结构定义
 class BookSource {
