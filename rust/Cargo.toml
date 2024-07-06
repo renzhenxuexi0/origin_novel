@@ -8,12 +8,20 @@ crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
 flutter_rust_bridge = { version = "=2.0.0", features = ["chrono"] }
+# 网络请求
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+# 时间
 chrono = "0.4.38"
+# 异步
+tokio = { version = "1.34", features = ["rt", "test-util", "macros"] }
+# 懒加载
+once_cell = "1.19.0"
+# 解析所用
 serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
 serde = { version = "1.0.203", features = ["derive"] }
-tokio = { version = "1", features = ["rt", "test-util", "macros"] }
 jsonpath-rust = "0.6.1"
-once_cell = "1.19.0"
 regex = "1.10.5"
 parcel_selectors = "0.26.5"
+# 日志配置
+log = "0.4"
+simple_logger = { version = "5.0.0" }

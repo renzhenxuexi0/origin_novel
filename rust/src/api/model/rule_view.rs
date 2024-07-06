@@ -1,4 +1,9 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
+
+use crate::api::model::book_source::frb;
+use crate::api::model::rule_type::RuleType;
 
 /// 段评规则结构定义
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -25,4 +30,33 @@ pub struct RuleReview {
     pub post_quote_url: Option<String>,
     /// 删除段评URL
     pub delete_url: Option<String>,
+    #[serde(skip)]
+    pub rule_types: HashMap<String, RuleType>,
+}
+
+impl RuleReview {
+    /// set_rule_types方法 用于设置rule_types字段
+    #[frb(ignore)]
+    pub fn set_rule_types(&mut self) {
+        // 创建一个包含所有可选字段的map
+        let fields: HashMap<&str, Option<&String>> = HashMap::from_iter(vec![
+            ("avatar_rule", self.avatar_rule.as_ref()),
+            ("content_rule", self.content_rule.as_ref()),
+            ("post_time_rule", self.post_time_rule.as_ref()),
+            ("review_quote_url", self.review_quote_url.as_ref()),
+            ("vote_up_url", self.vote_up_url.as_ref()),
+            ("vote_down_url", self.vote_down_url.as_ref()),
+            ("post_review_url", self.post_review_url.as_ref()),
+            ("post_quote_url", self.post_quote_url.as_ref()),
+            ("delete_url", self.delete_url.as_ref()),
+        ]);
+
+        // 初始化rule_types字段
+        self.rule_types = HashMap::new();
+        for (name, rule) in fields {
+            if let Some(rule) = rule {
+                self.rule_types.insert(name.to_string(), RuleType::new(rule));
+            }
+        }
+    }
 }

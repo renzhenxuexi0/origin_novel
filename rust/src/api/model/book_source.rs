@@ -1,6 +1,7 @@
 pub use std::borrow::BorrowMut;
 
 pub use flutter_rust_bridge::frb;
+use log::debug;
 pub use serde::{Deserialize, Serialize};
 
 use crate::api::model::rule_book_info::RuleBookInfo;
@@ -8,6 +9,7 @@ use crate::api::model::rule_content::RuleContent;
 use crate::api::model::rule_explore::RuleExplore;
 use crate::api::model::rule_search::RuleSearch;
 use crate::api::model::rule_toc::RuleToc;
+use crate::api::model::rule_type::is_supported_rule;
 use crate::api::model::rule_view::RuleReview;
 
 /// 书源结构定义
@@ -63,35 +65,86 @@ pub struct BookSource {
 }
 
 impl BookSource {
+    /// set_rule_types方法 用于设置rule_types字段
     #[frb(ignore)]
-    pub fn set_rule_type(&mut self) {
-        if let Some(rule) = &mut self.rule_book_info {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+    pub fn set_rule_types(&mut self) {
+        debug!("设置书源规则类型 书名 {:?}", self.book_source_name);
+        if let Some(rule_book_info) = self.rule_book_info.borrow_mut() {
+            rule_book_info.set_rule_types();
+            debug!("书信息规则的规则类型: {:?}", rule_book_info.rule_types);
         }
-        if let Some(rule) = &mut self.rule_toc {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+        if let Some(rule_content) = self.rule_content.borrow_mut() {
+            rule_content.set_rule_types();
+            debug!("正文规则的规则类型: {:?}", rule_content.rule_types);
         }
-        if let Some(rule) = &mut self.rule_search {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+        if let Some(rule_explore) = self.rule_explore.borrow_mut() {
+            rule_explore.set_rule_types();
+            debug!("发现规则的规则类型: {:?}", rule_explore.rule_types);
         }
-        if let Some(rule) = &mut self.rule_explore {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+        if let Some(rule_review) = self.rule_review.borrow_mut() {
+            rule_review.set_rule_types();
+            debug!("段评规则的规则类型: {:?}", rule_review.rule_types);
         }
-        if let Some(rule) = &mut self.rule_book_info {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+        if let Some(rule_search) = self.rule_search.borrow_mut() {
+            rule_search.set_rule_types();
+            debug!("搜索规则的规则类型: {:?}", rule_search.rule_types);
         }
-        if let Some(rule) = &mut self.rule_content {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+        if let Some(rule_toc) = self.rule_toc.borrow_mut() {
+            rule_toc.set_rule_types();
+            debug!("目录规则的规则类型: {:?}", rule_toc.rule_types);
         }
-        if let Some(rule) = &mut self.rule_review {
-            let rule = rule.borrow_mut();
-            rule.set_rule_type();
+    }
+
+    /// 过滤书源
+    #[frb(ignore)]
+    pub fn filter_book_source(&self) -> bool {
+        debug!("过滤书源 书名: {:?}", self.book_source_name);
+        let mut result = true;
+        match self.book_source_url.as_ref() {
+            Some(url) => {
+                result = result && !url.is_empty();
+                debug!("书源地址是否为空: {:?}", result);
+            }
+            None => {
+                result = false;
+                debug!("书源地址为空");
+            }
         }
+        match self.search_url.as_ref() {
+            Some(url) => {
+                result = result && !url.is_empty();
+                debug!("搜索地址是否为空: {:?}", result);
+            }
+            None => {
+                result = false;
+                debug!("搜索地址为空");
+            }
+        }
+        if let Some(rule_book_info) = self.rule_book_info.as_ref() {
+            let support = rule_book_info.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+            debug!("书籍信息规则是否支持: {:?}", support);
+            result = result && support;
+        }
+        if let Some(rule_content) = self.rule_content.as_ref() {
+            let support = rule_content.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+            debug!("正文规则是否支持: {:?}", support);
+            result = result && support;
+        }
+        // if let Some(rule_explore) = self.rule_explore.as_ref() {
+        //     result = result && rule_explore.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+        // }
+        // if let Some(rule_review) = self.rule_review.as_ref() {
+        //     result = result && rule_review.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+        // }
+        if let Some(rule_search) = self.rule_search.as_ref() {
+            let support = rule_search.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+            debug!("搜索规则是否支持: {:?}", support);
+            result = result && support;
+        }
+        // if let Some(rule_toc) = self.rule_toc.as_ref() {
+        //     result = result && rule_toc.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+        // }
+        debug!("过滤书源最终结果: {:?}", result);
+        result
     }
 }
