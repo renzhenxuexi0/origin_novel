@@ -9,6 +9,7 @@ import '../../app/theme/app_theme.dart';
 
 part 'base_confirm.dart';
 part 'base_toast.dart';
+part 'help_dialog.dart';
 
 class DialogUtils {
   DialogUtils._();
@@ -17,12 +18,14 @@ class DialogUtils {
 
   static Color get _maskBackground => Colors.transparent;
 
+  /// 加载类型弹窗
   static Future<void> loading() async {
     await SmartDialog.showLoading<void>(
       maskColor: _maskBackground,
     );
   }
 
+  /// 关闭弹窗 默认关闭loading
   static Future<void> dismiss(
       {SmartStatus status = SmartStatus.loading}) async {
     await SmartDialog.dismiss<void>(
@@ -30,6 +33,7 @@ class DialogUtils {
     );
   }
 
+  /// 默认提示弹窗
   static Future<void> tips(
     String msg, {
     AlignmentGeometry? alignment,
@@ -44,6 +48,7 @@ class DialogUtils {
         ),
       );
 
+  /// 成功提示弹窗
   static Future<void> success(
     String msg, {
     AlignmentGeometry? alignment,
@@ -58,6 +63,7 @@ class DialogUtils {
         ),
       );
 
+  /// 危险提示弹窗
   static Future<void> danger(
     String msg, {
     AlignmentGeometry? alignment,
@@ -73,6 +79,7 @@ class DialogUtils {
         ),
       );
 
+  /// 警告提示弹窗
   static Future<void> waring(
     String msg, {
     AlignmentGeometry? alignment,
@@ -84,6 +91,26 @@ class DialogUtils {
           type: ToastType.waring,
           alignment: alignment ?? _defaultAlignment,
           msg: msg,
+        ),
+      );
+
+  /// 帮助弹窗
+  static Future<T?> help<T>(String msg,
+          {AlignmentGeometry? alignment,
+          String? title,
+          FutureOr<T?> Function()? iKnowCallback}) async =>
+      await SmartDialog.show(
+        tag: 'help',
+        builder: (context) => HelpDialog(
+          msg: msg,
+          title: title ?? S.of(context).help,
+          iKnowCallback: () async {
+            final T? result = await iKnowCallback?.call();
+            await SmartDialog.dismiss<T>(
+              result: result,
+              tag: 'help',
+            );
+          },
         ),
       );
 

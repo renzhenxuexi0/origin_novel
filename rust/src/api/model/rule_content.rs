@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use flutter_rust_bridge::frb;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::api::model::rule_type::RuleType;
 
@@ -23,6 +23,22 @@ pub struct RuleContent {
     pub pay_action: Option<String>,
     #[serde(skip)]
     pub rule_types: HashMap<String, RuleType>,
+}
+
+impl Default for RuleContent {
+    fn default() -> Self {
+        RuleContent {
+            content: None,
+            replace_regex: None,
+            title: None,
+            next_content_url: None,
+            web_js: None,
+            source_regex: None,
+            image_style: None,
+            pay_action: None,
+            rule_types: HashMap::new(),
+        }
+    }
 }
 
 impl RuleContent {

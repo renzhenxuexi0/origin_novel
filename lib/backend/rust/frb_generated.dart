@@ -12,6 +12,7 @@ import 'api/model/rule_toc.dart';
 import 'api/model/rule_type.dart';
 import 'api/model/rule_view.dart';
 import 'api/parse_book_source_api.dart';
+import 'api/search_book_api.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'frb_generated.dart';
@@ -64,7 +65,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.0.0';
 
   @override
-  int get rustContentHash => 1443932969;
+  int get rustContentHash => -1646452327;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -77,6 +78,9 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
 abstract class RustLibApi extends BaseApi {
   Future<List<BookSource>> crateApiParseBookSourceApiParseBookSourceFromUrl(
       {required String url});
+
+  Future<void> crateApiSearchBookApiSearchBook(
+      {required BookSource bookSource, required String keyWord});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -114,6 +118,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             argNames: ["url"],
           );
 
+  @override
+  Future<void> crateApiSearchBookApiSearchBook(
+      {required BookSource bookSource, required String keyWord}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_book_source(bookSource, serializer);
+        sse_encode_String(keyWord, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 2, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiSearchBookApiSearchBookConstMeta,
+      argValues: [bookSource, keyWord],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiSearchBookApiSearchBookConstMeta =>
+      const TaskConstMeta(
+        debugName: "search_book",
+        argNames: ["bookSource", "keyWord"],
+      );
+
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -137,8 +168,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   BookSource dco_decode_book_source(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 23)
-      throw Exception('unexpected arr length: expect 23 but see ${arr.length}');
+    if (arr.length != 24)
+      throw Exception('unexpected arr length: expect 24 but see ${arr.length}');
     return BookSource(
       bookSourceComment: dco_decode_opt_String(arr[0]),
       bookSourceGroup: dco_decode_opt_String(arr[1]),
@@ -150,19 +181,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       loginUrl: dco_decode_opt_String(arr[7]),
       customOrder: dco_decode_opt_box_autoadd_i_64(arr[8]),
       enabled: dco_decode_opt_box_autoadd_bool(arr[9]),
-      enabledCookieJar: dco_decode_opt_box_autoadd_bool(arr[10]),
-      enabledExplore: dco_decode_opt_box_autoadd_bool(arr[11]),
-      exploreUrl: dco_decode_opt_String(arr[12]),
-      lastUpdateTime: dco_decode_opt_box_autoadd_i_64(arr[13]),
-      respondTime: dco_decode_opt_box_autoadd_i_64(arr[14]),
-      ruleBookInfo: dco_decode_opt_box_autoadd_rule_book_info(arr[15]),
-      ruleContent: dco_decode_opt_box_autoadd_rule_content(arr[16]),
-      ruleExplore: dco_decode_opt_box_autoadd_rule_explore(arr[17]),
-      ruleReview: dco_decode_opt_box_autoadd_rule_review(arr[18]),
-      ruleSearch: dco_decode_opt_box_autoadd_rule_search(arr[19]),
-      ruleToc: dco_decode_opt_box_autoadd_rule_toc(arr[20]),
-      searchUrl: dco_decode_opt_String(arr[21]),
-      weight: dco_decode_opt_box_autoadd_i_64(arr[22]),
+      canEnable: dco_decode_opt_box_autoadd_bool(arr[10]),
+      enabledCookieJar: dco_decode_opt_box_autoadd_bool(arr[11]),
+      enabledExplore: dco_decode_opt_box_autoadd_bool(arr[12]),
+      exploreUrl: dco_decode_opt_String(arr[13]),
+      lastUpdateTime: dco_decode_opt_box_autoadd_i_64(arr[14]),
+      respondTime: dco_decode_opt_box_autoadd_i_64(arr[15]),
+      ruleBookInfo: dco_decode_opt_box_autoadd_rule_book_info(arr[16]),
+      ruleContent: dco_decode_opt_box_autoadd_rule_content(arr[17]),
+      ruleExplore: dco_decode_opt_box_autoadd_rule_explore(arr[18]),
+      ruleReview: dco_decode_opt_box_autoadd_rule_review(arr[19]),
+      ruleSearch: dco_decode_opt_box_autoadd_rule_search(arr[20]),
+      ruleToc: dco_decode_opt_box_autoadd_rule_toc(arr[21]),
+      searchUrl: dco_decode_opt_String(arr[22]),
+      weight: dco_decode_opt_box_autoadd_i_64(arr[23]),
     );
   }
 
@@ -170,6 +202,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as bool;
+  }
+
+  @protected
+  BookSource dco_decode_box_autoadd_book_source(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_book_source(raw);
   }
 
   @protected
@@ -455,6 +493,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void dco_decode_unit(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return;
+  }
+
+  @protected
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_String(deserializer);
@@ -489,6 +533,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_loginUrl = sse_decode_opt_String(deserializer);
     var var_customOrder = sse_decode_opt_box_autoadd_i_64(deserializer);
     var var_enabled = sse_decode_opt_box_autoadd_bool(deserializer);
+    var var_canEnable = sse_decode_opt_box_autoadd_bool(deserializer);
     var var_enabledCookieJar = sse_decode_opt_box_autoadd_bool(deserializer);
     var var_enabledExplore = sse_decode_opt_box_autoadd_bool(deserializer);
     var var_exploreUrl = sse_decode_opt_String(deserializer);
@@ -514,6 +559,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         loginUrl: var_loginUrl,
         customOrder: var_customOrder,
         enabled: var_enabled,
+        canEnable: var_canEnable,
         enabledCookieJar: var_enabledCookieJar,
         enabledExplore: var_enabledExplore,
         exploreUrl: var_exploreUrl,
@@ -533,6 +579,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint8() != 0;
+  }
+
+  @protected
+  BookSource sse_decode_box_autoadd_book_source(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_book_source(deserializer));
   }
 
   @protected
@@ -917,6 +969,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_decode_unit(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+  }
+
+  @protected
   void sse_encode_AnyhowException(
       AnyhowException self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -950,6 +1007,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.loginUrl, serializer);
     sse_encode_opt_box_autoadd_i_64(self.customOrder, serializer);
     sse_encode_opt_box_autoadd_bool(self.enabled, serializer);
+    sse_encode_opt_box_autoadd_bool(self.canEnable, serializer);
     sse_encode_opt_box_autoadd_bool(self.enabledCookieJar, serializer);
     sse_encode_opt_box_autoadd_bool(self.enabledExplore, serializer);
     sse_encode_opt_String(self.exploreUrl, serializer);
@@ -969,6 +1027,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self ? 1 : 0);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_book_source(
+      BookSource self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_book_source(self, serializer);
   }
 
   @protected
@@ -1272,5 +1337,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_u_8(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint8(self);
+  }
+
+  @protected
+  void sse_encode_unit(void self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
   }
 }

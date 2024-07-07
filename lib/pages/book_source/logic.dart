@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:origin_novel/app/database/app_database.dart';
-import 'package:origin_novel/app/database/models/models.dart';
+import 'package:origin_novel/app/database/model/models.dart';
 import 'package:origin_novel/util/dialog/dialog_utils.dart';
 import 'package:origin_novel/util/log_utils.dart';
 
-import '../../backend/rust/api/model/book_source.dart' as rust_model;
+import '../../backend/rust/api/model/book_source.dart' as rust_book_source;
 import '../../backend/rust/api/parse_book_source_api.dart';
 import 'state.dart';
 
@@ -115,17 +115,14 @@ class BookSourceLogic extends GetxController {
       state.bookSources = [];
       if (bookSources.isNotEmpty) {
         for (final element in bookSources) {
-          final bookSource = _isar.bookSources
-                  .where()
-                  .bookSourceUrlEqualTo(element.bookSourceUrl!)
-                  .findFirst() ??
-              _convertBookSource(element);
+          final bookSource = _convertBookSource(element);
 
           if (bookSource != null) {
             state.bookSources.add(bookSource);
           }
         }
         _isar.write((isar) {
+          isar.bookSources.clear();
           isar.bookSources.putAll(state.bookSources);
         });
       }
@@ -173,13 +170,14 @@ class BookSourceLogic extends GetxController {
     }
   }
 
-  BookSource? _convertBookSource(rust_model.BookSource bookSource) {
+  BookSource? _convertBookSource(rust_book_source.BookSource bookSource) {
     try {
       return BookSource(
         id: _isar.bookSources.autoIncrement(),
         bookSourceName: bookSource.bookSourceName!,
         bookSourceUrl: bookSource.bookSourceUrl!,
         enabled: bookSource.enabled ?? true,
+        canEnable: bookSource.canEnable ?? true,
         exploreUrl: bookSource.exploreUrl,
         header: bookSource.header,
         loginUrl: bookSource.loginUrl,

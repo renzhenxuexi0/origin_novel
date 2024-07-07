@@ -42,6 +42,9 @@ class BookSource {
   /// 是否启用
   final bool? enabled;
 
+  /// 是否可以启用
+  final bool? canEnable;
+
   /// 每次请求的cookie
   final bool? enabledCookieJar;
 
@@ -92,6 +95,7 @@ class BookSource {
     this.loginUrl,
     this.customOrder,
     this.enabled,
+    this.canEnable,
     this.enabledCookieJar,
     this.enabledExplore,
     this.exploreUrl,
@@ -119,6 +123,7 @@ class BookSource {
       loginUrl.hashCode ^
       customOrder.hashCode ^
       enabled.hashCode ^
+      canEnable.hashCode ^
       enabledCookieJar.hashCode ^
       enabledExplore.hashCode ^
       exploreUrl.hashCode ^
@@ -148,6 +153,7 @@ class BookSource {
           loginUrl == other.loginUrl &&
           customOrder == other.customOrder &&
           enabled == other.enabled &&
+          canEnable == other.canEnable &&
           enabledCookieJar == other.enabledCookieJar &&
           enabledExplore == other.enabledExplore &&
           exploreUrl == other.exploreUrl &&

@@ -1,7 +1,7 @@
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 
 import '../../app/constants/assets.dart';
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 
 class HomeState {
   late ZoomDrawerController zoomDrawerController;

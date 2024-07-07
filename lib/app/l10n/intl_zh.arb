@@ -2,6 +2,9 @@
   "@@locale": "zh",
   "appName": "起源小说",
   "all": "全部",
+  "help": "帮助",
+  "bookSourceHelp": "书源默认情况下是可以启用/禁用.\n但是由于目前书源解析能力有限.\n有些书源是永久禁用的(无法使用)!",
+  "iKnow": "我知道了",
   "enabled": "启用",
   "topping": "置顶",
   "disabled": "禁用",
@@ -30,6 +33,7 @@
   "thereAreNoMoreChaptersToCome": "后面没有章节了",
   "thereAreNoChaptersAhead": "前面没有章节了",
   "chapterDoesNotExist": "章节不存在",
+  "refreshBookSource": "刷新书源",
   "bookSource": "书源({count})",
   "@bookSource": {
     "placeholders": {

@@ -59,7 +59,7 @@ final appDarkTheme = FlexThemeData.dark(
   swapLegacyOnMaterial3: true,
 );
 
-class ConfirmTheme {
+class MyDialogTheme {
   static const radius = 4.0;
   static const dialogWidth = 270.0;
   static const dialogContentMinHeight = 60.0;
@@ -68,9 +68,6 @@ class ConfirmTheme {
   static const padding = 16.0;
 }
 
-class BookItemTheme {}
-
 class BookReadTheme {
-  static const radius = 4.0;
   static const padding = 16.0;
 }

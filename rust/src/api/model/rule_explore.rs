@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::api::model::book_source::frb;
 use crate::api::model::rule_type::RuleType;
@@ -20,6 +20,23 @@ pub struct RuleExplore {
     pub kind: Option<String>,
     #[serde(skip)]
     pub rule_types: HashMap<String, RuleType>,
+}
+
+impl Default for RuleExplore {
+    fn default() -> Self {
+        RuleExplore {
+            author: None,
+            kind: None,
+            book_list: None,
+            intro: None,
+            cover_url: None,
+            word_count: None,
+            name: None,
+            book_url: None,
+            last_chapter: None,
+            rule_types: HashMap::new(),
+        }
+    }
 }
 
 impl RuleExplore {

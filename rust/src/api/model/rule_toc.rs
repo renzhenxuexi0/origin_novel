@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::api::model::book_source::frb;
 use crate::api::model::rule_type::RuleType;
@@ -21,6 +21,24 @@ pub struct RuleToc {
     pub update_time: Option<String>,
     #[serde(skip)]
     pub rule_types: HashMap<String, RuleType>,
+}
+
+impl Default for RuleToc {
+    fn default() -> Self {
+        RuleToc {
+            chapter_list: None,
+            chapter_name: None,
+            chapter_url: None,
+            is_volume: None,
+            pre_update_json: None,
+            format_js: None,
+            is_vip: None,
+            is_pay: None,
+            next_toc_url: None,
+            update_time: None,
+            rule_types: HashMap::new(),
+        }
+    }
 }
 
 impl RuleToc {

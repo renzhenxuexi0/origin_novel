@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 
 class BookSourceState {
   List<String> sourceOfBookSource = [
-    'https://github.moeyy.xyz/https://raw.githubusercontent.com/XIU2/Yuedu/master/shuyuan',
+    'https://mirror.ghproxy.com/https://raw.githubusercontent.com/shidahuilang/shuyuan/shuyuan/good.json',
   ];
 
   List<BookSource> bookSources = [];

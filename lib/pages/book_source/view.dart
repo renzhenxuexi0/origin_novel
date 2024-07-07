@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:origin_novel/util/dialog/dialog_utils.dart';
 
 import '../../app/l10n/generated/l10n.dart';
 import '../../widget/gap.dart';
@@ -21,9 +22,20 @@ class BookSourcePage extends StatelessWidget {
           S.of(context).bookSource(1),
         ),
         actions: [
-          // 刷新书源
+          // 帮助按钮
+          IconButton(
+            icon: const Icon(Icons.help),
+            tooltip: S.of(context).help,
+            onPressed: () {
+              DialogUtils.help(
+                S.of(context).bookSourceHelp,
+              );
+            },
+          ),
+          // 刷新书源按钮
           IconButton(
             icon: const Icon(Icons.refresh),
+            tooltip: S.of(context).refreshBookSource,
             onPressed: logic.initBookSourcesFormNet,
           ),
         ],
@@ -101,18 +113,21 @@ class BookSourcePage extends StatelessWidget {
                 ),
               ),
               // 启用/禁用
-              TextButton(
-                onPressed: () => logic.enableOrDisableBookSource(bookSource),
-                child: Row(
-                  children: [
-                    Icon(bookSource.enabled
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    const Gap.hs(),
-                    Text(bookSource.enabled
-                        ? S.of(context).disabled
-                        : S.of(context).enabled),
-                  ],
+              Visibility(
+                visible: bookSource.canEnable,
+                child: TextButton(
+                  onPressed: () => logic.enableOrDisableBookSource(bookSource),
+                  child: Row(
+                    children: [
+                      Icon(bookSource.enabled
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                      const Gap.hs(),
+                      Text(bookSource.enabled
+                          ? S.of(context).disabled
+                          : S.of(context).enabled),
+                    ],
+                  ),
                 ),
               ),
               // 删除

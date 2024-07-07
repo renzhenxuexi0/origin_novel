@@ -14,6 +14,7 @@ class RuleBookInfo {
   final String? wordCount;
   final String? downloadUrl;
   final String? canReName;
+  final String ruleTypes;
 
   const RuleBookInfo({
     this.author,
@@ -27,45 +28,16 @@ class RuleBookInfo {
     this.wordCount,
     this.downloadUrl,
     this.canReName,
+    required this.ruleTypes,
   });
-
-  @override
-  int get hashCode =>
-      author.hashCode ^
-      coverUrl.hashCode ^
-      init.hashCode ^
-      intro.hashCode ^
-      kind.hashCode ^
-      lastChapter.hashCode ^
-      name.hashCode ^
-      tocUrl.hashCode ^
-      wordCount.hashCode ^
-      downloadUrl.hashCode ^
-      canReName.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RuleBookInfo &&
-          runtimeType == other.runtimeType &&
-          author == other.author &&
-          coverUrl == other.coverUrl &&
-          init == other.init &&
-          intro == other.intro &&
-          kind == other.kind &&
-          lastChapter == other.lastChapter &&
-          name == other.name &&
-          tocUrl == other.tocUrl &&
-          wordCount == other.wordCount &&
-          downloadUrl == other.downloadUrl &&
-          canReName == other.canReName;
 
   // 父类转子类
   factory RuleBookInfo.fromRustModel(
       rust_rule_book_info.RuleBookInfo? ruleBookInfo) {
     if (ruleBookInfo == null) {
-      return const RuleBookInfo();
+      return const RuleBookInfo(ruleTypes: '');
     }
+
     return RuleBookInfo(
       wordCount: ruleBookInfo.wordCount,
       tocUrl: ruleBookInfo.tocUrl,
@@ -78,6 +50,14 @@ class RuleBookInfo {
       author: ruleBookInfo.author,
       downloadUrl: ruleBookInfo.downloadUrl,
       canReName: ruleBookInfo.canReName,
+      // 转为json字符串存储
+      ruleTypes: jsonEncode(
+        Map.fromEntries(
+          ruleBookInfo.ruleTypes.entries.map(
+            (entry) => MapEntry(entry.key, entry.value.toJson()),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -93,6 +73,7 @@ class RuleContent {
   final String? sourceRegex;
   final String? imageStyle;
   final String? payAction;
+  final String ruleTypes;
 
   const RuleContent({
     this.content,
@@ -103,38 +84,14 @@ class RuleContent {
     this.sourceRegex,
     this.imageStyle,
     this.payAction,
+    required this.ruleTypes,
   });
-
-  @override
-  int get hashCode =>
-      content.hashCode ^
-      replaceRegex.hashCode ^
-      title.hashCode ^
-      nextContentUrl.hashCode ^
-      webJs.hashCode ^
-      sourceRegex.hashCode ^
-      imageStyle.hashCode ^
-      payAction.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RuleContent &&
-          runtimeType == other.runtimeType &&
-          content == other.content &&
-          replaceRegex == other.replaceRegex &&
-          title == other.title &&
-          nextContentUrl == other.nextContentUrl &&
-          webJs == other.webJs &&
-          sourceRegex == other.sourceRegex &&
-          imageStyle == other.imageStyle &&
-          payAction == other.payAction;
 
   // 父类转子类
   factory RuleContent.fromRustModel(
       rust_rule_content.RuleContent? ruleContent) {
     if (ruleContent == null) {
-      return const RuleContent();
+      return const RuleContent(ruleTypes: '');
     }
     return RuleContent(
       content: ruleContent.content,
@@ -145,6 +102,14 @@ class RuleContent {
       sourceRegex: ruleContent.sourceRegex,
       imageStyle: ruleContent.imageStyle,
       payAction: ruleContent.payAction,
+      // 转为json字符串存储
+      ruleTypes: jsonEncode(
+        Map.fromEntries(
+          ruleContent.ruleTypes.entries.map(
+            (entry) => MapEntry(entry.key, entry.value.toJson()),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -161,6 +126,7 @@ class RuleExplore {
   final String? name;
   final String? wordCount;
   final String? kind;
+  final String ruleTypes;
 
   const RuleExplore({
     this.author,
@@ -172,40 +138,14 @@ class RuleExplore {
     this.name,
     this.wordCount,
     this.kind,
+    required this.ruleTypes,
   });
-
-  @override
-  int get hashCode =>
-      author.hashCode ^
-      bookList.hashCode ^
-      bookUrl.hashCode ^
-      coverUrl.hashCode ^
-      lastChapter.hashCode ^
-      intro.hashCode ^
-      name.hashCode ^
-      wordCount.hashCode ^
-      kind.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RuleExplore &&
-          runtimeType == other.runtimeType &&
-          author == other.author &&
-          bookList == other.bookList &&
-          bookUrl == other.bookUrl &&
-          coverUrl == other.coverUrl &&
-          lastChapter == other.lastChapter &&
-          intro == other.intro &&
-          name == other.name &&
-          wordCount == other.wordCount &&
-          kind == other.kind;
 
   // 父类转子类
   factory RuleExplore.fromRustModel(
       rust_rule_explore.RuleExplore? ruleExplore) {
     if (ruleExplore == null) {
-      return const RuleExplore();
+      return const RuleExplore(ruleTypes: '');
     }
     return RuleExplore(
       wordCount: ruleExplore.wordCount,
@@ -217,6 +157,14 @@ class RuleExplore {
       bookList: ruleExplore.bookList,
       author: ruleExplore.author,
       kind: ruleExplore.kind,
+      // 转为json字符串存储
+      ruleTypes: jsonEncode(
+        Map.fromEntries(
+          ruleExplore.ruleTypes.entries.map(
+            (entry) => MapEntry(entry.key, entry.value.toJson()),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -253,6 +201,7 @@ class RuleReview {
 
   /// 删除段评URL
   final String? deleteUrl;
+  final String ruleTypes;
 
   const RuleReview({
     this.reviewUrl,
@@ -265,41 +214,13 @@ class RuleReview {
     this.postReviewUrl,
     this.postQuoteUrl,
     this.deleteUrl,
+    required this.ruleTypes,
   });
-
-  @override
-  int get hashCode =>
-      reviewUrl.hashCode ^
-      avatarRule.hashCode ^
-      contentRule.hashCode ^
-      postTimeRule.hashCode ^
-      reviewQuoteUrl.hashCode ^
-      voteUpUrl.hashCode ^
-      voteDownUrl.hashCode ^
-      postReviewUrl.hashCode ^
-      postQuoteUrl.hashCode ^
-      deleteUrl.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RuleReview &&
-          runtimeType == other.runtimeType &&
-          reviewUrl == other.reviewUrl &&
-          avatarRule == other.avatarRule &&
-          contentRule == other.contentRule &&
-          postTimeRule == other.postTimeRule &&
-          reviewQuoteUrl == other.reviewQuoteUrl &&
-          voteUpUrl == other.voteUpUrl &&
-          voteDownUrl == other.voteDownUrl &&
-          postReviewUrl == other.postReviewUrl &&
-          postQuoteUrl == other.postQuoteUrl &&
-          deleteUrl == other.deleteUrl;
 
   // 父类转子类
   factory RuleReview.fromRustModel(rust_rule_view.RuleReview? ruleReview) {
     if (ruleReview == null) {
-      return const RuleReview();
+      return const RuleReview(ruleTypes: '');
     }
     return RuleReview(
       reviewUrl: ruleReview.reviewUrl,
@@ -312,6 +233,14 @@ class RuleReview {
       postReviewUrl: ruleReview.postReviewUrl,
       postQuoteUrl: ruleReview.postQuoteUrl,
       deleteUrl: ruleReview.deleteUrl,
+      // 转为json字符串存储
+      ruleTypes: jsonEncode(
+        Map.fromEntries(
+          ruleReview.ruleTypes.entries.map(
+            (entry) => MapEntry(entry.key, entry.value.toJson()),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -327,6 +256,7 @@ class RuleSearch {
   final String? name;
   final String? wordCount;
   final String? kind;
+  final String ruleTypes;
 
   const RuleSearch({
     this.author,
@@ -337,37 +267,13 @@ class RuleSearch {
     this.name,
     this.wordCount,
     this.kind,
+    required this.ruleTypes,
   });
-
-  @override
-  int get hashCode =>
-      author.hashCode ^
-      bookList.hashCode ^
-      bookUrl.hashCode ^
-      coverUrl.hashCode ^
-      intro.hashCode ^
-      name.hashCode ^
-      wordCount.hashCode ^
-      kind.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RuleSearch &&
-          runtimeType == other.runtimeType &&
-          author == other.author &&
-          bookList == other.bookList &&
-          bookUrl == other.bookUrl &&
-          coverUrl == other.coverUrl &&
-          intro == other.intro &&
-          name == other.name &&
-          wordCount == other.wordCount &&
-          kind == other.kind;
 
   // 父类转子类
   factory RuleSearch.fromRustModel(rust_rule_search.RuleSearch? ruleSearch) {
     if (ruleSearch == null) {
-      return const RuleSearch();
+      return const RuleSearch(ruleTypes: '');
     }
     return RuleSearch(
       wordCount: ruleSearch.wordCount,
@@ -378,6 +284,14 @@ class RuleSearch {
       bookList: ruleSearch.bookList,
       kind: ruleSearch.kind,
       author: ruleSearch.author,
+      // 转为json字符串存储
+      ruleTypes: jsonEncode(
+        Map.fromEntries(
+          ruleSearch.ruleTypes.entries.map(
+            (entry) => MapEntry(entry.key, entry.value.toJson()),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -395,6 +309,7 @@ class RuleToc {
   final String? isPay;
   final String? nextTocUrl;
   final String? updateTime;
+  final String ruleTypes;
 
   const RuleToc({
     this.chapterList,
@@ -407,41 +322,13 @@ class RuleToc {
     this.isPay,
     this.nextTocUrl,
     this.updateTime,
+    required this.ruleTypes,
   });
-
-  @override
-  int get hashCode =>
-      chapterList.hashCode ^
-      chapterName.hashCode ^
-      chapterUrl.hashCode ^
-      isVolume.hashCode ^
-      preUpdateJson.hashCode ^
-      formatJs.hashCode ^
-      isVip.hashCode ^
-      isPay.hashCode ^
-      nextTocUrl.hashCode ^
-      updateTime.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RuleToc &&
-          runtimeType == other.runtimeType &&
-          chapterList == other.chapterList &&
-          chapterName == other.chapterName &&
-          chapterUrl == other.chapterUrl &&
-          isVolume == other.isVolume &&
-          preUpdateJson == other.preUpdateJson &&
-          formatJs == other.formatJs &&
-          isVip == other.isVip &&
-          isPay == other.isPay &&
-          nextTocUrl == other.nextTocUrl &&
-          updateTime == other.updateTime;
 
   // 父类转子类
   factory RuleToc.fromRustModel(rust_rule_toc.RuleToc? ruleToc) {
     if (ruleToc == null) {
-      return const RuleToc();
+      return const RuleToc(ruleTypes: '');
     }
     return RuleToc(
       chapterList: ruleToc.chapterList,
@@ -454,6 +341,36 @@ class RuleToc {
       isPay: ruleToc.isPay,
       nextTocUrl: ruleToc.nextTocUrl,
       updateTime: ruleToc.updateTime,
+      // 转为json字符串存储
+      ruleTypes: jsonEncode(
+        Map.fromEntries(
+          ruleToc.ruleTypes.entries.map(
+            (entry) => MapEntry(entry.key, entry.value.toJson()),
+          ),
+        ),
+      ),
     );
+  }
+}
+
+/// 规则类型转为json
+extension RuleTypeEnumToJson on RuleType {
+  String toJson() {
+    switch (this) {
+      case RuleType.jsonPath:
+        return 'jsonPath';
+      case RuleType.regex:
+        return 'regex';
+      case RuleType.jsoupDefault:
+        return 'jsoupDefault';
+      case RuleType.jsoupCss:
+        return 'jsoupCss';
+      case RuleType.js:
+        return 'js';
+      case RuleType.xPath:
+        return 'xPath';
+      case RuleType.unknown:
+        return 'unknown';
+    }
   }
 }

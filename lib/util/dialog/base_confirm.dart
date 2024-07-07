@@ -31,19 +31,19 @@ class BaseConfirm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double bottomActionButtonWidth =
-        ConfirmTheme.dialogWidth / 2 - ConfirmTheme.dialogDividerWidth / 2;
+        MyDialogTheme.dialogWidth / 2 - MyDialogTheme.dialogDividerWidth / 2;
 
     return ConstrainedBox(
       constraints:
-          const BoxConstraints.tightFor(width: ConfirmTheme.dialogWidth),
+          const BoxConstraints.tightFor(width: MyDialogTheme.dialogWidth),
       child: Material(
-        borderRadius: BorderRadius.circular(ConfirmTheme.radius),
+        borderRadius: BorderRadius.circular(MyDialogTheme.radius),
         color: context.theme.colorScheme.surface,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(ConfirmTheme.padding),
+              padding: const EdgeInsets.all(MyDialogTheme.padding),
               child: Align(
                 child: Text(
                   title ??
@@ -53,13 +53,13 @@ class BaseConfirm extends StatelessWidget {
               ),
             ),
             const Divider(
-              height: ConfirmTheme.dialogDividerWidth,
+              height: MyDialogTheme.dialogDividerWidth,
               indent: 0.0,
               endIndent: 0.0,
             ),
             ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: ConfirmTheme.dialogContentMinHeight,
+                minHeight: MyDialogTheme.dialogContentMinHeight,
                 maxHeight: context.height / 2,
               ),
               child: SingleChildScrollView(
@@ -71,7 +71,7 @@ class BaseConfirm extends StatelessWidget {
               ),
             ),
             const Divider(
-              height: ConfirmTheme.dialogDividerWidth,
+              height: MyDialogTheme.dialogDividerWidth,
               indent: 0.0,
               endIndent: 0.0,
             ),
@@ -79,16 +79,16 @@ class BaseConfirm extends StatelessWidget {
               children: <Widget>[
                 Ink(
                   width: bottomActionButtonWidth,
-                  height: ConfirmTheme.dialogBottomActionHeight,
+                  height: MyDialogTheme.dialogBottomActionHeight,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(ConfirmTheme.radius),
+                      bottomLeft: Radius.circular(MyDialogTheme.radius),
                     ),
                   ),
                   child: InkWell(
                     onTap: cancelHandle,
                     borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(ConfirmTheme.radius),
+                      bottomLeft: Radius.circular(MyDialogTheme.radius),
                     ),
                     child: Align(
                       child: Text(
@@ -101,10 +101,10 @@ class BaseConfirm extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: ConfirmTheme.dialogDividerWidth,
-                  height: ConfirmTheme.dialogBottomActionHeight,
+                  width: MyDialogTheme.dialogDividerWidth,
+                  height: MyDialogTheme.dialogBottomActionHeight,
                   child: VerticalDivider(
-                    width: ConfirmTheme.dialogDividerWidth,
+                    width: MyDialogTheme.dialogDividerWidth,
                     // thickness: AppTheme.dividerTheme.thickness,
                     indent: 0.0,
                     endIndent: 0.0,
@@ -113,16 +113,16 @@ class BaseConfirm extends StatelessWidget {
                 ),
                 Ink(
                   width: bottomActionButtonWidth,
-                  height: ConfirmTheme.dialogBottomActionHeight,
+                  height: MyDialogTheme.dialogBottomActionHeight,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(ConfirmTheme.radius),
+                      bottomRight: Radius.circular(MyDialogTheme.radius),
                     ),
                   ),
                   child: InkWell(
                     onTap: confirmHandle,
                     borderRadius: const BorderRadius.only(
-                      bottomRight: Radius.circular(ConfirmTheme.radius),
+                      bottomRight: Radius.circular(MyDialogTheme.radius),
                     ),
                     child: Align(
                       child: Text(

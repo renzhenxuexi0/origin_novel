@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 import '../../app/l10n/generated/l10n.dart';
 import '../../app/theme/app_theme.dart';
 import '../../widget/gap.dart';

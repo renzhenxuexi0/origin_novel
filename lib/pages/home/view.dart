@@ -3,7 +3,7 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
 
 import '../../app/constants/assets.dart';
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 import '../../app/l10n/generated/l10n.dart';
 import '../../app/routes/app_routes.dart';
 import '../../widget/gap.dart';

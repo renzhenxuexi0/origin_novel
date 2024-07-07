@@ -5,7 +5,7 @@ import 'package:isar/isar.dart';
 import 'package:origin_novel/app/database/app_database.dart';
 
 import '../../app/constants/assets.dart';
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 import 'state.dart';
 
 class BookSearchLogic extends GetxController {

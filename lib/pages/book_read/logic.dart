@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:chinese_font_library/chinese_font_library.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,7 @@ import 'package:origin_novel/app/constants/default_setting.dart';
 
 import '../../app/constants/assets.dart';
 import '../../app/database/app_database.dart';
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 import '../../app/l10n/generated/l10n.dart';
 import '../../app/theme/app_theme.dart';
 import '../../util/dialog/dialog_utils.dart';
@@ -27,6 +28,9 @@ class BookReadLogic extends GetxController {
   void onInit() {
     super.onInit();
     // 读取默认设置
+    _isar.write(
+      (isar) => isar.bookReadSettings.clear(),
+    );
     state.bookReadSetting = _isar.bookReadSettings
             .where()
             .idEqualTo(DefaultSetting.defaultBookReadSettingId)
@@ -41,6 +45,7 @@ class BookReadLogic extends GetxController {
               fontHeight: DefaultSetting.defaultBookReadSettingFontHeight,
               wordSpacing: DefaultSetting.defaultBookReadSettingWordSpacing,
               letterSpacing: DefaultSetting.defaultBookReadSettingLetterSpacing,
+              fontFamily: SystemChineseFont.systemFont,
             );
             // 保存默认设置
             isar.bookReadSettings.put(bookReadSetting);
@@ -65,7 +70,6 @@ class BookReadLogic extends GetxController {
       maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout(
-        minWidth: 0,
         maxWidth: (state.contentStyle.fontSize ??
                 DefaultSetting.defaultBookReadSettingFontSize) *
             2);

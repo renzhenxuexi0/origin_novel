@@ -59,11 +59,18 @@ class BookSource with _$BookSource implements Comparable<BookSource> {
 
     /// 书源类型，0 文本，1 音频, 2 图片, 3 文件（指的是类似知轩藏书只提供下载的网站）
     int? bookSourceType,
+
+    /// 请求头
     String? header,
+
+    /// 登录url
     String? loginUrl,
 
     /// 是否启用
     @Default(true) bool enabled,
+
+    /// 是否可以启动
+    @Default(true) bool canEnable,
   }) = _BookSource;
 
   const BookSource._();

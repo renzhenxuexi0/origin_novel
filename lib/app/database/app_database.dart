@@ -4,7 +4,7 @@ import 'package:isar/isar.dart';
 import 'package:origin_novel/util/log_utils.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'models/models.dart';
+import 'model/models.dart';
 
 class AppDatabase {
   late Isar _isar;

@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 
 import '../../app/database/app_database.dart';
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 
 class BookSearchState {
   late Map<String, List<BookInfo>> searchBookInfoMap;

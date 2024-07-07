@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 
-import '../../app/database/models/models.dart';
+import '../../app/database/model/models.dart';
 
 class BookReadState {
   /// 拖动开始位置
