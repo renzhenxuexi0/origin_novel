@@ -6,7 +6,7 @@ use crate::api::model::book_source::frb;
 use crate::api::model::rule_type::RuleType;
 
 /// 段评规则结构定义
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuleReview {
     /// 段评URL
@@ -34,25 +34,6 @@ pub struct RuleReview {
     pub rule_types: HashMap<String, RuleType>,
 }
 
-
-impl Default for RuleReview {
-    fn default() -> Self {
-        RuleReview {
-            review_url: None,
-            avatar_rule: None,
-            content_rule: None,
-            post_time_rule: None,
-            review_quote_url: None,
-            vote_up_url: None,
-            vote_down_url: None,
-            post_review_url: None,
-            post_quote_url: None,
-            delete_url: None,
-            rule_types: HashMap::new(),
-        }
-    }
-}
-
 impl RuleReview {
     /// set_rule_types方法 用于设置rule_types字段
     #[frb(ignore)]
@@ -74,7 +55,8 @@ impl RuleReview {
         self.rule_types = HashMap::new();
         for (name, rule) in fields {
             if let Some(rule) = rule {
-                self.rule_types.insert(name.to_string(), RuleType::new(rule));
+                self.rule_types
+                    .insert(name.to_string(), RuleType::new(rule));
             }
         }
     }

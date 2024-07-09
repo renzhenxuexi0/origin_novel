@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
 use flutter_rust_bridge::frb;
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::api::model::rule_type::RuleType;
 
 /// 正文页规则结构定义
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RuleContent {
     pub content: Option<String>,
@@ -23,22 +23,6 @@ pub struct RuleContent {
     pub pay_action: Option<String>,
     #[serde(skip)]
     pub rule_types: HashMap<String, RuleType>,
-}
-
-impl Default for RuleContent {
-    fn default() -> Self {
-        RuleContent {
-            content: None,
-            replace_regex: None,
-            title: None,
-            next_content_url: None,
-            web_js: None,
-            source_regex: None,
-            image_style: None,
-            pay_action: None,
-            rule_types: HashMap::new(),
-        }
-    }
 }
 
 impl RuleContent {

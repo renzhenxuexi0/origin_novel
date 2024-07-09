@@ -34,7 +34,7 @@ enum MatchingMethod {
 /// 规则特征获取
 #[frb(ignore)]
 impl RuleType {
-    pub fn new(rule: &String) -> Self {
+    pub fn new(rule: &str) -> Self {
         let rule = rule.trim();
         for characteristic in RULE_CHARACTERISTICS.iter() {
             match characteristic.match_method {
@@ -58,18 +58,71 @@ impl RuleType {
 #[frb(ignore)]
 static RULE_CHARACTERISTICS: Lazy<Vec<RuleCharacteristic>> = Lazy::new(|| {
     vec![
-        RuleCharacteristic { prefix: "$.".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsonPath },
-        RuleCharacteristic { prefix: "@json:".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsonPath },
-        RuleCharacteristic { prefix: "@js".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::Js },
-        RuleCharacteristic { prefix: "<js>".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::Js },
-        RuleCharacteristic { prefix: "class".to_string(), match_method: MatchingMethod::Contains, rule_type: RuleType::JsoupDefault },
-        RuleCharacteristic { prefix: "tag".to_string(), match_method: MatchingMethod::Contains, rule_type: RuleType::JsoupDefault },
-        RuleCharacteristic { prefix: "id".to_string(), match_method: MatchingMethod::Contains, rule_type: RuleType::JsoupDefault },
-        RuleCharacteristic { prefix: "a[".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsoupDefault },
-        RuleCharacteristic { prefix: "@css:".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::JsoupCss },
-        RuleCharacteristic { prefix: "@XPath:".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::XPath },
-        RuleCharacteristic { prefix: "//".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::XPath },
-        RuleCharacteristic { prefix: ":".to_string(), match_method: MatchingMethod::StartsWith, rule_type: RuleType::Regex },
+        RuleCharacteristic {
+            prefix: "$.".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::JsonPath,
+        },
+        RuleCharacteristic {
+            prefix: "@json:".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::JsonPath,
+        },
+        RuleCharacteristic {
+            prefix: "@js".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::Js,
+        },
+        RuleCharacteristic {
+            prefix: "<js>".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::Js,
+        },
+        RuleCharacteristic {
+            prefix: "class".to_string(),
+            match_method: MatchingMethod::Contains,
+            rule_type: RuleType::JsoupDefault,
+        },
+        RuleCharacteristic {
+            prefix: "tag".to_string(),
+            match_method: MatchingMethod::Contains,
+            rule_type: RuleType::JsoupDefault,
+        },
+        RuleCharacteristic {
+            prefix: "id".to_string(),
+            match_method: MatchingMethod::Contains,
+            rule_type: RuleType::JsoupDefault,
+        },
+        RuleCharacteristic {
+            prefix: "a[".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::JsoupDefault,
+        },
+        RuleCharacteristic {
+            prefix: "@css:".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::JsoupCss,
+        },
+        RuleCharacteristic {
+            prefix: "@XPath:".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::XPath,
+        },
+        RuleCharacteristic {
+            prefix: "//".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::XPath,
+        },
+        RuleCharacteristic {
+            prefix: ":".to_string(),
+            match_method: MatchingMethod::StartsWith,
+            rule_type: RuleType::Regex,
+        },
+        RuleCharacteristic {
+            prefix: "java".to_string(),
+            match_method: MatchingMethod::Contains,
+            rule_type: RuleType::Unknown,
+        },
     ]
 });
 

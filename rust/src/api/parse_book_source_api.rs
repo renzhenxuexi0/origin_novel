@@ -6,6 +6,7 @@ pub async fn parse_book_source_from_url(url: &str) -> Result<Vec<BookSource>, re
         .await?
         .json::<Vec<BookSource>>()
         .await?;
+
     // 使用map来处理每个BookSource，然后使用filter来过滤掉不需要的元素
     let processed_vec: Vec<BookSource> = vec
         .into_iter()

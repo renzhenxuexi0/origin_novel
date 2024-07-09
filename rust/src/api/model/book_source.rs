@@ -126,11 +126,11 @@ fn parse_field<T: Deserialize<'static>>(map: &serde_json::Map<String, Value>, ke
 fn parse_complex_field<T: Deserialize<'static> + Default>(map: &serde_json::Map<String, Value>, key: &str) -> Option<T> {
     map.get(key).and_then(|v| {
         if v.is_null() || (v.is_array() && v.as_array().unwrap().is_empty()) {
-            T::default()
+            Some(T::default())
         } else if v.is_object() {
             T::deserialize(v.clone()).ok()
         } else {
-            T::default()
+            Some(T::default())
         }
     })
 }
@@ -186,7 +186,7 @@ impl BookSource {
                 result = result && !url.is_empty();
                 // debug!("搜索地址是否为空: {:?}", result);
                 // 如果包含webview则过滤
-                if url.to_ascii_lowercase().contains("webview") {
+                if url.to_ascii_lowercase().contains("webview") || url.to_ascii_lowercase().contains("java") {
                     result = false;
                     // debug!("搜索地址包含webview");
                 }

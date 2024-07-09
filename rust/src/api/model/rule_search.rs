@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::api::model::book_source::frb;
 use crate::api::model::rule_type::RuleType;
 
 /// 搜索规则结构定义
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RuleSearch {
     pub author: Option<String>,
@@ -19,22 +19,6 @@ pub struct RuleSearch {
     pub kind: Option<String>,
     #[serde(skip)]
     pub rule_types: HashMap<String, RuleType>,
-}
-
-impl Default for RuleSearch {
-    fn default() -> Self {
-        RuleSearch {
-            author: None,
-            book_list: None,
-            book_url: None,
-            cover_url: None,
-            intro: None,
-            name: None,
-            word_count: None,
-            kind: None,
-            rule_types: HashMap::new(),
-        }
-    }
 }
 
 impl RuleSearch {
@@ -57,7 +41,8 @@ impl RuleSearch {
         self.rule_types = HashMap::new();
         for (name, rule) in fields {
             if let Some(rule) = rule {
-                self.rule_types.insert(name.to_string(), RuleType::new(rule));
+                self.rule_types
+                    .insert(name.to_string(), RuleType::new(rule));
             }
         }
     }
