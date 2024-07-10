@@ -67,6 +67,7 @@ class BookReadLogic extends GetxController {
         text: "测",
         style: state.contentStyle,
       ),
+      locale: Get.locale,
       maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout(

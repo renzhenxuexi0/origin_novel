@@ -24,9 +24,9 @@ Future<void> main() async {
   await RustLib.init();
 
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(800, 620),
+    size: Size(800, 600),
     center: true,
-    minimumSize: Size(800, 620),
+    minimumSize: Size(800, 600),
     skipTaskbar: false,
     titleBarStyle: TitleBarStyle.normal,
   );
