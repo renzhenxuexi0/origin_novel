@@ -8,13 +8,17 @@ use once_cell::sync::Lazy;
 use reqwest::Client;
 use reqwest::header::{CONTENT_TYPE, HeaderMap, HeaderName, HeaderValue};
 
+use crate::api::model::search_book::SearchBook;
 use crate::api::parse_book_source_api::BookSource;
 use crate::api::util::regex_util;
 
 static REQUEST_CLIENT: Lazy<reqwest::Client> = Lazy::new(Client::new);
 
 /// 搜索书籍
-pub async fn search_book(book_source: BookSource, keyword: String) -> Result<(), reqwest::Error> {
+pub async fn search_book(
+    book_source: BookSource,
+    keyword: String,
+) -> Result<Vec<SearchBook>, reqwest::Error> {
     if let BookSource {
         book_source_url: Some(book_source_url),
         search_url: Some(search_url),
@@ -139,7 +143,7 @@ async fn send_request(
         "post" => REQUEST_CLIENT.post(url),
         _ => REQUEST_CLIENT.get(url),
     }
-        .headers(headers.clone());
+    .headers(headers.clone());
 
     let response = if let Some(form_data) = body {
         request_builder.form(form_data).send().await?
