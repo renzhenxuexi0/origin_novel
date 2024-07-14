@@ -1,0 +1,79 @@
+[
+  {
+    "bookSourceUrl": "https://www.zbcxw.cn#🎃",
+    "bookSourceName": "星星小说🎃#2",
+    "bookSourceGroup": "",
+    "bookSourceType": 0,
+    "customOrder": 73,
+    "enabled": true,
+    "enabledExplore": true,
+    "enabledCookieJar": true,
+    "bookSourceComment": "",
+    "lastUpdateTime": 0,
+    "respondTime": 2029,
+    "weight": 0,
+    "ruleExplore": {},
+    "searchUrl": "https://www.zbcxw.cn/search.php?key={{key}}",
+    "ruleSearch": {
+      "bookList": "tag.li",
+      "name": "class.top clearfix@tag.h1@tag.a@text",
+      "author": "class.top clearfix@class.s2@text",
+      "intro": "class.c@html",
+      "kind": "class.tips clearfix@tag.a@text",
+      "lastChapter": "class.bottom clearfix@tag.a@text",
+      "bookUrl": "class.sCboxBookParL left@tag.a@href",
+      "coverUrl": "class.sCboxBookParL left@tag.img@src",
+      "wordCount": "class.top clearfix@class.s4@text"
+    },
+    "ruleBookInfo": {
+      "name": "class.other right@class.left@text",
+      "author": "class.other right@class.s2@tag.a@text",
+      "intro": "class.brief@html",
+      "kind": "class.tips clearfix@tag.a.0@text",
+      "lastChapter": "class.news clearfix@tag.a@text",
+      "coverUrl": "class.imgBox left@tag.img@src",
+      "tocUrl": "class.button clearfix@tag.a.0@href",
+      "wordCount": "class.other right@class.s4@text"
+    },
+    "ruleToc": {
+      "chapterList": "id.chapter",
+      "chapterName": "tag.a@text",
+      "chapterUrl": "tag.a@href"
+    },
+    "ruleContent": {
+      "content": "id.txt@html"
+    },
+    "tocRule": {
+      "chapterList": "id.chapter",
+      "chapterName": "tag.a@text",
+      "chapterUrl": "tag.a@href"
+    },
+    "contentRule": {
+      "content": "id.txt@html"
+    },
+    "tag": "星星小说🎃#2",
+    "exploreRule": {},
+    "bookInfoRule": {
+      "name": "class.other right@class.left@text",
+      "author": "class.other right@class.s2@tag.a@text",
+      "intro": "class.brief@html",
+      "kind": "class.tips clearfix@tag.a.0@text",
+      "lastChapter": "class.news clearfix@tag.a@text",
+      "coverUrl": "class.imgBox left@tag.img@src",
+      "tocUrl": "class.button clearfix@tag.a.0@href",
+      "wordCount": "class.other right@class.s4@text"
+    },
+    "searchRule": {
+      "bookList": "tag.li",
+      "name": "class.top clearfix@tag.h1@tag.a@text",
+      "author": "class.top clearfix@class.s2@text",
+      "intro": "class.c@html",
+      "kind": "class.tips clearfix@tag.a@text",
+      "lastChapter": "class.bottom clearfix@tag.a@text",
+      "bookUrl": "class.sCboxBookParL left@tag.a@href",
+      "coverUrl": "class.sCboxBookParL left@tag.img@src",
+      "wordCount": "class.top clearfix@class.s4@text"
+    },
+    "key": "https://www.zbcxw.cn#🎃"
+  }
+]

@@ -3,14 +3,19 @@ import 'dart:convert';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
-import '../../../backend/rust/api/model/rule_toc.dart' as rust_rule_toc;
-import '../../../backend/rust/api/model/rule_content.dart' as rust_rule_content;
-import '../../../backend/rust/api/model/rule_book_info.dart'
+import 'package:origin_novel/backend/rust/api/model/rule/rule_toc.dart'
+    as rust_rule_toc;
+import 'package:origin_novel/backend/rust/api/model/rule/rule_content.dart'
+    as rust_rule_content;
+import 'package:origin_novel/backend/rust/api/model/rule/rule_book_info.dart'
     as rust_rule_book_info;
-import '../../../backend/rust/api/model/rule_search.dart' as rust_rule_search;
-import '../../../backend/rust/api/model/rule_explore.dart' as rust_rule_explore;
-import '../../../backend/rust/api/model/rule_type.dart';
-import '../../../backend/rust/api/model/rule_view.dart' as rust_rule_view;
+import 'package:origin_novel/backend/rust/api/model/rule/rule_search.dart'
+    as rust_rule_search;
+import 'package:origin_novel/backend/rust/api/model/rule/rule_explore.dart'
+    as rust_rule_explore;
+import 'package:origin_novel/backend/rust/api/model/rule/rule_type.dart';
+import 'package:origin_novel/backend/rust/api/model/rule/rule_review.dart'
+    as rust_rule_review;
 
 part 'book_info.dart';
 

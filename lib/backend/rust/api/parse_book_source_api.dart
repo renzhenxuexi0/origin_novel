@@ -5,13 +5,13 @@
 
 import '../frb_generated.dart';
 import 'model/book_source.dart';
-import 'model/rule_book_info.dart';
-import 'model/rule_content.dart';
-import 'model/rule_explore.dart';
-import 'model/rule_search.dart';
-import 'model/rule_toc.dart';
-import 'model/rule_type.dart';
-import 'model/rule_view.dart';
+import 'model/rule/rule_book_info.dart';
+import 'model/rule/rule_content.dart';
+import 'model/rule/rule_explore.dart';
+import 'model/rule/rule_review.dart';
+import 'model/rule/rule_search.dart';
+import 'model/rule/rule_toc.dart';
+import 'model/rule/rule_type.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// 从URL解析书源

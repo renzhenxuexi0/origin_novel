@@ -3,11 +3,11 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../frb_generated.dart';
+import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'rule_type.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `default`, `eq`, `fmt`, `fmt`, `hash`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 段评规则结构定义
@@ -41,7 +41,7 @@ class RuleReview {
 
   /// 删除段评URL
   final String? deleteUrl;
-  final Map<String, RuleType> ruleTypes;
+  final Map<RuleReviewField, RuleType> ruleTypes;
 
   const RuleReview({
     this.reviewUrl,
@@ -87,4 +87,18 @@ class RuleReview {
           postQuoteUrl == other.postQuoteUrl &&
           deleteUrl == other.deleteUrl &&
           ruleTypes == other.ruleTypes;
+}
+
+enum RuleReviewField {
+  reviewUrl,
+  avatarRule,
+  contentRule,
+  postTimeRule,
+  reviewQuoteUrl,
+  voteUpUrl,
+  voteDownUrl,
+  postReviewUrl,
+  postQuoteUrl,
+  deleteUrl,
+  ;
 }

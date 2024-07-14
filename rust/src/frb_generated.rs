@@ -25,14 +25,9 @@
 
 // Section: imports
 
-use flutter_rust_bridge::{Handler, IntoIntoDart};
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::Lockable;
-
-#[cfg(not(target_family = "wasm"))]
-pub use io::*;
-#[cfg(target_family = "wasm")]
-pub use web::*;
+use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
 
@@ -82,7 +77,7 @@ fn wire__crate__api__parse_book_source_api__parse_book_source_from_url_impl(
                                 .await?;
                         Ok(output_ok)
                     })()
-                        .await,
+                    .await,
                 )
             }
         },
@@ -112,17 +107,18 @@ fn wire__crate__api__search_book_api__search_book_impl(
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_book_source =
                 <crate::api::model::book_source::BookSource>::sse_decode(&mut deserializer);
-            let api_key_word = <String>::sse_decode(&mut deserializer);
+            let api_keyword = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
-                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                transform_result_sse::<_, ()>(
                     (move || async move {
-                        let output_ok =
-                            crate::api::search_book_api::search_book(api_book_source, api_key_word)
-                                .await?;
+                        let output_ok = Result::<_, ()>::Ok(
+                            crate::api::search_book_api::search_book(api_book_source, api_keyword)
+                                .await,
+                        )?;
                         Ok(output_ok)
                     })()
-                        .await,
+                    .await,
                 )
             }
         },
@@ -139,11 +135,98 @@ impl SseDecode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
-impl SseDecode for std::collections::HashMap<String, crate::api::model::rule_type::RuleType> {
+impl SseDecode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_book_info::RuleBookInfoField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut inner =
-            <Vec<(String, crate::api::model::rule_type::RuleType)>>::sse_decode(deserializer);
+        let mut inner = <Vec<(
+            crate::api::model::rule::rule_book_info::RuleBookInfoField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_content::RuleContentField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(
+            crate::api::model::rule::rule_content::RuleContentField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_explore::RuleExploreField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(
+            crate::api::model::rule::rule_explore::RuleExploreField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_review::RuleReviewField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(
+            crate::api::model::rule::rule_review::RuleReviewField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_search::RuleSearchField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(
+            crate::api::model::rule::rule_search::RuleSearchField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
+impl SseDecode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_toc::RuleTocField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(
+            crate::api::model::rule::rule_toc::RuleTocField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_decode(deserializer);
         return inner.into_iter().collect();
     }
 }
@@ -176,17 +259,19 @@ impl SseDecode for crate::api::model::book_source::BookSource {
         let mut var_lastUpdateTime = <Option<i64>>::sse_decode(deserializer);
         let mut var_respondTime = <Option<i64>>::sse_decode(deserializer);
         let mut var_ruleBookInfo =
-            <Option<crate::api::model::rule_book_info::RuleBookInfo>>::sse_decode(deserializer);
+            <Option<crate::api::model::rule::rule_book_info::RuleBookInfo>>::sse_decode(
+                deserializer,
+            );
         let mut var_ruleContent =
-            <Option<crate::api::model::rule_content::RuleContent>>::sse_decode(deserializer);
+            <Option<crate::api::model::rule::rule_content::RuleContent>>::sse_decode(deserializer);
         let mut var_ruleExplore =
-            <Option<crate::api::model::rule_explore::RuleExplore>>::sse_decode(deserializer);
+            <Option<crate::api::model::rule::rule_explore::RuleExplore>>::sse_decode(deserializer);
         let mut var_ruleReview =
-            <Option<crate::api::model::rule_review::RuleReview>>::sse_decode(deserializer);
+            <Option<crate::api::model::rule::rule_review::RuleReview>>::sse_decode(deserializer);
         let mut var_ruleSearch =
-            <Option<crate::api::model::rule_search::RuleSearch>>::sse_decode(deserializer);
+            <Option<crate::api::model::rule::rule_search::RuleSearch>>::sse_decode(deserializer);
         let mut var_ruleToc =
-            <Option<crate::api::model::rule_toc::RuleToc>>::sse_decode(deserializer);
+            <Option<crate::api::model::rule::rule_toc::RuleToc>>::sse_decode(deserializer);
         let mut var_searchUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_weight = <Option<i64>>::sse_decode(deserializer);
         return crate::api::model::book_source::BookSource {
@@ -265,13 +350,135 @@ impl SseDecode for Vec<u8> {
     }
 }
 
-impl SseDecode for Vec<(String, crate::api::model::rule_type::RuleType)> {
+impl SseDecode
+    for Vec<(
+        crate::api::model::rule::rule_book_info::RuleBookInfoField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<(String, crate::api::model::rule_type::RuleType)>::sse_decode(deserializer));
+            ans_.push(<(
+                crate::api::model::rule::rule_book_info::RuleBookInfoField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode
+    for Vec<(
+        crate::api::model::rule::rule_content::RuleContentField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(
+                crate::api::model::rule::rule_content::RuleContentField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode
+    for Vec<(
+        crate::api::model::rule::rule_explore::RuleExploreField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(
+                crate::api::model::rule::rule_explore::RuleExploreField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode
+    for Vec<(
+        crate::api::model::rule::rule_review::RuleReviewField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(
+                crate::api::model::rule::rule_review::RuleReviewField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode
+    for Vec<(
+        crate::api::model::rule::rule_search::RuleSearchField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(
+                crate::api::model::rule::rule_search::RuleSearchField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode
+    for Vec<(
+        crate::api::model::rule::rule_toc::RuleTocField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<(
+                crate::api::model::rule::rule_toc::RuleTocField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::model::search_book::SearchBook> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = vec![];
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::model::search_book::SearchBook>::sse_decode(
+                deserializer,
+            ));
         }
         return ans_;
     }
@@ -310,12 +517,12 @@ impl SseDecode for Option<i64> {
     }
 }
 
-impl SseDecode for Option<crate::api::model::rule_book_info::RuleBookInfo> {
+impl SseDecode for Option<crate::api::model::rule::rule_book_info::RuleBookInfo> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
             return Some(
-                <crate::api::model::rule_book_info::RuleBookInfo>::sse_decode(deserializer),
+                <crate::api::model::rule::rule_book_info::RuleBookInfo>::sse_decode(deserializer),
             );
         } else {
             return None;
@@ -323,11 +530,63 @@ impl SseDecode for Option<crate::api::model::rule_book_info::RuleBookInfo> {
     }
 }
 
-impl SseDecode for Option<crate::api::model::rule_content::RuleContent> {
+impl SseDecode for Option<crate::api::model::rule::rule_content::RuleContent> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::model::rule_content::RuleContent>::sse_decode(
+            return Some(
+                <crate::api::model::rule::rule_content::RuleContent>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::model::rule::rule_explore::RuleExplore> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <crate::api::model::rule::rule_explore::RuleExplore>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::model::rule::rule_review::RuleReview> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <crate::api::model::rule::rule_review::RuleReview>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::model::rule::rule_search::RuleSearch> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(
+                <crate::api::model::rule::rule_search::RuleSearch>::sse_decode(deserializer),
+            );
+        } else {
+            return None;
+        }
+    }
+}
+
+impl SseDecode for Option<crate::api::model::rule::rule_toc::RuleToc> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        if (<bool>::sse_decode(deserializer)) {
+            return Some(<crate::api::model::rule::rule_toc::RuleToc>::sse_decode(
                 deserializer,
             ));
         } else {
@@ -336,68 +595,103 @@ impl SseDecode for Option<crate::api::model::rule_content::RuleContent> {
     }
 }
 
-impl SseDecode for Option<crate::api::model::rule_explore::RuleExplore> {
+impl SseDecode
+    for (
+        crate::api::model::rule::rule_book_info::RuleBookInfoField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::model::rule_explore::RuleExplore>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<crate::api::model::rule_review::RuleReview> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::model::rule_review::RuleReview>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<crate::api::model::rule_search::RuleSearch> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::model::rule_search::RuleSearch>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for Option<crate::api::model::rule_toc::RuleToc> {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        if (<bool>::sse_decode(deserializer)) {
-            return Some(<crate::api::model::rule_toc::RuleToc>::sse_decode(
-                deserializer,
-            ));
-        } else {
-            return None;
-        }
-    }
-}
-
-impl SseDecode for (String, crate::api::model::rule_type::RuleType) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_field0 = <String>::sse_decode(deserializer);
-        let mut var_field1 = <crate::api::model::rule_type::RuleType>::sse_decode(deserializer);
+        let mut var_field0 =
+            <crate::api::model::rule::rule_book_info::RuleBookInfoField>::sse_decode(deserializer);
+        let mut var_field1 =
+            <crate::api::model::rule::rule_type::RuleType>::sse_decode(deserializer);
         return (var_field0, var_field1);
     }
 }
 
-impl SseDecode for crate::api::model::rule_book_info::RuleBookInfo {
+impl SseDecode
+    for (
+        crate::api::model::rule::rule_content::RuleContentField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 =
+            <crate::api::model::rule::rule_content::RuleContentField>::sse_decode(deserializer);
+        let mut var_field1 =
+            <crate::api::model::rule::rule_type::RuleType>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode
+    for (
+        crate::api::model::rule::rule_explore::RuleExploreField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 =
+            <crate::api::model::rule::rule_explore::RuleExploreField>::sse_decode(deserializer);
+        let mut var_field1 =
+            <crate::api::model::rule::rule_type::RuleType>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode
+    for (
+        crate::api::model::rule::rule_review::RuleReviewField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 =
+            <crate::api::model::rule::rule_review::RuleReviewField>::sse_decode(deserializer);
+        let mut var_field1 =
+            <crate::api::model::rule::rule_type::RuleType>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode
+    for (
+        crate::api::model::rule::rule_search::RuleSearchField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 =
+            <crate::api::model::rule::rule_search::RuleSearchField>::sse_decode(deserializer);
+        let mut var_field1 =
+            <crate::api::model::rule::rule_type::RuleType>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode
+    for (
+        crate::api::model::rule::rule_toc::RuleTocField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 =
+            <crate::api::model::rule::rule_toc::RuleTocField>::sse_decode(deserializer);
+        let mut var_field1 =
+            <crate::api::model::rule::rule_type::RuleType>::sse_decode(deserializer);
+        return (var_field0, var_field1);
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_book_info::RuleBookInfo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_author = <Option<String>>::sse_decode(deserializer);
@@ -412,10 +706,10 @@ impl SseDecode for crate::api::model::rule_book_info::RuleBookInfo {
         let mut var_downloadUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_canReName = <Option<String>>::sse_decode(deserializer);
         let mut var_ruleTypes = <std::collections::HashMap<
-            String,
-            crate::api::model::rule_type::RuleType,
+            crate::api::model::rule::rule_book_info::RuleBookInfoField,
+            crate::api::model::rule::rule_type::RuleType,
         >>::sse_decode(deserializer);
-        return crate::api::model::rule_book_info::RuleBookInfo {
+        return crate::api::model::rule::rule_book_info::RuleBookInfo {
             author: var_author,
             cover_url: var_coverUrl,
             init: var_init,
@@ -432,7 +726,28 @@ impl SseDecode for crate::api::model::rule_book_info::RuleBookInfo {
     }
 }
 
-impl SseDecode for crate::api::model::rule_content::RuleContent {
+impl SseDecode for crate::api::model::rule::rule_book_info::RuleBookInfoField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::model::rule::rule_book_info::RuleBookInfoField::Author,
+            1 => crate::api::model::rule::rule_book_info::RuleBookInfoField::CoverUrl,
+            2 => crate::api::model::rule::rule_book_info::RuleBookInfoField::Init,
+            3 => crate::api::model::rule::rule_book_info::RuleBookInfoField::Intro,
+            4 => crate::api::model::rule::rule_book_info::RuleBookInfoField::Kind,
+            5 => crate::api::model::rule::rule_book_info::RuleBookInfoField::LastChapter,
+            6 => crate::api::model::rule::rule_book_info::RuleBookInfoField::Name,
+            7 => crate::api::model::rule::rule_book_info::RuleBookInfoField::TocUrl,
+            8 => crate::api::model::rule::rule_book_info::RuleBookInfoField::WordCount,
+            9 => crate::api::model::rule::rule_book_info::RuleBookInfoField::DownloadUrl,
+            10 => crate::api::model::rule::rule_book_info::RuleBookInfoField::CanReName,
+            _ => unreachable!("Invalid variant for RuleBookInfoField: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_content::RuleContent {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_content = <Option<String>>::sse_decode(deserializer);
@@ -444,10 +759,10 @@ impl SseDecode for crate::api::model::rule_content::RuleContent {
         let mut var_imageStyle = <Option<String>>::sse_decode(deserializer);
         let mut var_payAction = <Option<String>>::sse_decode(deserializer);
         let mut var_ruleTypes = <std::collections::HashMap<
-            String,
-            crate::api::model::rule_type::RuleType,
+            crate::api::model::rule::rule_content::RuleContentField,
+            crate::api::model::rule::rule_type::RuleType,
         >>::sse_decode(deserializer);
-        return crate::api::model::rule_content::RuleContent {
+        return crate::api::model::rule::rule_content::RuleContent {
             content: var_content,
             replace_regex: var_replaceRegex,
             title: var_title,
@@ -461,7 +776,25 @@ impl SseDecode for crate::api::model::rule_content::RuleContent {
     }
 }
 
-impl SseDecode for crate::api::model::rule_explore::RuleExplore {
+impl SseDecode for crate::api::model::rule::rule_content::RuleContentField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::model::rule::rule_content::RuleContentField::Content,
+            1 => crate::api::model::rule::rule_content::RuleContentField::ReplaceRegex,
+            2 => crate::api::model::rule::rule_content::RuleContentField::Title,
+            3 => crate::api::model::rule::rule_content::RuleContentField::NextContentUrl,
+            4 => crate::api::model::rule::rule_content::RuleContentField::WebJs,
+            5 => crate::api::model::rule::rule_content::RuleContentField::SourceRegex,
+            6 => crate::api::model::rule::rule_content::RuleContentField::ImageStyle,
+            7 => crate::api::model::rule::rule_content::RuleContentField::PayAction,
+            _ => unreachable!("Invalid variant for RuleContentField: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_explore::RuleExplore {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_author = <Option<String>>::sse_decode(deserializer);
@@ -474,10 +807,10 @@ impl SseDecode for crate::api::model::rule_explore::RuleExplore {
         let mut var_wordCount = <Option<String>>::sse_decode(deserializer);
         let mut var_kind = <Option<String>>::sse_decode(deserializer);
         let mut var_ruleTypes = <std::collections::HashMap<
-            String,
-            crate::api::model::rule_type::RuleType,
+            crate::api::model::rule::rule_explore::RuleExploreField,
+            crate::api::model::rule::rule_type::RuleType,
         >>::sse_decode(deserializer);
-        return crate::api::model::rule_explore::RuleExplore {
+        return crate::api::model::rule::rule_explore::RuleExplore {
             author: var_author,
             book_list: var_bookList,
             book_url: var_bookUrl,
@@ -492,7 +825,26 @@ impl SseDecode for crate::api::model::rule_explore::RuleExplore {
     }
 }
 
-impl SseDecode for crate::api::model::rule_review::RuleReview {
+impl SseDecode for crate::api::model::rule::rule_explore::RuleExploreField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::model::rule::rule_explore::RuleExploreField::Author,
+            1 => crate::api::model::rule::rule_explore::RuleExploreField::BookList,
+            2 => crate::api::model::rule::rule_explore::RuleExploreField::BookUrl,
+            3 => crate::api::model::rule::rule_explore::RuleExploreField::CoverUrl,
+            4 => crate::api::model::rule::rule_explore::RuleExploreField::LastChapter,
+            5 => crate::api::model::rule::rule_explore::RuleExploreField::Intro,
+            6 => crate::api::model::rule::rule_explore::RuleExploreField::Name,
+            7 => crate::api::model::rule::rule_explore::RuleExploreField::WordCount,
+            8 => crate::api::model::rule::rule_explore::RuleExploreField::Kind,
+            _ => unreachable!("Invalid variant for RuleExploreField: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_review::RuleReview {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_reviewUrl = <Option<String>>::sse_decode(deserializer);
@@ -506,10 +858,10 @@ impl SseDecode for crate::api::model::rule_review::RuleReview {
         let mut var_postQuoteUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_deleteUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_ruleTypes = <std::collections::HashMap<
-            String,
-            crate::api::model::rule_type::RuleType,
+            crate::api::model::rule::rule_review::RuleReviewField,
+            crate::api::model::rule::rule_type::RuleType,
         >>::sse_decode(deserializer);
-        return crate::api::model::rule_review::RuleReview {
+        return crate::api::model::rule::rule_review::RuleReview {
             review_url: var_reviewUrl,
             avatar_rule: var_avatarRule,
             content_rule: var_contentRule,
@@ -525,7 +877,27 @@ impl SseDecode for crate::api::model::rule_review::RuleReview {
     }
 }
 
-impl SseDecode for crate::api::model::rule_search::RuleSearch {
+impl SseDecode for crate::api::model::rule::rule_review::RuleReviewField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::model::rule::rule_review::RuleReviewField::ReviewUrl,
+            1 => crate::api::model::rule::rule_review::RuleReviewField::AvatarRule,
+            2 => crate::api::model::rule::rule_review::RuleReviewField::ContentRule,
+            3 => crate::api::model::rule::rule_review::RuleReviewField::PostTimeRule,
+            4 => crate::api::model::rule::rule_review::RuleReviewField::ReviewQuoteUrl,
+            5 => crate::api::model::rule::rule_review::RuleReviewField::VoteUpUrl,
+            6 => crate::api::model::rule::rule_review::RuleReviewField::VoteDownUrl,
+            7 => crate::api::model::rule::rule_review::RuleReviewField::PostReviewUrl,
+            8 => crate::api::model::rule::rule_review::RuleReviewField::PostQuoteUrl,
+            9 => crate::api::model::rule::rule_review::RuleReviewField::DeleteUrl,
+            _ => unreachable!("Invalid variant for RuleReviewField: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_search::RuleSearch {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_author = <Option<String>>::sse_decode(deserializer);
@@ -537,10 +909,10 @@ impl SseDecode for crate::api::model::rule_search::RuleSearch {
         let mut var_wordCount = <Option<String>>::sse_decode(deserializer);
         let mut var_kind = <Option<String>>::sse_decode(deserializer);
         let mut var_ruleTypes = <std::collections::HashMap<
-            String,
-            crate::api::model::rule_type::RuleType,
+            crate::api::model::rule::rule_search::RuleSearchField,
+            crate::api::model::rule::rule_type::RuleType,
         >>::sse_decode(deserializer);
-        return crate::api::model::rule_search::RuleSearch {
+        return crate::api::model::rule::rule_search::RuleSearch {
             author: var_author,
             book_list: var_bookList,
             book_url: var_bookUrl,
@@ -554,7 +926,25 @@ impl SseDecode for crate::api::model::rule_search::RuleSearch {
     }
 }
 
-impl SseDecode for crate::api::model::rule_toc::RuleToc {
+impl SseDecode for crate::api::model::rule::rule_search::RuleSearchField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::model::rule::rule_search::RuleSearchField::Author,
+            1 => crate::api::model::rule::rule_search::RuleSearchField::BookList,
+            2 => crate::api::model::rule::rule_search::RuleSearchField::BookUrl,
+            3 => crate::api::model::rule::rule_search::RuleSearchField::CoverUrl,
+            4 => crate::api::model::rule::rule_search::RuleSearchField::Intro,
+            5 => crate::api::model::rule::rule_search::RuleSearchField::Name,
+            6 => crate::api::model::rule::rule_search::RuleSearchField::WordCount,
+            7 => crate::api::model::rule::rule_search::RuleSearchField::Kind,
+            _ => unreachable!("Invalid variant for RuleSearchField: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_toc::RuleToc {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut var_chapterList = <Option<String>>::sse_decode(deserializer);
@@ -568,10 +958,10 @@ impl SseDecode for crate::api::model::rule_toc::RuleToc {
         let mut var_nextTocUrl = <Option<String>>::sse_decode(deserializer);
         let mut var_updateTime = <Option<String>>::sse_decode(deserializer);
         let mut var_ruleTypes = <std::collections::HashMap<
-            String,
-            crate::api::model::rule_type::RuleType,
+            crate::api::model::rule::rule_toc::RuleTocField,
+            crate::api::model::rule::rule_type::RuleType,
         >>::sse_decode(deserializer);
-        return crate::api::model::rule_toc::RuleToc {
+        return crate::api::model::rule::rule_toc::RuleToc {
             chapter_list: var_chapterList,
             chapter_name: var_chapterName,
             chapter_url: var_chapterUrl,
@@ -587,19 +977,61 @@ impl SseDecode for crate::api::model::rule_toc::RuleToc {
     }
 }
 
-impl SseDecode for crate::api::model::rule_type::RuleType {
+impl SseDecode for crate::api::model::rule::rule_toc::RuleTocField {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <i32>::sse_decode(deserializer);
         return match inner {
-            0 => crate::api::model::rule_type::RuleType::JsonPath,
-            1 => crate::api::model::rule_type::RuleType::Regex,
-            2 => crate::api::model::rule_type::RuleType::JsoupDefault,
-            3 => crate::api::model::rule_type::RuleType::JsoupCss,
-            4 => crate::api::model::rule_type::RuleType::Js,
-            5 => crate::api::model::rule_type::RuleType::XPath,
-            6 => crate::api::model::rule_type::RuleType::Unknown,
+            0 => crate::api::model::rule::rule_toc::RuleTocField::ChapterList,
+            1 => crate::api::model::rule::rule_toc::RuleTocField::ChapterName,
+            2 => crate::api::model::rule::rule_toc::RuleTocField::ChapterUrl,
+            3 => crate::api::model::rule::rule_toc::RuleTocField::IsVolume,
+            4 => crate::api::model::rule::rule_toc::RuleTocField::PreUpdateJson,
+            5 => crate::api::model::rule::rule_toc::RuleTocField::FormatJs,
+            6 => crate::api::model::rule::rule_toc::RuleTocField::IsVip,
+            7 => crate::api::model::rule::rule_toc::RuleTocField::IsPay,
+            8 => crate::api::model::rule::rule_toc::RuleTocField::NextTocUrl,
+            9 => crate::api::model::rule::rule_toc::RuleTocField::UpdateTime,
+            _ => unreachable!("Invalid variant for RuleTocField: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::rule::rule_type::RuleType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::model::rule::rule_type::RuleType::JsonPath,
+            1 => crate::api::model::rule::rule_type::RuleType::Regex,
+            2 => crate::api::model::rule::rule_type::RuleType::JsoupDefault,
+            3 => crate::api::model::rule::rule_type::RuleType::JsoupCss,
+            4 => crate::api::model::rule::rule_type::RuleType::Js,
+            5 => crate::api::model::rule::rule_type::RuleType::XPath,
+            6 => crate::api::model::rule::rule_type::RuleType::Unknown,
             _ => unreachable!("Invalid variant for RuleType: {}", inner),
+        };
+    }
+}
+
+impl SseDecode for crate::api::model::search_book::SearchBook {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_author = <Option<String>>::sse_decode(deserializer);
+        let mut var_bookUrl = <Option<String>>::sse_decode(deserializer);
+        let mut var_coverUrl = <Option<String>>::sse_decode(deserializer);
+        let mut var_intro = <Option<String>>::sse_decode(deserializer);
+        let mut var_name = <Option<String>>::sse_decode(deserializer);
+        let mut var_wordCount = <Option<String>>::sse_decode(deserializer);
+        let mut var_kind = <Option<String>>::sse_decode(deserializer);
+        return crate::api::model::search_book::SearchBook {
+            author: var_author,
+            book_url: var_bookUrl,
+            cover_url: var_coverUrl,
+            intro: var_intro,
+            name: var_name,
+            word_count: var_wordCount,
+            kind: var_kind,
         };
     }
 }
@@ -679,21 +1111,22 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::book_source::BookSourc
             self.search_url.into_into_dart().into_dart(),
             self.weight.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::book_source::BookSource
-{}
+    for crate::api::model::book_source::BookSource
+{
+}
 impl flutter_rust_bridge::IntoIntoDart<crate::api::model::book_source::BookSource>
-for crate::api::model::book_source::BookSource
+    for crate::api::model::book_source::BookSource
 {
     fn into_into_dart(self) -> crate::api::model::book_source::BookSource {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_book_info::RuleBookInfo {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_book_info::RuleBookInfo {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.author.into_into_dart().into_dart(),
@@ -709,21 +1142,52 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_book_info::RuleBo
             self.can_re_name.into_into_dart().into_dart(),
             self.rule_types.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_book_info::RuleBookInfo
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_book_info::RuleBookInfo>
-for crate::api::model::rule_book_info::RuleBookInfo
+    for crate::api::model::rule::rule_book_info::RuleBookInfo
 {
-    fn into_into_dart(self) -> crate::api::model::rule_book_info::RuleBookInfo {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_book_info::RuleBookInfo>
+    for crate::api::model::rule::rule_book_info::RuleBookInfo
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_book_info::RuleBookInfo {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_content::RuleContent {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_book_info::RuleBookInfoField {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Author => 0.into_dart(),
+            Self::CoverUrl => 1.into_dart(),
+            Self::Init => 2.into_dart(),
+            Self::Intro => 3.into_dart(),
+            Self::Kind => 4.into_dart(),
+            Self::LastChapter => 5.into_dart(),
+            Self::Name => 6.into_dart(),
+            Self::TocUrl => 7.into_dart(),
+            Self::WordCount => 8.into_dart(),
+            Self::DownloadUrl => 9.into_dart(),
+            Self::CanReName => 10.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::rule::rule_book_info::RuleBookInfoField
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_book_info::RuleBookInfoField>
+    for crate::api::model::rule::rule_book_info::RuleBookInfoField
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_book_info::RuleBookInfoField {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_content::RuleContent {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.content.into_into_dart().into_dart(),
@@ -736,21 +1200,49 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_content::RuleCont
             self.pay_action.into_into_dart().into_dart(),
             self.rule_types.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_content::RuleContent
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_content::RuleContent>
-for crate::api::model::rule_content::RuleContent
+    for crate::api::model::rule::rule_content::RuleContent
 {
-    fn into_into_dart(self) -> crate::api::model::rule_content::RuleContent {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_content::RuleContent>
+    for crate::api::model::rule::rule_content::RuleContent
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_content::RuleContent {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_explore::RuleExplore {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_content::RuleContentField {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Content => 0.into_dart(),
+            Self::ReplaceRegex => 1.into_dart(),
+            Self::Title => 2.into_dart(),
+            Self::NextContentUrl => 3.into_dart(),
+            Self::WebJs => 4.into_dart(),
+            Self::SourceRegex => 5.into_dart(),
+            Self::ImageStyle => 6.into_dart(),
+            Self::PayAction => 7.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::rule::rule_content::RuleContentField
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_content::RuleContentField>
+    for crate::api::model::rule::rule_content::RuleContentField
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_content::RuleContentField {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_explore::RuleExplore {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.author.into_into_dart().into_dart(),
@@ -764,21 +1256,50 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_explore::RuleExpl
             self.kind.into_into_dart().into_dart(),
             self.rule_types.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_explore::RuleExplore
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_explore::RuleExplore>
-for crate::api::model::rule_explore::RuleExplore
+    for crate::api::model::rule::rule_explore::RuleExplore
 {
-    fn into_into_dart(self) -> crate::api::model::rule_explore::RuleExplore {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_explore::RuleExplore>
+    for crate::api::model::rule::rule_explore::RuleExplore
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_explore::RuleExplore {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_review::RuleReview {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_explore::RuleExploreField {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Author => 0.into_dart(),
+            Self::BookList => 1.into_dart(),
+            Self::BookUrl => 2.into_dart(),
+            Self::CoverUrl => 3.into_dart(),
+            Self::LastChapter => 4.into_dart(),
+            Self::Intro => 5.into_dart(),
+            Self::Name => 6.into_dart(),
+            Self::WordCount => 7.into_dart(),
+            Self::Kind => 8.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::rule::rule_explore::RuleExploreField
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_explore::RuleExploreField>
+    for crate::api::model::rule::rule_explore::RuleExploreField
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_explore::RuleExploreField {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_review::RuleReview {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.review_url.into_into_dart().into_dart(),
@@ -793,21 +1314,51 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_review::RuleRevie
             self.delete_url.into_into_dart().into_dart(),
             self.rule_types.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_review::RuleReview
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_review::RuleReview>
-for crate::api::model::rule_review::RuleReview
+    for crate::api::model::rule::rule_review::RuleReview
 {
-    fn into_into_dart(self) -> crate::api::model::rule_review::RuleReview {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_review::RuleReview>
+    for crate::api::model::rule::rule_review::RuleReview
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_review::RuleReview {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_search::RuleSearch {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_review::RuleReviewField {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::ReviewUrl => 0.into_dart(),
+            Self::AvatarRule => 1.into_dart(),
+            Self::ContentRule => 2.into_dart(),
+            Self::PostTimeRule => 3.into_dart(),
+            Self::ReviewQuoteUrl => 4.into_dart(),
+            Self::VoteUpUrl => 5.into_dart(),
+            Self::VoteDownUrl => 6.into_dart(),
+            Self::PostReviewUrl => 7.into_dart(),
+            Self::PostQuoteUrl => 8.into_dart(),
+            Self::DeleteUrl => 9.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::rule::rule_review::RuleReviewField
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_review::RuleReviewField>
+    for crate::api::model::rule::rule_review::RuleReviewField
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_review::RuleReviewField {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_search::RuleSearch {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.author.into_into_dart().into_dart(),
@@ -820,21 +1371,49 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_search::RuleSearc
             self.kind.into_into_dart().into_dart(),
             self.rule_types.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_search::RuleSearch
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_search::RuleSearch>
-for crate::api::model::rule_search::RuleSearch
+    for crate::api::model::rule::rule_search::RuleSearch
 {
-    fn into_into_dart(self) -> crate::api::model::rule_search::RuleSearch {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_search::RuleSearch>
+    for crate::api::model::rule::rule_search::RuleSearch
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_search::RuleSearch {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_toc::RuleToc {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_search::RuleSearchField {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Author => 0.into_dart(),
+            Self::BookList => 1.into_dart(),
+            Self::BookUrl => 2.into_dart(),
+            Self::CoverUrl => 3.into_dart(),
+            Self::Intro => 4.into_dart(),
+            Self::Name => 5.into_dart(),
+            Self::WordCount => 6.into_dart(),
+            Self::Kind => 7.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::rule::rule_search::RuleSearchField
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_search::RuleSearchField>
+    for crate::api::model::rule::rule_search::RuleSearchField
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_search::RuleSearchField {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_toc::RuleToc {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
             self.chapter_list.into_into_dart().into_dart(),
@@ -849,21 +1428,51 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_toc::RuleToc {
             self.update_time.into_into_dart().into_dart(),
             self.rule_types.into_into_dart().into_dart(),
         ]
-            .into_dart()
+        .into_dart()
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_toc::RuleToc
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_toc::RuleToc>
-for crate::api::model::rule_toc::RuleToc
+    for crate::api::model::rule::rule_toc::RuleToc
 {
-    fn into_into_dart(self) -> crate::api::model::rule_toc::RuleToc {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_toc::RuleToc>
+    for crate::api::model::rule::rule_toc::RuleToc
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_toc::RuleToc {
         self
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::model::rule_type::RuleType {
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_toc::RuleTocField {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::ChapterList => 0.into_dart(),
+            Self::ChapterName => 1.into_dart(),
+            Self::ChapterUrl => 2.into_dart(),
+            Self::IsVolume => 3.into_dart(),
+            Self::PreUpdateJson => 4.into_dart(),
+            Self::FormatJs => 5.into_dart(),
+            Self::IsVip => 6.into_dart(),
+            Self::IsPay => 7.into_dart(),
+            Self::NextTocUrl => 8.into_dart(),
+            Self::UpdateTime => 9.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::rule::rule_toc::RuleTocField
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_toc::RuleTocField>
+    for crate::api::model::rule::rule_toc::RuleTocField
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_toc::RuleTocField {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_type::RuleType {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
             Self::JsonPath => 0.into_dart(),
@@ -878,12 +1487,39 @@ impl flutter_rust_bridge::IntoDart for crate::api::model::rule_type::RuleType {
     }
 }
 impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-for crate::api::model::rule_type::RuleType
-{}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule_type::RuleType>
-for crate::api::model::rule_type::RuleType
+    for crate::api::model::rule::rule_type::RuleType
 {
-    fn into_into_dart(self) -> crate::api::model::rule_type::RuleType {
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::rule::rule_type::RuleType>
+    for crate::api::model::rule::rule_type::RuleType
+{
+    fn into_into_dart(self) -> crate::api::model::rule::rule_type::RuleType {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::search_book::SearchBook {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.author.into_into_dart().into_dart(),
+            self.book_url.into_into_dart().into_dart(),
+            self.cover_url.into_into_dart().into_dart(),
+            self.intro.into_into_dart().into_dart(),
+            self.name.into_into_dart().into_dart(),
+            self.word_count.into_into_dart().into_dart(),
+            self.kind.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::search_book::SearchBook
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::search_book::SearchBook>
+    for crate::api::model::search_book::SearchBook
+{
+    fn into_into_dart(self) -> crate::api::model::search_book::SearchBook {
         self
     }
 }
@@ -895,13 +1531,93 @@ impl SseEncode for flutter_rust_bridge::for_generated::anyhow::Error {
     }
 }
 
-impl SseEncode for std::collections::HashMap<String, crate::api::model::rule_type::RuleType> {
+impl SseEncode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_book_info::RuleBookInfoField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <Vec<(String, crate::api::model::rule_type::RuleType)>>::sse_encode(
-            self.into_iter().collect(),
-            serializer,
-        );
+        <Vec<(
+            crate::api::model::rule::rule_book_info::RuleBookInfoField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_content::RuleContentField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(
+            crate::api::model::rule::rule_content::RuleContentField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_explore::RuleExploreField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(
+            crate::api::model::rule::rule_explore::RuleExploreField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_review::RuleReviewField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(
+            crate::api::model::rule::rule_review::RuleReviewField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_search::RuleSearchField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(
+            crate::api::model::rule::rule_search::RuleSearchField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
+impl SseEncode
+    for std::collections::HashMap<
+        crate::api::model::rule::rule_toc::RuleTocField,
+        crate::api::model::rule::rule_type::RuleType,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(
+            crate::api::model::rule::rule_toc::RuleTocField,
+            crate::api::model::rule::rule_type::RuleType,
+        )>>::sse_encode(self.into_iter().collect(), serializer);
     }
 }
 
@@ -931,27 +1647,27 @@ impl SseEncode for crate::api::model::book_source::BookSource {
         <Option<String>>::sse_encode(self.explore_url, serializer);
         <Option<i64>>::sse_encode(self.last_update_time, serializer);
         <Option<i64>>::sse_encode(self.respond_time, serializer);
-        <Option<crate::api::model::rule_book_info::RuleBookInfo>>::sse_encode(
+        <Option<crate::api::model::rule::rule_book_info::RuleBookInfo>>::sse_encode(
             self.rule_book_info,
             serializer,
         );
-        <Option<crate::api::model::rule_content::RuleContent>>::sse_encode(
+        <Option<crate::api::model::rule::rule_content::RuleContent>>::sse_encode(
             self.rule_content,
             serializer,
         );
-        <Option<crate::api::model::rule_explore::RuleExplore>>::sse_encode(
+        <Option<crate::api::model::rule::rule_explore::RuleExplore>>::sse_encode(
             self.rule_explore,
             serializer,
         );
-        <Option<crate::api::model::rule_review::RuleReview>>::sse_encode(
+        <Option<crate::api::model::rule::rule_review::RuleReview>>::sse_encode(
             self.rule_review,
             serializer,
         );
-        <Option<crate::api::model::rule_search::RuleSearch>>::sse_encode(
+        <Option<crate::api::model::rule::rule_search::RuleSearch>>::sse_encode(
             self.rule_search,
             serializer,
         );
-        <Option<crate::api::model::rule_toc::RuleToc>>::sse_encode(self.rule_toc, serializer);
+        <Option<crate::api::model::rule::rule_toc::RuleToc>>::sse_encode(self.rule_toc, serializer);
         <Option<String>>::sse_encode(self.search_url, serializer);
         <Option<i64>>::sse_encode(self.weight, serializer);
     }
@@ -998,12 +1714,120 @@ impl SseEncode for Vec<u8> {
     }
 }
 
-impl SseEncode for Vec<(String, crate::api::model::rule_type::RuleType)> {
+impl SseEncode
+    for Vec<(
+        crate::api::model::rule::rule_book_info::RuleBookInfoField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <(String, crate::api::model::rule_type::RuleType)>::sse_encode(item, serializer);
+            <(
+                crate::api::model::rule::rule_book_info::RuleBookInfoField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode
+    for Vec<(
+        crate::api::model::rule::rule_content::RuleContentField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(
+                crate::api::model::rule::rule_content::RuleContentField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode
+    for Vec<(
+        crate::api::model::rule::rule_explore::RuleExploreField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(
+                crate::api::model::rule::rule_explore::RuleExploreField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode
+    for Vec<(
+        crate::api::model::rule::rule_review::RuleReviewField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(
+                crate::api::model::rule::rule_review::RuleReviewField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode
+    for Vec<(
+        crate::api::model::rule::rule_search::RuleSearchField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(
+                crate::api::model::rule::rule_search::RuleSearchField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode
+    for Vec<(
+        crate::api::model::rule::rule_toc::RuleTocField,
+        crate::api::model::rule::rule_type::RuleType,
+    )>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(
+                crate::api::model::rule::rule_toc::RuleTocField,
+                crate::api::model::rule::rule_type::RuleType,
+            )>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::model::search_book::SearchBook> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::model::search_book::SearchBook>::sse_encode(item, serializer);
         }
     }
 }
@@ -1038,75 +1862,147 @@ impl SseEncode for Option<i64> {
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_book_info::RuleBookInfo> {
+impl SseEncode for Option<crate::api::model::rule::rule_book_info::RuleBookInfo> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::model::rule_book_info::RuleBookInfo>::sse_encode(value, serializer);
+            <crate::api::model::rule::rule_book_info::RuleBookInfo>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_content::RuleContent> {
+impl SseEncode for Option<crate::api::model::rule::rule_content::RuleContent> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::model::rule_content::RuleContent>::sse_encode(value, serializer);
+            <crate::api::model::rule::rule_content::RuleContent>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_explore::RuleExplore> {
+impl SseEncode for Option<crate::api::model::rule::rule_explore::RuleExplore> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::model::rule_explore::RuleExplore>::sse_encode(value, serializer);
+            <crate::api::model::rule::rule_explore::RuleExplore>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_review::RuleReview> {
+impl SseEncode for Option<crate::api::model::rule::rule_review::RuleReview> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::model::rule_review::RuleReview>::sse_encode(value, serializer);
+            <crate::api::model::rule::rule_review::RuleReview>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_search::RuleSearch> {
+impl SseEncode for Option<crate::api::model::rule::rule_search::RuleSearch> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::model::rule_search::RuleSearch>::sse_encode(value, serializer);
+            <crate::api::model::rule::rule_search::RuleSearch>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for Option<crate::api::model::rule_toc::RuleToc> {
+impl SseEncode for Option<crate::api::model::rule::rule_toc::RuleToc> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <bool>::sse_encode(self.is_some(), serializer);
         if let Some(value) = self {
-            <crate::api::model::rule_toc::RuleToc>::sse_encode(value, serializer);
+            <crate::api::model::rule::rule_toc::RuleToc>::sse_encode(value, serializer);
         }
     }
 }
 
-impl SseEncode for (String, crate::api::model::rule_type::RuleType) {
+impl SseEncode
+    for (
+        crate::api::model::rule::rule_book_info::RuleBookInfoField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.0, serializer);
-        <crate::api::model::rule_type::RuleType>::sse_encode(self.1, serializer);
+        <crate::api::model::rule::rule_book_info::RuleBookInfoField>::sse_encode(
+            self.0, serializer,
+        );
+        <crate::api::model::rule::rule_type::RuleType>::sse_encode(self.1, serializer);
     }
 }
 
-impl SseEncode for crate::api::model::rule_book_info::RuleBookInfo {
+impl SseEncode
+    for (
+        crate::api::model::rule::rule_content::RuleContentField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::model::rule::rule_content::RuleContentField>::sse_encode(self.0, serializer);
+        <crate::api::model::rule::rule_type::RuleType>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode
+    for (
+        crate::api::model::rule::rule_explore::RuleExploreField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::model::rule::rule_explore::RuleExploreField>::sse_encode(self.0, serializer);
+        <crate::api::model::rule::rule_type::RuleType>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode
+    for (
+        crate::api::model::rule::rule_review::RuleReviewField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::model::rule::rule_review::RuleReviewField>::sse_encode(self.0, serializer);
+        <crate::api::model::rule::rule_type::RuleType>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode
+    for (
+        crate::api::model::rule::rule_search::RuleSearchField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::model::rule::rule_search::RuleSearchField>::sse_encode(self.0, serializer);
+        <crate::api::model::rule::rule_type::RuleType>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode
+    for (
+        crate::api::model::rule::rule_toc::RuleTocField,
+        crate::api::model::rule::rule_type::RuleType,
+    )
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::model::rule::rule_toc::RuleTocField>::sse_encode(self.0, serializer);
+        <crate::api::model::rule::rule_type::RuleType>::sse_encode(self.1, serializer);
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_book_info::RuleBookInfo {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.author, serializer);
@@ -1120,14 +2016,39 @@ impl SseEncode for crate::api::model::rule_book_info::RuleBookInfo {
         <Option<String>>::sse_encode(self.word_count, serializer);
         <Option<String>>::sse_encode(self.download_url, serializer);
         <Option<String>>::sse_encode(self.can_re_name, serializer);
-        <std::collections::HashMap<String, crate::api::model::rule_type::RuleType>>::sse_encode(
-            self.rule_types,
+        <std::collections::HashMap<
+            crate::api::model::rule::rule_book_info::RuleBookInfoField,
+            crate::api::model::rule::rule_type::RuleType,
+        >>::sse_encode(self.rule_types, serializer);
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_book_info::RuleBookInfoField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::Author => 0,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::CoverUrl => 1,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::Init => 2,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::Intro => 3,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::Kind => 4,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::LastChapter => 5,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::Name => 6,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::TocUrl => 7,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::WordCount => 8,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::DownloadUrl => 9,
+                crate::api::model::rule::rule_book_info::RuleBookInfoField::CanReName => 10,
+                _ => {
+                    unimplemented!("");
+                }
+            },
             serializer,
         );
     }
 }
 
-impl SseEncode for crate::api::model::rule_content::RuleContent {
+impl SseEncode for crate::api::model::rule::rule_content::RuleContent {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.content, serializer);
@@ -1138,14 +2059,36 @@ impl SseEncode for crate::api::model::rule_content::RuleContent {
         <Option<String>>::sse_encode(self.source_regex, serializer);
         <Option<String>>::sse_encode(self.image_style, serializer);
         <Option<String>>::sse_encode(self.pay_action, serializer);
-        <std::collections::HashMap<String, crate::api::model::rule_type::RuleType>>::sse_encode(
-            self.rule_types,
+        <std::collections::HashMap<
+            crate::api::model::rule::rule_content::RuleContentField,
+            crate::api::model::rule::rule_type::RuleType,
+        >>::sse_encode(self.rule_types, serializer);
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_content::RuleContentField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::model::rule::rule_content::RuleContentField::Content => 0,
+                crate::api::model::rule::rule_content::RuleContentField::ReplaceRegex => 1,
+                crate::api::model::rule::rule_content::RuleContentField::Title => 2,
+                crate::api::model::rule::rule_content::RuleContentField::NextContentUrl => 3,
+                crate::api::model::rule::rule_content::RuleContentField::WebJs => 4,
+                crate::api::model::rule::rule_content::RuleContentField::SourceRegex => 5,
+                crate::api::model::rule::rule_content::RuleContentField::ImageStyle => 6,
+                crate::api::model::rule::rule_content::RuleContentField::PayAction => 7,
+                _ => {
+                    unimplemented!("");
+                }
+            },
             serializer,
         );
     }
 }
 
-impl SseEncode for crate::api::model::rule_explore::RuleExplore {
+impl SseEncode for crate::api::model::rule::rule_explore::RuleExplore {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.author, serializer);
@@ -1157,14 +2100,37 @@ impl SseEncode for crate::api::model::rule_explore::RuleExplore {
         <Option<String>>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.word_count, serializer);
         <Option<String>>::sse_encode(self.kind, serializer);
-        <std::collections::HashMap<String, crate::api::model::rule_type::RuleType>>::sse_encode(
-            self.rule_types,
+        <std::collections::HashMap<
+            crate::api::model::rule::rule_explore::RuleExploreField,
+            crate::api::model::rule::rule_type::RuleType,
+        >>::sse_encode(self.rule_types, serializer);
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_explore::RuleExploreField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::model::rule::rule_explore::RuleExploreField::Author => 0,
+                crate::api::model::rule::rule_explore::RuleExploreField::BookList => 1,
+                crate::api::model::rule::rule_explore::RuleExploreField::BookUrl => 2,
+                crate::api::model::rule::rule_explore::RuleExploreField::CoverUrl => 3,
+                crate::api::model::rule::rule_explore::RuleExploreField::LastChapter => 4,
+                crate::api::model::rule::rule_explore::RuleExploreField::Intro => 5,
+                crate::api::model::rule::rule_explore::RuleExploreField::Name => 6,
+                crate::api::model::rule::rule_explore::RuleExploreField::WordCount => 7,
+                crate::api::model::rule::rule_explore::RuleExploreField::Kind => 8,
+                _ => {
+                    unimplemented!("");
+                }
+            },
             serializer,
         );
     }
 }
 
-impl SseEncode for crate::api::model::rule_review::RuleReview {
+impl SseEncode for crate::api::model::rule::rule_review::RuleReview {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.review_url, serializer);
@@ -1177,14 +2143,38 @@ impl SseEncode for crate::api::model::rule_review::RuleReview {
         <Option<String>>::sse_encode(self.post_review_url, serializer);
         <Option<String>>::sse_encode(self.post_quote_url, serializer);
         <Option<String>>::sse_encode(self.delete_url, serializer);
-        <std::collections::HashMap<String, crate::api::model::rule_type::RuleType>>::sse_encode(
-            self.rule_types,
+        <std::collections::HashMap<
+            crate::api::model::rule::rule_review::RuleReviewField,
+            crate::api::model::rule::rule_type::RuleType,
+        >>::sse_encode(self.rule_types, serializer);
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_review::RuleReviewField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::model::rule::rule_review::RuleReviewField::ReviewUrl => 0,
+                crate::api::model::rule::rule_review::RuleReviewField::AvatarRule => 1,
+                crate::api::model::rule::rule_review::RuleReviewField::ContentRule => 2,
+                crate::api::model::rule::rule_review::RuleReviewField::PostTimeRule => 3,
+                crate::api::model::rule::rule_review::RuleReviewField::ReviewQuoteUrl => 4,
+                crate::api::model::rule::rule_review::RuleReviewField::VoteUpUrl => 5,
+                crate::api::model::rule::rule_review::RuleReviewField::VoteDownUrl => 6,
+                crate::api::model::rule::rule_review::RuleReviewField::PostReviewUrl => 7,
+                crate::api::model::rule::rule_review::RuleReviewField::PostQuoteUrl => 8,
+                crate::api::model::rule::rule_review::RuleReviewField::DeleteUrl => 9,
+                _ => {
+                    unimplemented!("");
+                }
+            },
             serializer,
         );
     }
 }
 
-impl SseEncode for crate::api::model::rule_search::RuleSearch {
+impl SseEncode for crate::api::model::rule::rule_search::RuleSearch {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.author, serializer);
@@ -1195,14 +2185,36 @@ impl SseEncode for crate::api::model::rule_search::RuleSearch {
         <Option<String>>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.word_count, serializer);
         <Option<String>>::sse_encode(self.kind, serializer);
-        <std::collections::HashMap<String, crate::api::model::rule_type::RuleType>>::sse_encode(
-            self.rule_types,
+        <std::collections::HashMap<
+            crate::api::model::rule::rule_search::RuleSearchField,
+            crate::api::model::rule::rule_type::RuleType,
+        >>::sse_encode(self.rule_types, serializer);
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_search::RuleSearchField {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::model::rule::rule_search::RuleSearchField::Author => 0,
+                crate::api::model::rule::rule_search::RuleSearchField::BookList => 1,
+                crate::api::model::rule::rule_search::RuleSearchField::BookUrl => 2,
+                crate::api::model::rule::rule_search::RuleSearchField::CoverUrl => 3,
+                crate::api::model::rule::rule_search::RuleSearchField::Intro => 4,
+                crate::api::model::rule::rule_search::RuleSearchField::Name => 5,
+                crate::api::model::rule::rule_search::RuleSearchField::WordCount => 6,
+                crate::api::model::rule::rule_search::RuleSearchField::Kind => 7,
+                _ => {
+                    unimplemented!("");
+                }
+            },
             serializer,
         );
     }
 }
 
-impl SseEncode for crate::api::model::rule_toc::RuleToc {
+impl SseEncode for crate::api::model::rule::rule_toc::RuleToc {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Option<String>>::sse_encode(self.chapter_list, serializer);
@@ -1215,31 +2227,68 @@ impl SseEncode for crate::api::model::rule_toc::RuleToc {
         <Option<String>>::sse_encode(self.is_pay, serializer);
         <Option<String>>::sse_encode(self.next_toc_url, serializer);
         <Option<String>>::sse_encode(self.update_time, serializer);
-        <std::collections::HashMap<String, crate::api::model::rule_type::RuleType>>::sse_encode(
-            self.rule_types,
-            serializer,
-        );
+        <std::collections::HashMap<
+            crate::api::model::rule::rule_toc::RuleTocField,
+            crate::api::model::rule::rule_type::RuleType,
+        >>::sse_encode(self.rule_types, serializer);
     }
 }
 
-impl SseEncode for crate::api::model::rule_type::RuleType {
+impl SseEncode for crate::api::model::rule::rule_toc::RuleTocField {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(
             match self {
-                crate::api::model::rule_type::RuleType::JsonPath => 0,
-                crate::api::model::rule_type::RuleType::Regex => 1,
-                crate::api::model::rule_type::RuleType::JsoupDefault => 2,
-                crate::api::model::rule_type::RuleType::JsoupCss => 3,
-                crate::api::model::rule_type::RuleType::Js => 4,
-                crate::api::model::rule_type::RuleType::XPath => 5,
-                crate::api::model::rule_type::RuleType::Unknown => 6,
+                crate::api::model::rule::rule_toc::RuleTocField::ChapterList => 0,
+                crate::api::model::rule::rule_toc::RuleTocField::ChapterName => 1,
+                crate::api::model::rule::rule_toc::RuleTocField::ChapterUrl => 2,
+                crate::api::model::rule::rule_toc::RuleTocField::IsVolume => 3,
+                crate::api::model::rule::rule_toc::RuleTocField::PreUpdateJson => 4,
+                crate::api::model::rule::rule_toc::RuleTocField::FormatJs => 5,
+                crate::api::model::rule::rule_toc::RuleTocField::IsVip => 6,
+                crate::api::model::rule::rule_toc::RuleTocField::IsPay => 7,
+                crate::api::model::rule::rule_toc::RuleTocField::NextTocUrl => 8,
+                crate::api::model::rule::rule_toc::RuleTocField::UpdateTime => 9,
                 _ => {
                     unimplemented!("");
                 }
             },
             serializer,
         );
+    }
+}
+
+impl SseEncode for crate::api::model::rule::rule_type::RuleType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::model::rule::rule_type::RuleType::JsonPath => 0,
+                crate::api::model::rule::rule_type::RuleType::Regex => 1,
+                crate::api::model::rule::rule_type::RuleType::JsoupDefault => 2,
+                crate::api::model::rule::rule_type::RuleType::JsoupCss => 3,
+                crate::api::model::rule::rule_type::RuleType::Js => 4,
+                crate::api::model::rule::rule_type::RuleType::XPath => 5,
+                crate::api::model::rule::rule_type::RuleType::Unknown => 6,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
+    }
+}
+
+impl SseEncode for crate::api::model::search_book::SearchBook {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Option<String>>::sse_encode(self.author, serializer);
+        <Option<String>>::sse_encode(self.book_url, serializer);
+        <Option<String>>::sse_encode(self.cover_url, serializer);
+        <Option<String>>::sse_encode(self.intro, serializer);
+        <Option<String>>::sse_encode(self.name, serializer);
+        <Option<String>>::sse_encode(self.word_count, serializer);
+        <Option<String>>::sse_encode(self.kind, serializer);
     }
 }
 
@@ -1258,7 +2307,12 @@ impl SseEncode for () {
 #[cfg(not(target_family = "wasm"))]
 #[path = "frb_generated.io.rs"]
 mod io;
+#[cfg(not(target_family = "wasm"))]
+pub use io::*;
+
 /// cbindgen:ignore
 #[cfg(target_family = "wasm")]
 #[path = "frb_generated.web.rs"]
 mod web;
+#[cfg(target_family = "wasm")]
+pub use web::*;

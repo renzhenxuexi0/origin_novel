@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 
 use crate::api::model::book_source::frb;
-use crate::api::model::rule_type::RuleType;
+use crate::api::model::rule::rule_type::RuleType;
 
 /// 段评规则结构定义
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
@@ -31,32 +31,46 @@ pub struct RuleReview {
     /// 删除段评URL
     pub delete_url: Option<String>,
     #[serde(skip)]
-    pub rule_types: HashMap<String, RuleType>,
+    pub rule_types: HashMap<RuleReviewField, RuleType>,
 }
 
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub enum RuleReviewField {
+    ReviewUrl,
+    AvatarRule,
+    ContentRule,
+    PostTimeRule,
+    ReviewQuoteUrl,
+    VoteUpUrl,
+    VoteDownUrl,
+    PostReviewUrl,
+    PostQuoteUrl,
+    DeleteUrl,
+}
+
+#[frb(ignore)]
 impl RuleReview {
     /// set_rule_types方法 用于设置rule_types字段
-    #[frb(ignore)]
     pub fn set_rule_types(&mut self) {
         // 创建一个包含所有可选字段的map
-        let fields: HashMap<&str, Option<&String>> = HashMap::from_iter(vec![
-            ("avatar_rule", self.avatar_rule.as_ref()),
-            ("content_rule", self.content_rule.as_ref()),
-            ("post_time_rule", self.post_time_rule.as_ref()),
-            ("review_quote_url", self.review_quote_url.as_ref()),
-            ("vote_up_url", self.vote_up_url.as_ref()),
-            ("vote_down_url", self.vote_down_url.as_ref()),
-            ("post_review_url", self.post_review_url.as_ref()),
-            ("post_quote_url", self.post_quote_url.as_ref()),
-            ("delete_url", self.delete_url.as_ref()),
+        let fields: HashMap<RuleReviewField, Option<&String>> = HashMap::from_iter(vec![
+            (RuleReviewField::ReviewUrl, self.review_url.as_ref()),
+            (RuleReviewField::AvatarRule, self.avatar_rule.as_ref()),
+            (RuleReviewField::ContentRule, self.content_rule.as_ref()),
+            (RuleReviewField::PostTimeRule, self.post_time_rule.as_ref()),
+            (RuleReviewField::ReviewQuoteUrl, self.review_quote_url.as_ref()),
+            (RuleReviewField::VoteUpUrl, self.vote_up_url.as_ref()),
+            (RuleReviewField::VoteDownUrl, self.vote_down_url.as_ref()),
+            (RuleReviewField::PostReviewUrl, self.post_review_url.as_ref()),
+            (RuleReviewField::PostQuoteUrl, self.post_quote_url.as_ref()),
+            (RuleReviewField::DeleteUrl, self.delete_url.as_ref()),
         ]);
 
         // 初始化rule_types字段
         self.rule_types = HashMap::new();
         for (name, rule) in fields {
             if let Some(rule) = rule {
-                self.rule_types
-                    .insert(name.to_string(), RuleType::new(rule));
+                self.rule_types.insert(name, RuleType::new(rule));
             }
         }
     }

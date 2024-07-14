@@ -218,7 +218,7 @@ class RuleReview {
   });
 
   // 父类转子类
-  factory RuleReview.fromRustModel(rust_rule_view.RuleReview? ruleReview) {
+  factory RuleReview.fromRustModel(rust_rule_review.RuleReview? ruleReview) {
     if (ruleReview == null) {
       return const RuleReview(ruleTypes: '');
     }

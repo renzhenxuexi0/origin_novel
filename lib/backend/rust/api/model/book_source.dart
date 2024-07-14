@@ -5,15 +5,16 @@
 
 import '../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
-import 'rule_book_info.dart';
-import 'rule_content.dart';
-import 'rule_explore.dart';
-import 'rule_search.dart';
-import 'rule_toc.dart';
-import 'rule_type.dart';
-import 'rule_view.dart';
+import 'rule/rule_book_info.dart';
+import 'rule/rule_content.dart';
+import 'rule/rule_explore.dart';
+import 'rule/rule_review.dart';
+import 'rule/rule_search.dart';
+import 'rule/rule_toc.dart';
+import 'rule/rule_type.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored because they are not marked as `pub`: `parse_complex_field`, `parse_field`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `deserialize`, `fmt`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `filter_book_source`, `set_rule_types`
 
 /// 书源结构定义

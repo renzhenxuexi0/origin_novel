@@ -3,11 +3,11 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../frb_generated.dart';
+import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'rule_type.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `default`, `eq`, `fmt`, `fmt`, `hash`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 搜索规则结构定义
@@ -20,7 +20,7 @@ class RuleSearch {
   final String? name;
   final String? wordCount;
   final String? kind;
-  final Map<String, RuleType> ruleTypes;
+  final Map<RuleSearchField, RuleType> ruleTypes;
 
   const RuleSearch({
     this.author,
@@ -60,4 +60,16 @@ class RuleSearch {
           wordCount == other.wordCount &&
           kind == other.kind &&
           ruleTypes == other.ruleTypes;
+}
+
+enum RuleSearchField {
+  author,
+  bookList,
+  bookUrl,
+  coverUrl,
+  intro,
+  name,
+  wordCount,
+  kind,
+  ;
 }

@@ -4,13 +4,14 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/model/book_source.dart';
-import 'api/model/rule_book_info.dart';
-import 'api/model/rule_content.dart';
-import 'api/model/rule_explore.dart';
-import 'api/model/rule_search.dart';
-import 'api/model/rule_toc.dart';
-import 'api/model/rule_type.dart';
-import 'api/model/rule_view.dart';
+import 'api/model/rule/rule_book_info.dart';
+import 'api/model/rule/rule_content.dart';
+import 'api/model/rule/rule_explore.dart';
+import 'api/model/rule/rule_review.dart';
+import 'api/model/rule/rule_search.dart';
+import 'api/model/rule/rule_toc.dart';
+import 'api/model/rule/rule_type.dart';
+import 'api/model/search_book.dart';
 import 'api/parse_book_source_api.dart';
 import 'api/search_book_api.dart';
 import 'dart:async';
@@ -31,7 +32,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException dco_decode_AnyhowException(dynamic raw);
 
   @protected
-  Map<String, RuleType> dco_decode_Map_String_rule_type(dynamic raw);
+  Map<RuleBookInfoField, RuleType>
+      dco_decode_Map_rule_book_info_field_rule_type(dynamic raw);
+
+  @protected
+  Map<RuleContentField, RuleType> dco_decode_Map_rule_content_field_rule_type(
+      dynamic raw);
+
+  @protected
+  Map<RuleExploreField, RuleType> dco_decode_Map_rule_explore_field_rule_type(
+      dynamic raw);
+
+  @protected
+  Map<RuleReviewField, RuleType> dco_decode_Map_rule_review_field_rule_type(
+      dynamic raw);
+
+  @protected
+  Map<RuleSearchField, RuleType> dco_decode_Map_rule_search_field_rule_type(
+      dynamic raw);
+
+  @protected
+  Map<RuleTocField, RuleType> dco_decode_Map_rule_toc_field_rule_type(
+      dynamic raw);
 
   @protected
   String dco_decode_String(dynamic raw);
@@ -82,7 +104,31 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
 
   @protected
-  List<(String, RuleType)> dco_decode_list_record_string_rule_type(dynamic raw);
+  List<(RuleBookInfoField, RuleType)>
+      dco_decode_list_record_rule_book_info_field_rule_type(dynamic raw);
+
+  @protected
+  List<(RuleContentField, RuleType)>
+      dco_decode_list_record_rule_content_field_rule_type(dynamic raw);
+
+  @protected
+  List<(RuleExploreField, RuleType)>
+      dco_decode_list_record_rule_explore_field_rule_type(dynamic raw);
+
+  @protected
+  List<(RuleReviewField, RuleType)>
+      dco_decode_list_record_rule_review_field_rule_type(dynamic raw);
+
+  @protected
+  List<(RuleSearchField, RuleType)>
+      dco_decode_list_record_rule_search_field_rule_type(dynamic raw);
+
+  @protected
+  List<(RuleTocField, RuleType)>
+      dco_decode_list_record_rule_toc_field_rule_type(dynamic raw);
+
+  @protected
+  List<SearchBook> dco_decode_list_search_book(dynamic raw);
 
   @protected
   String? dco_decode_opt_String(dynamic raw);
@@ -112,28 +158,70 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RuleToc? dco_decode_opt_box_autoadd_rule_toc(dynamic raw);
 
   @protected
-  (String, RuleType) dco_decode_record_string_rule_type(dynamic raw);
+  (RuleBookInfoField, RuleType)
+      dco_decode_record_rule_book_info_field_rule_type(dynamic raw);
+
+  @protected
+  (RuleContentField, RuleType) dco_decode_record_rule_content_field_rule_type(
+      dynamic raw);
+
+  @protected
+  (RuleExploreField, RuleType) dco_decode_record_rule_explore_field_rule_type(
+      dynamic raw);
+
+  @protected
+  (RuleReviewField, RuleType) dco_decode_record_rule_review_field_rule_type(
+      dynamic raw);
+
+  @protected
+  (RuleSearchField, RuleType) dco_decode_record_rule_search_field_rule_type(
+      dynamic raw);
+
+  @protected
+  (RuleTocField, RuleType) dco_decode_record_rule_toc_field_rule_type(
+      dynamic raw);
 
   @protected
   RuleBookInfo dco_decode_rule_book_info(dynamic raw);
 
   @protected
+  RuleBookInfoField dco_decode_rule_book_info_field(dynamic raw);
+
+  @protected
   RuleContent dco_decode_rule_content(dynamic raw);
+
+  @protected
+  RuleContentField dco_decode_rule_content_field(dynamic raw);
 
   @protected
   RuleExplore dco_decode_rule_explore(dynamic raw);
 
   @protected
+  RuleExploreField dco_decode_rule_explore_field(dynamic raw);
+
+  @protected
   RuleReview dco_decode_rule_review(dynamic raw);
+
+  @protected
+  RuleReviewField dco_decode_rule_review_field(dynamic raw);
 
   @protected
   RuleSearch dco_decode_rule_search(dynamic raw);
 
   @protected
+  RuleSearchField dco_decode_rule_search_field(dynamic raw);
+
+  @protected
   RuleToc dco_decode_rule_toc(dynamic raw);
 
   @protected
+  RuleTocField dco_decode_rule_toc_field(dynamic raw);
+
+  @protected
   RuleType dco_decode_rule_type(dynamic raw);
+
+  @protected
+  SearchBook dco_decode_search_book(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -145,7 +233,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
 
   @protected
-  Map<String, RuleType> sse_decode_Map_String_rule_type(
+  Map<RuleBookInfoField, RuleType>
+      sse_decode_Map_rule_book_info_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  Map<RuleContentField, RuleType> sse_decode_Map_rule_content_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  Map<RuleExploreField, RuleType> sse_decode_Map_rule_explore_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  Map<RuleReviewField, RuleType> sse_decode_Map_rule_review_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  Map<RuleSearchField, RuleType> sse_decode_Map_rule_search_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  Map<RuleTocField, RuleType> sse_decode_Map_rule_toc_field_rule_type(
       SseDeserializer deserializer);
 
   @protected
@@ -198,8 +307,37 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
 
   @protected
-  List<(String, RuleType)> sse_decode_list_record_string_rule_type(
-      SseDeserializer deserializer);
+  List<(RuleBookInfoField, RuleType)>
+      sse_decode_list_record_rule_book_info_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  List<(RuleContentField, RuleType)>
+      sse_decode_list_record_rule_content_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  List<(RuleExploreField, RuleType)>
+      sse_decode_list_record_rule_explore_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  List<(RuleReviewField, RuleType)>
+      sse_decode_list_record_rule_review_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  List<(RuleSearchField, RuleType)>
+      sse_decode_list_record_rule_search_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  List<(RuleTocField, RuleType)>
+      sse_decode_list_record_rule_toc_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SearchBook> sse_decode_list_search_book(SseDeserializer deserializer);
 
   @protected
   String? sse_decode_opt_String(SseDeserializer deserializer);
@@ -234,29 +372,72 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   RuleToc? sse_decode_opt_box_autoadd_rule_toc(SseDeserializer deserializer);
 
   @protected
-  (String, RuleType) sse_decode_record_string_rule_type(
+  (RuleBookInfoField, RuleType)
+      sse_decode_record_rule_book_info_field_rule_type(
+          SseDeserializer deserializer);
+
+  @protected
+  (RuleContentField, RuleType) sse_decode_record_rule_content_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  (RuleExploreField, RuleType) sse_decode_record_rule_explore_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  (RuleReviewField, RuleType) sse_decode_record_rule_review_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  (RuleSearchField, RuleType) sse_decode_record_rule_search_field_rule_type(
+      SseDeserializer deserializer);
+
+  @protected
+  (RuleTocField, RuleType) sse_decode_record_rule_toc_field_rule_type(
       SseDeserializer deserializer);
 
   @protected
   RuleBookInfo sse_decode_rule_book_info(SseDeserializer deserializer);
 
   @protected
+  RuleBookInfoField sse_decode_rule_book_info_field(
+      SseDeserializer deserializer);
+
+  @protected
   RuleContent sse_decode_rule_content(SseDeserializer deserializer);
+
+  @protected
+  RuleContentField sse_decode_rule_content_field(SseDeserializer deserializer);
 
   @protected
   RuleExplore sse_decode_rule_explore(SseDeserializer deserializer);
 
   @protected
+  RuleExploreField sse_decode_rule_explore_field(SseDeserializer deserializer);
+
+  @protected
   RuleReview sse_decode_rule_review(SseDeserializer deserializer);
+
+  @protected
+  RuleReviewField sse_decode_rule_review_field(SseDeserializer deserializer);
 
   @protected
   RuleSearch sse_decode_rule_search(SseDeserializer deserializer);
 
   @protected
+  RuleSearchField sse_decode_rule_search_field(SseDeserializer deserializer);
+
+  @protected
   RuleToc sse_decode_rule_toc(SseDeserializer deserializer);
 
   @protected
+  RuleTocField sse_decode_rule_toc_field(SseDeserializer deserializer);
+
+  @protected
   RuleType sse_decode_rule_type(SseDeserializer deserializer);
+
+  @protected
+  SearchBook sse_decode_search_book(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -269,8 +450,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       AnyhowException self, SseSerializer serializer);
 
   @protected
-  void sse_encode_Map_String_rule_type(
-      Map<String, RuleType> self, SseSerializer serializer);
+  void sse_encode_Map_rule_book_info_field_rule_type(
+      Map<RuleBookInfoField, RuleType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_rule_content_field_rule_type(
+      Map<RuleContentField, RuleType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_rule_explore_field_rule_type(
+      Map<RuleExploreField, RuleType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_rule_review_field_rule_type(
+      Map<RuleReviewField, RuleType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_rule_search_field_rule_type(
+      Map<RuleSearchField, RuleType> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_Map_rule_toc_field_rule_type(
+      Map<RuleTocField, RuleType> self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
@@ -330,8 +531,32 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       Uint8List self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_record_string_rule_type(
-      List<(String, RuleType)> self, SseSerializer serializer);
+  void sse_encode_list_record_rule_book_info_field_rule_type(
+      List<(RuleBookInfoField, RuleType)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_rule_content_field_rule_type(
+      List<(RuleContentField, RuleType)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_rule_explore_field_rule_type(
+      List<(RuleExploreField, RuleType)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_rule_review_field_rule_type(
+      List<(RuleReviewField, RuleType)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_rule_search_field_rule_type(
+      List<(RuleSearchField, RuleType)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_record_rule_toc_field_rule_type(
+      List<(RuleTocField, RuleType)> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_search_book(
+      List<SearchBook> self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_String(String? self, SseSerializer serializer);
@@ -368,29 +593,75 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       RuleToc? self, SseSerializer serializer);
 
   @protected
-  void sse_encode_record_string_rule_type(
-      (String, RuleType) self, SseSerializer serializer);
+  void sse_encode_record_rule_book_info_field_rule_type(
+      (RuleBookInfoField, RuleType) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_rule_content_field_rule_type(
+      (RuleContentField, RuleType) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_rule_explore_field_rule_type(
+      (RuleExploreField, RuleType) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_rule_review_field_rule_type(
+      (RuleReviewField, RuleType) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_rule_search_field_rule_type(
+      (RuleSearchField, RuleType) self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_record_rule_toc_field_rule_type(
+      (RuleTocField, RuleType) self, SseSerializer serializer);
 
   @protected
   void sse_encode_rule_book_info(RuleBookInfo self, SseSerializer serializer);
 
   @protected
+  void sse_encode_rule_book_info_field(
+      RuleBookInfoField self, SseSerializer serializer);
+
+  @protected
   void sse_encode_rule_content(RuleContent self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_rule_content_field(
+      RuleContentField self, SseSerializer serializer);
 
   @protected
   void sse_encode_rule_explore(RuleExplore self, SseSerializer serializer);
 
   @protected
+  void sse_encode_rule_explore_field(
+      RuleExploreField self, SseSerializer serializer);
+
+  @protected
   void sse_encode_rule_review(RuleReview self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_rule_review_field(
+      RuleReviewField self, SseSerializer serializer);
 
   @protected
   void sse_encode_rule_search(RuleSearch self, SseSerializer serializer);
 
   @protected
+  void sse_encode_rule_search_field(
+      RuleSearchField self, SseSerializer serializer);
+
+  @protected
   void sse_encode_rule_toc(RuleToc self, SseSerializer serializer);
 
   @protected
+  void sse_encode_rule_toc_field(RuleTocField self, SseSerializer serializer);
+
+  @protected
   void sse_encode_rule_type(RuleType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_search_book(SearchBook self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);

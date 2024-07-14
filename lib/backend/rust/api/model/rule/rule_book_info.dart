@@ -3,11 +3,11 @@
 
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
-import '../../frb_generated.dart';
+import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'rule_type.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `clone`, `clone`, `default`, `eq`, `fmt`, `fmt`, `hash`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `set_rule_types`
 
 /// 书籍信息页规则结构定义
@@ -23,7 +23,7 @@ class RuleBookInfo {
   final String? wordCount;
   final String? downloadUrl;
   final String? canReName;
-  final Map<String, RuleType> ruleTypes;
+  final Map<RuleBookInfoField, RuleType> ruleTypes;
 
   const RuleBookInfo({
     this.author,
@@ -72,4 +72,19 @@ class RuleBookInfo {
           downloadUrl == other.downloadUrl &&
           canReName == other.canReName &&
           ruleTypes == other.ruleTypes;
+}
+
+enum RuleBookInfoField {
+  author,
+  coverUrl,
+  init,
+  intro,
+  kind,
+  lastChapter,
+  name,
+  tocUrl,
+  wordCount,
+  downloadUrl,
+  canReName,
+  ;
 }

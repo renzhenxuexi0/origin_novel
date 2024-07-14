@@ -5,19 +5,21 @@
 
 import '../frb_generated.dart';
 import 'model/book_source.dart';
-import 'model/rule_book_info.dart';
-import 'model/rule_content.dart';
-import 'model/rule_explore.dart';
-import 'model/rule_search.dart';
-import 'model/rule_toc.dart';
-import 'model/rule_type.dart';
-import 'model/rule_view.dart';
+import 'model/rule/rule_book_info.dart';
+import 'model/rule/rule_content.dart';
+import 'model/rule/rule_explore.dart';
+import 'model/rule/rule_review.dart';
+import 'model/rule/rule_search.dart';
+import 'model/rule/rule_toc.dart';
+import 'model/rule/rule_type.dart';
+import 'model/search_book.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `build_header`
+// These functions are ignored because they are not marked as `pub`: `create_search_book`, `parse_body`, `parse_options`, `process_field`, `replace_keywords`, `search`, `send_request`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `build_header`
 
 /// 搜索书籍
-Future<void> searchBook(
-        {required BookSource bookSource, required String keyWord}) =>
+Future<List<SearchBook>> searchBook(
+        {required BookSource bookSource, required String keyword}) =>
     RustLib.instance.api.crateApiSearchBookApiSearchBook(
-        bookSource: bookSource, keyWord: keyWord);
+        bookSource: bookSource, keyword: keyword);

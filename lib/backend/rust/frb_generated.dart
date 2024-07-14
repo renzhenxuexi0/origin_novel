@@ -4,13 +4,14 @@
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
 import 'api/model/book_source.dart';
-import 'api/model/rule_book_info.dart';
-import 'api/model/rule_content.dart';
-import 'api/model/rule_explore.dart';
-import 'api/model/rule_search.dart';
-import 'api/model/rule_toc.dart';
-import 'api/model/rule_type.dart';
-import 'api/model/rule_view.dart';
+import 'api/model/rule/rule_book_info.dart';
+import 'api/model/rule/rule_content.dart';
+import 'api/model/rule/rule_explore.dart';
+import 'api/model/rule/rule_review.dart';
+import 'api/model/rule/rule_search.dart';
+import 'api/model/rule/rule_toc.dart';
+import 'api/model/rule/rule_type.dart';
+import 'api/model/search_book.dart';
 import 'api/parse_book_source_api.dart';
 import 'api/search_book_api.dart';
 import 'dart:async';
@@ -79,8 +80,8 @@ abstract class RustLibApi extends BaseApi {
   Future<List<BookSource>> crateApiParseBookSourceApiParseBookSourceFromUrl(
       {required String url});
 
-  Future<void> crateApiSearchBookApiSearchBook(
-      {required BookSource bookSource, required String keyWord});
+  Future<List<SearchBook>> crateApiSearchBookApiSearchBook(
+      {required BookSource bookSource, required String keyword});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -119,22 +120,22 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
 
   @override
-  Future<void> crateApiSearchBookApiSearchBook(
-      {required BookSource bookSource, required String keyWord}) {
+  Future<List<SearchBook>> crateApiSearchBookApiSearchBook(
+      {required BookSource bookSource, required String keyword}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_book_source(bookSource, serializer);
-        sse_encode_String(keyWord, serializer);
+        sse_encode_String(keyword, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 2, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
+        decodeSuccessData: sse_decode_list_search_book,
+        decodeErrorData: null,
       ),
       constMeta: kCrateApiSearchBookApiSearchBookConstMeta,
-      argValues: [bookSource, keyWord],
+      argValues: [bookSource, keyword],
       apiImpl: this,
     ));
   }
@@ -142,7 +143,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSearchBookApiSearchBookConstMeta =>
       const TaskConstMeta(
         debugName: "search_book",
-        argNames: ["bookSource", "keyWord"],
+        argNames: ["bookSource", "keyword"],
       );
 
   @protected
@@ -152,9 +153,55 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Map<String, RuleType> dco_decode_Map_String_rule_type(dynamic raw) {
+  Map<RuleBookInfoField, RuleType>
+      dco_decode_Map_rule_book_info_field_rule_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return Map.fromEntries(dco_decode_list_record_string_rule_type(raw)
+    return Map.fromEntries(
+        dco_decode_list_record_rule_book_info_field_rule_type(raw)
+            .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleContentField, RuleType> dco_decode_Map_rule_content_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+        dco_decode_list_record_rule_content_field_rule_type(raw)
+            .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleExploreField, RuleType> dco_decode_Map_rule_explore_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+        dco_decode_list_record_rule_explore_field_rule_type(raw)
+            .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleReviewField, RuleType> dco_decode_Map_rule_review_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+        dco_decode_list_record_rule_review_field_rule_type(raw)
+            .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleSearchField, RuleType> dco_decode_Map_rule_search_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+        dco_decode_list_record_rule_search_field_rule_type(raw)
+            .map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleTocField, RuleType> dco_decode_Map_rule_toc_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(dco_decode_list_record_rule_toc_field_rule_type(raw)
         .map((e) => MapEntry(e.$1, e.$2)));
   }
 
@@ -283,12 +330,63 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, RuleType)> dco_decode_list_record_string_rule_type(
-      dynamic raw) {
+  List<(RuleBookInfoField, RuleType)>
+      dco_decode_list_record_rule_book_info_field_rule_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>)
-        .map(dco_decode_record_string_rule_type)
+        .map(dco_decode_record_rule_book_info_field_rule_type)
         .toList();
+  }
+
+  @protected
+  List<(RuleContentField, RuleType)>
+      dco_decode_list_record_rule_content_field_rule_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_rule_content_field_rule_type)
+        .toList();
+  }
+
+  @protected
+  List<(RuleExploreField, RuleType)>
+      dco_decode_list_record_rule_explore_field_rule_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_rule_explore_field_rule_type)
+        .toList();
+  }
+
+  @protected
+  List<(RuleReviewField, RuleType)>
+      dco_decode_list_record_rule_review_field_rule_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_rule_review_field_rule_type)
+        .toList();
+  }
+
+  @protected
+  List<(RuleSearchField, RuleType)>
+      dco_decode_list_record_rule_search_field_rule_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_rule_search_field_rule_type)
+        .toList();
+  }
+
+  @protected
+  List<(RuleTocField, RuleType)>
+      dco_decode_list_record_rule_toc_field_rule_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_record_rule_toc_field_rule_type)
+        .toList();
+  }
+
+  @protected
+  List<SearchBook> dco_decode_list_search_book(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_search_book).toList();
   }
 
   @protected
@@ -346,14 +444,85 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, RuleType) dco_decode_record_string_rule_type(dynamic raw) {
+  (RuleBookInfoField, RuleType)
+      dco_decode_record_rule_book_info_field_rule_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
     if (arr.length != 2) {
       throw Exception('Expected 2 elements, got ${arr.length}');
     }
     return (
-      dco_decode_String(arr[0]),
+      dco_decode_rule_book_info_field(arr[0]),
+      dco_decode_rule_type(arr[1]),
+    );
+  }
+
+  @protected
+  (RuleContentField, RuleType) dco_decode_record_rule_content_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_rule_content_field(arr[0]),
+      dco_decode_rule_type(arr[1]),
+    );
+  }
+
+  @protected
+  (RuleExploreField, RuleType) dco_decode_record_rule_explore_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_rule_explore_field(arr[0]),
+      dco_decode_rule_type(arr[1]),
+    );
+  }
+
+  @protected
+  (RuleReviewField, RuleType) dco_decode_record_rule_review_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_rule_review_field(arr[0]),
+      dco_decode_rule_type(arr[1]),
+    );
+  }
+
+  @protected
+  (RuleSearchField, RuleType) dco_decode_record_rule_search_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_rule_search_field(arr[0]),
+      dco_decode_rule_type(arr[1]),
+    );
+  }
+
+  @protected
+  (RuleTocField, RuleType) dco_decode_record_rule_toc_field_rule_type(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (
+      dco_decode_rule_toc_field(arr[0]),
       dco_decode_rule_type(arr[1]),
     );
   }
@@ -376,8 +545,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       wordCount: dco_decode_opt_String(arr[8]),
       downloadUrl: dco_decode_opt_String(arr[9]),
       canReName: dco_decode_opt_String(arr[10]),
-      ruleTypes: dco_decode_Map_String_rule_type(arr[11]),
+      ruleTypes: dco_decode_Map_rule_book_info_field_rule_type(arr[11]),
     );
+  }
+
+  @protected
+  RuleBookInfoField dco_decode_rule_book_info_field(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RuleBookInfoField.values[raw as int];
   }
 
   @protected
@@ -395,8 +570,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       sourceRegex: dco_decode_opt_String(arr[5]),
       imageStyle: dco_decode_opt_String(arr[6]),
       payAction: dco_decode_opt_String(arr[7]),
-      ruleTypes: dco_decode_Map_String_rule_type(arr[8]),
+      ruleTypes: dco_decode_Map_rule_content_field_rule_type(arr[8]),
     );
+  }
+
+  @protected
+  RuleContentField dco_decode_rule_content_field(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RuleContentField.values[raw as int];
   }
 
   @protected
@@ -415,8 +596,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       name: dco_decode_opt_String(arr[6]),
       wordCount: dco_decode_opt_String(arr[7]),
       kind: dco_decode_opt_String(arr[8]),
-      ruleTypes: dco_decode_Map_String_rule_type(arr[9]),
+      ruleTypes: dco_decode_Map_rule_explore_field_rule_type(arr[9]),
     );
+  }
+
+  @protected
+  RuleExploreField dco_decode_rule_explore_field(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RuleExploreField.values[raw as int];
   }
 
   @protected
@@ -436,8 +623,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       postReviewUrl: dco_decode_opt_String(arr[7]),
       postQuoteUrl: dco_decode_opt_String(arr[8]),
       deleteUrl: dco_decode_opt_String(arr[9]),
-      ruleTypes: dco_decode_Map_String_rule_type(arr[10]),
+      ruleTypes: dco_decode_Map_rule_review_field_rule_type(arr[10]),
     );
+  }
+
+  @protected
+  RuleReviewField dco_decode_rule_review_field(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RuleReviewField.values[raw as int];
   }
 
   @protected
@@ -455,8 +648,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       name: dco_decode_opt_String(arr[5]),
       wordCount: dco_decode_opt_String(arr[6]),
       kind: dco_decode_opt_String(arr[7]),
-      ruleTypes: dco_decode_Map_String_rule_type(arr[8]),
+      ruleTypes: dco_decode_Map_rule_search_field_rule_type(arr[8]),
     );
+  }
+
+  @protected
+  RuleSearchField dco_decode_rule_search_field(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RuleSearchField.values[raw as int];
   }
 
   @protected
@@ -476,14 +675,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       isPay: dco_decode_opt_String(arr[7]),
       nextTocUrl: dco_decode_opt_String(arr[8]),
       updateTime: dco_decode_opt_String(arr[9]),
-      ruleTypes: dco_decode_Map_String_rule_type(arr[10]),
+      ruleTypes: dco_decode_Map_rule_toc_field_rule_type(arr[10]),
     );
+  }
+
+  @protected
+  RuleTocField dco_decode_rule_toc_field(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return RuleTocField.values[raw as int];
   }
 
   @protected
   RuleType dco_decode_rule_type(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return RuleType.values[raw as int];
+  }
+
+  @protected
+  SearchBook dco_decode_search_book(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    return SearchBook(
+      author: dco_decode_opt_String(arr[0]),
+      bookUrl: dco_decode_opt_String(arr[1]),
+      coverUrl: dco_decode_opt_String(arr[2]),
+      intro: dco_decode_opt_String(arr[3]),
+      name: dco_decode_opt_String(arr[4]),
+      wordCount: dco_decode_opt_String(arr[5]),
+      kind: dco_decode_opt_String(arr[6]),
+    );
   }
 
   @protected
@@ -506,10 +728,56 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  Map<String, RuleType> sse_decode_Map_String_rule_type(
+  Map<RuleBookInfoField, RuleType>
+      sse_decode_Map_rule_book_info_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_rule_book_info_field_rule_type(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleContentField, RuleType> sse_decode_Map_rule_content_field_rule_type(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var inner = sse_decode_list_record_string_rule_type(deserializer);
+    var inner =
+        sse_decode_list_record_rule_content_field_rule_type(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleExploreField, RuleType> sse_decode_Map_rule_explore_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_rule_explore_field_rule_type(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleReviewField, RuleType> sse_decode_Map_rule_review_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_rule_review_field_rule_type(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleSearchField, RuleType> sse_decode_Map_rule_search_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner =
+        sse_decode_list_record_rule_search_field_rule_type(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
+  }
+
+  @protected
+  Map<RuleTocField, RuleType> sse_decode_Map_rule_toc_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_rule_toc_field_rule_type(deserializer);
     return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
   }
 
@@ -670,14 +938,97 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<(String, RuleType)> sse_decode_list_record_string_rule_type(
-      SseDeserializer deserializer) {
+  List<(RuleBookInfoField, RuleType)>
+      sse_decode_list_record_rule_book_info_field_rule_type(
+          SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <(String, RuleType)>[];
+    var ans_ = <(RuleBookInfoField, RuleType)>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_record_string_rule_type(deserializer));
+      ans_.add(sse_decode_record_rule_book_info_field_rule_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(RuleContentField, RuleType)>
+      sse_decode_list_record_rule_content_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(RuleContentField, RuleType)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_rule_content_field_rule_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(RuleExploreField, RuleType)>
+      sse_decode_list_record_rule_explore_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(RuleExploreField, RuleType)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_rule_explore_field_rule_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(RuleReviewField, RuleType)>
+      sse_decode_list_record_rule_review_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(RuleReviewField, RuleType)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_rule_review_field_rule_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(RuleSearchField, RuleType)>
+      sse_decode_list_record_rule_search_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(RuleSearchField, RuleType)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_rule_search_field_rule_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<(RuleTocField, RuleType)>
+      sse_decode_list_record_rule_toc_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(RuleTocField, RuleType)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_rule_toc_field_rule_type(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<SearchBook> sse_decode_list_search_book(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <SearchBook>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_search_book(deserializer));
     }
     return ans_;
   }
@@ -787,10 +1138,56 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  (String, RuleType) sse_decode_record_string_rule_type(
+  (RuleBookInfoField, RuleType)
+      sse_decode_record_rule_book_info_field_rule_type(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_rule_book_info_field(deserializer);
+    var var_field1 = sse_decode_rule_type(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (RuleContentField, RuleType) sse_decode_record_rule_content_field_rule_type(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_field0 = sse_decode_String(deserializer);
+    var var_field0 = sse_decode_rule_content_field(deserializer);
+    var var_field1 = sse_decode_rule_type(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (RuleExploreField, RuleType) sse_decode_record_rule_explore_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_rule_explore_field(deserializer);
+    var var_field1 = sse_decode_rule_type(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (RuleReviewField, RuleType) sse_decode_record_rule_review_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_rule_review_field(deserializer);
+    var var_field1 = sse_decode_rule_type(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (RuleSearchField, RuleType) sse_decode_record_rule_search_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_rule_search_field(deserializer);
+    var var_field1 = sse_decode_rule_type(deserializer);
+    return (var_field0, var_field1);
+  }
+
+  @protected
+  (RuleTocField, RuleType) sse_decode_record_rule_toc_field_rule_type(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_rule_toc_field(deserializer);
     var var_field1 = sse_decode_rule_type(deserializer);
     return (var_field0, var_field1);
   }
@@ -809,7 +1206,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_wordCount = sse_decode_opt_String(deserializer);
     var var_downloadUrl = sse_decode_opt_String(deserializer);
     var var_canReName = sse_decode_opt_String(deserializer);
-    var var_ruleTypes = sse_decode_Map_String_rule_type(deserializer);
+    var var_ruleTypes =
+        sse_decode_Map_rule_book_info_field_rule_type(deserializer);
     return RuleBookInfo(
         author: var_author,
         coverUrl: var_coverUrl,
@@ -826,6 +1224,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  RuleBookInfoField sse_decode_rule_book_info_field(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return RuleBookInfoField.values[inner];
+  }
+
+  @protected
   RuleContent sse_decode_rule_content(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_content = sse_decode_opt_String(deserializer);
@@ -836,7 +1242,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_sourceRegex = sse_decode_opt_String(deserializer);
     var var_imageStyle = sse_decode_opt_String(deserializer);
     var var_payAction = sse_decode_opt_String(deserializer);
-    var var_ruleTypes = sse_decode_Map_String_rule_type(deserializer);
+    var var_ruleTypes =
+        sse_decode_Map_rule_content_field_rule_type(deserializer);
     return RuleContent(
         content: var_content,
         replaceRegex: var_replaceRegex,
@@ -847,6 +1254,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         imageStyle: var_imageStyle,
         payAction: var_payAction,
         ruleTypes: var_ruleTypes);
+  }
+
+  @protected
+  RuleContentField sse_decode_rule_content_field(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return RuleContentField.values[inner];
   }
 
   @protected
@@ -861,7 +1275,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_name = sse_decode_opt_String(deserializer);
     var var_wordCount = sse_decode_opt_String(deserializer);
     var var_kind = sse_decode_opt_String(deserializer);
-    var var_ruleTypes = sse_decode_Map_String_rule_type(deserializer);
+    var var_ruleTypes =
+        sse_decode_Map_rule_explore_field_rule_type(deserializer);
     return RuleExplore(
         author: var_author,
         bookList: var_bookList,
@@ -873,6 +1288,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         wordCount: var_wordCount,
         kind: var_kind,
         ruleTypes: var_ruleTypes);
+  }
+
+  @protected
+  RuleExploreField sse_decode_rule_explore_field(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return RuleExploreField.values[inner];
   }
 
   @protected
@@ -888,7 +1310,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_postReviewUrl = sse_decode_opt_String(deserializer);
     var var_postQuoteUrl = sse_decode_opt_String(deserializer);
     var var_deleteUrl = sse_decode_opt_String(deserializer);
-    var var_ruleTypes = sse_decode_Map_String_rule_type(deserializer);
+    var var_ruleTypes =
+        sse_decode_Map_rule_review_field_rule_type(deserializer);
     return RuleReview(
         reviewUrl: var_reviewUrl,
         avatarRule: var_avatarRule,
@@ -904,6 +1327,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  RuleReviewField sse_decode_rule_review_field(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return RuleReviewField.values[inner];
+  }
+
+  @protected
   RuleSearch sse_decode_rule_search(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_author = sse_decode_opt_String(deserializer);
@@ -914,7 +1344,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_name = sse_decode_opt_String(deserializer);
     var var_wordCount = sse_decode_opt_String(deserializer);
     var var_kind = sse_decode_opt_String(deserializer);
-    var var_ruleTypes = sse_decode_Map_String_rule_type(deserializer);
+    var var_ruleTypes =
+        sse_decode_Map_rule_search_field_rule_type(deserializer);
     return RuleSearch(
         author: var_author,
         bookList: var_bookList,
@@ -925,6 +1356,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         wordCount: var_wordCount,
         kind: var_kind,
         ruleTypes: var_ruleTypes);
+  }
+
+  @protected
+  RuleSearchField sse_decode_rule_search_field(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return RuleSearchField.values[inner];
   }
 
   @protected
@@ -940,7 +1378,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_isPay = sse_decode_opt_String(deserializer);
     var var_nextTocUrl = sse_decode_opt_String(deserializer);
     var var_updateTime = sse_decode_opt_String(deserializer);
-    var var_ruleTypes = sse_decode_Map_String_rule_type(deserializer);
+    var var_ruleTypes = sse_decode_Map_rule_toc_field_rule_type(deserializer);
     return RuleToc(
         chapterList: var_chapterList,
         chapterName: var_chapterName,
@@ -956,10 +1394,37 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  RuleTocField sse_decode_rule_toc_field(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return RuleTocField.values[inner];
+  }
+
+  @protected
   RuleType sse_decode_rule_type(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_32(deserializer);
     return RuleType.values[inner];
+  }
+
+  @protected
+  SearchBook sse_decode_search_book(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_author = sse_decode_opt_String(deserializer);
+    var var_bookUrl = sse_decode_opt_String(deserializer);
+    var var_coverUrl = sse_decode_opt_String(deserializer);
+    var var_intro = sse_decode_opt_String(deserializer);
+    var var_name = sse_decode_opt_String(deserializer);
+    var var_wordCount = sse_decode_opt_String(deserializer);
+    var var_kind = sse_decode_opt_String(deserializer);
+    return SearchBook(
+        author: var_author,
+        bookUrl: var_bookUrl,
+        coverUrl: var_coverUrl,
+        intro: var_intro,
+        name: var_name,
+        wordCount: var_wordCount,
+        kind: var_kind);
   }
 
   @protected
@@ -981,10 +1446,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_Map_String_rule_type(
-      Map<String, RuleType> self, SseSerializer serializer) {
+  void sse_encode_Map_rule_book_info_field_rule_type(
+      Map<RuleBookInfoField, RuleType> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_list_record_string_rule_type(
+    sse_encode_list_record_rule_book_info_field_rule_type(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_rule_content_field_rule_type(
+      Map<RuleContentField, RuleType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_rule_content_field_rule_type(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_rule_explore_field_rule_type(
+      Map<RuleExploreField, RuleType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_rule_explore_field_rule_type(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_rule_review_field_rule_type(
+      Map<RuleReviewField, RuleType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_rule_review_field_rule_type(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_rule_search_field_rule_type(
+      Map<RuleSearchField, RuleType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_rule_search_field_rule_type(
+        self.entries.map((e) => (e.key, e.value)).toList(), serializer);
+  }
+
+  @protected
+  void sse_encode_Map_rule_toc_field_rule_type(
+      Map<RuleTocField, RuleType> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_rule_toc_field_rule_type(
         self.entries.map((e) => (e.key, e.value)).toList(), serializer);
   }
 
@@ -1121,12 +1626,72 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_record_string_rule_type(
-      List<(String, RuleType)> self, SseSerializer serializer) {
+  void sse_encode_list_record_rule_book_info_field_rule_type(
+      List<(RuleBookInfoField, RuleType)> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
-      sse_encode_record_string_rule_type(item, serializer);
+      sse_encode_record_rule_book_info_field_rule_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_rule_content_field_rule_type(
+      List<(RuleContentField, RuleType)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_rule_content_field_rule_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_rule_explore_field_rule_type(
+      List<(RuleExploreField, RuleType)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_rule_explore_field_rule_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_rule_review_field_rule_type(
+      List<(RuleReviewField, RuleType)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_rule_review_field_rule_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_rule_search_field_rule_type(
+      List<(RuleSearchField, RuleType)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_rule_search_field_rule_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_record_rule_toc_field_rule_type(
+      List<(RuleTocField, RuleType)> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_rule_toc_field_rule_type(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_search_book(
+      List<SearchBook> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_search_book(item, serializer);
     }
   }
 
@@ -1228,10 +1793,50 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_record_string_rule_type(
-      (String, RuleType) self, SseSerializer serializer) {
+  void sse_encode_record_rule_book_info_field_rule_type(
+      (RuleBookInfoField, RuleType) self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.$1, serializer);
+    sse_encode_rule_book_info_field(self.$1, serializer);
+    sse_encode_rule_type(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_rule_content_field_rule_type(
+      (RuleContentField, RuleType) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_rule_content_field(self.$1, serializer);
+    sse_encode_rule_type(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_rule_explore_field_rule_type(
+      (RuleExploreField, RuleType) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_rule_explore_field(self.$1, serializer);
+    sse_encode_rule_type(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_rule_review_field_rule_type(
+      (RuleReviewField, RuleType) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_rule_review_field(self.$1, serializer);
+    sse_encode_rule_type(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_rule_search_field_rule_type(
+      (RuleSearchField, RuleType) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_rule_search_field(self.$1, serializer);
+    sse_encode_rule_type(self.$2, serializer);
+  }
+
+  @protected
+  void sse_encode_record_rule_toc_field_rule_type(
+      (RuleTocField, RuleType) self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_rule_toc_field(self.$1, serializer);
     sse_encode_rule_type(self.$2, serializer);
   }
 
@@ -1249,7 +1854,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.wordCount, serializer);
     sse_encode_opt_String(self.downloadUrl, serializer);
     sse_encode_opt_String(self.canReName, serializer);
-    sse_encode_Map_String_rule_type(self.ruleTypes, serializer);
+    sse_encode_Map_rule_book_info_field_rule_type(self.ruleTypes, serializer);
+  }
+
+  @protected
+  void sse_encode_rule_book_info_field(
+      RuleBookInfoField self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -1263,7 +1875,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.sourceRegex, serializer);
     sse_encode_opt_String(self.imageStyle, serializer);
     sse_encode_opt_String(self.payAction, serializer);
-    sse_encode_Map_String_rule_type(self.ruleTypes, serializer);
+    sse_encode_Map_rule_content_field_rule_type(self.ruleTypes, serializer);
+  }
+
+  @protected
+  void sse_encode_rule_content_field(
+      RuleContentField self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -1278,7 +1897,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.name, serializer);
     sse_encode_opt_String(self.wordCount, serializer);
     sse_encode_opt_String(self.kind, serializer);
-    sse_encode_Map_String_rule_type(self.ruleTypes, serializer);
+    sse_encode_Map_rule_explore_field_rule_type(self.ruleTypes, serializer);
+  }
+
+  @protected
+  void sse_encode_rule_explore_field(
+      RuleExploreField self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -1294,7 +1920,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.postReviewUrl, serializer);
     sse_encode_opt_String(self.postQuoteUrl, serializer);
     sse_encode_opt_String(self.deleteUrl, serializer);
-    sse_encode_Map_String_rule_type(self.ruleTypes, serializer);
+    sse_encode_Map_rule_review_field_rule_type(self.ruleTypes, serializer);
+  }
+
+  @protected
+  void sse_encode_rule_review_field(
+      RuleReviewField self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -1308,7 +1941,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.name, serializer);
     sse_encode_opt_String(self.wordCount, serializer);
     sse_encode_opt_String(self.kind, serializer);
-    sse_encode_Map_String_rule_type(self.ruleTypes, serializer);
+    sse_encode_Map_rule_search_field_rule_type(self.ruleTypes, serializer);
+  }
+
+  @protected
+  void sse_encode_rule_search_field(
+      RuleSearchField self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -1324,13 +1964,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_opt_String(self.isPay, serializer);
     sse_encode_opt_String(self.nextTocUrl, serializer);
     sse_encode_opt_String(self.updateTime, serializer);
-    sse_encode_Map_String_rule_type(self.ruleTypes, serializer);
+    sse_encode_Map_rule_toc_field_rule_type(self.ruleTypes, serializer);
+  }
+
+  @protected
+  void sse_encode_rule_toc_field(RuleTocField self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
   void sse_encode_rule_type(RuleType self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.index, serializer);
+  }
+
+  @protected
+  void sse_encode_search_book(SearchBook self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_opt_String(self.author, serializer);
+    sse_encode_opt_String(self.bookUrl, serializer);
+    sse_encode_opt_String(self.coverUrl, serializer);
+    sse_encode_opt_String(self.intro, serializer);
+    sse_encode_opt_String(self.name, serializer);
+    sse_encode_opt_String(self.wordCount, serializer);
+    sse_encode_opt_String(self.kind, serializer);
   }
 
   @protected
