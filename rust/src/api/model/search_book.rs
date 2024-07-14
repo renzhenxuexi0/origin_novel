@@ -1,3 +1,4 @@
+/// 搜索规则结构定义
 #[derive(Debug, Clone, Default)]
 pub struct SearchBook {
     pub author: Option<String>,

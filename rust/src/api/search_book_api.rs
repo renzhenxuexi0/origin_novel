@@ -285,7 +285,7 @@ async fn send_request(
         "post" => REQUEST_CLIENT.post(url),
         _ => REQUEST_CLIENT.get(url),
     }
-        .headers(headers.clone())
+    .headers(headers.clone())
         .timeout(std::time::Duration::from_secs(5));
 
     let response = if let Some(form_data) = body {
