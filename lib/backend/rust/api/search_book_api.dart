@@ -15,7 +15,7 @@ import 'model/rule/rule_type.dart';
 import 'model/search_book.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
-// These functions are ignored because they are not marked as `pub`: `create_search_book`, `parse_body`, `parse_options`, `process_field`, `replace_keywords`, `search`, `send_request`
+// These functions are ignored because they are not marked as `pub`: `create_search_books`, `parse_body`, `parse_options`, `process_field`, `replace_keywords`, `search`, `send_request`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `build_header`
 
 /// 搜索书籍
