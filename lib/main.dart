@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -16,24 +18,26 @@ Future<void> main() async {
   // 它会初始化Flutter的Widgets库。这个方法通常在你的应用程序的main()函数中调用，
   // 特别是在你的应用程序需要在runApp()之前执行异步操作时。
   WidgetsFlutterBinding.ensureInitialized();
-  // 初始化窗口管理器
-  await windowManager.ensureInitialized();
   // 初始化isar
   await AppDatabase.init();
   // 初始化rust
   await RustLib.init();
 
-  WindowOptions windowOptions = const WindowOptions(
-    size: Size(800, 600),
-    center: true,
-    minimumSize: Size(800, 600),
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.normal,
-  );
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    // 初始化窗口管理器
+    await windowManager.ensureInitialized();
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(800, 600),
+      center: true,
+      minimumSize: Size(800, 600),
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.normal,
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   runApp(const MyApp());
 }

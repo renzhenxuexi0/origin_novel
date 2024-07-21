@@ -1,10 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app/database/model/models.dart';
 import '../../app/l10n/generated/l10n.dart';
-import '../../app/theme/app_theme.dart';
 import '../../widget/gap.dart';
 import 'logic.dart';
 import 'widget/book_read_page_bottom_button.dart';
@@ -73,24 +71,17 @@ class BookReadPage extends StatelessWidget {
             },
             onPageChanged: logic.pageOnPageProcessChange,
             itemBuilder: (context, index) {
-              return Listener(
-                onPointerSignal: (event) {
-                  if (event is PointerScrollEvent) {
-                    if (event.scrollDelta.dy < 0) {
-                      logic.previousPage();
-                    } else {
-                      logic.nextPage();
-                    }
-                  }
-                },
-                child: Container(
-                  width: context.width - 2 * BookReadTheme.padding,
-                  height: context.height - 2 * BookReadTheme.padding,
-                  padding: const EdgeInsets.all(BookReadTheme.padding),
-                  child: Text(
-                    state.currentBookContentPage[index],
-                    style: state.contentStyle,
-                  ),
+              return Container(
+                width: state.contentWidth,
+                height: state.contentHeight,
+                // 间隔半个字符的宽度和高度
+                padding: EdgeInsets.symmetric(
+                  horizontal: state.charWidth,
+                  vertical: state.charHeight,
+                ),
+                child: Text(
+                  state.currentBookContentPage[index],
+                  style: state.contentStyle,
                 ),
               );
             },
@@ -112,7 +103,7 @@ class BookReadPage extends StatelessWidget {
         // 底部菜单栏
         child: Container(
           height: _bottomBarHeight,
-          padding: const EdgeInsets.all(BookReadTheme.padding),
+          width: double.infinity,
           // 半透明
           color: context.theme.colorScheme.surface.withOpacity(0.0),
           child: Column(
@@ -136,7 +127,7 @@ class BookReadPage extends StatelessWidget {
       color: context.theme.colorScheme.surface.withOpacity(0.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           // 上一章
           TextButton(
@@ -147,8 +138,7 @@ class BookReadPage extends StatelessWidget {
             child: Text(S.of(context).previousChapter),
           ),
           // 进度条
-          SizedBox(
-            width: context.width * 0.6,
+          Expanded(
             child: GetBuilder<BookReadLogic>(builder: (logic) {
               return Slider(
                 value: state.currentPage.toDouble(),

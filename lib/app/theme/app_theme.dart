@@ -67,7 +67,3 @@ class MyDialogTheme {
   static const dialogDividerWidth = 1.0;
   static const padding = 16.0;
 }
-
-class BookReadTheme {
-  static const padding = 16.0;
-}

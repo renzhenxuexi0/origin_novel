@@ -54,7 +54,7 @@ class RuleBookInfo {
       ruleTypes: jsonEncode(
         Map.fromEntries(
           ruleBookInfo.ruleTypes.entries.map(
-            (entry) => MapEntry(entry.key, entry.value.toJson()),
+            (entry) => MapEntry(entry.key.toString(), entry.value.toString()),
           ),
         ),
       ),
@@ -106,7 +106,7 @@ class RuleContent {
       ruleTypes: jsonEncode(
         Map.fromEntries(
           ruleContent.ruleTypes.entries.map(
-            (entry) => MapEntry(entry.key, entry.value.toJson()),
+            (entry) => MapEntry(entry.key.toString(), entry.value.toString()),
           ),
         ),
       ),
@@ -161,7 +161,7 @@ class RuleExplore {
       ruleTypes: jsonEncode(
         Map.fromEntries(
           ruleExplore.ruleTypes.entries.map(
-            (entry) => MapEntry(entry.key, entry.value.toJson()),
+            (entry) => MapEntry(entry.key.toString(), entry.value.toString()),
           ),
         ),
       ),
@@ -237,7 +237,7 @@ class RuleReview {
       ruleTypes: jsonEncode(
         Map.fromEntries(
           ruleReview.ruleTypes.entries.map(
-            (entry) => MapEntry(entry.key, entry.value.toJson()),
+            (entry) => MapEntry(entry.key.toString(), entry.value.toString()),
           ),
         ),
       ),
@@ -288,7 +288,7 @@ class RuleSearch {
       ruleTypes: jsonEncode(
         Map.fromEntries(
           ruleSearch.ruleTypes.entries.map(
-            (entry) => MapEntry(entry.key, entry.value.toJson()),
+            (entry) => MapEntry(entry.key.toString(), entry.value.toString()),
           ),
         ),
       ),
@@ -345,32 +345,10 @@ class RuleToc {
       ruleTypes: jsonEncode(
         Map.fromEntries(
           ruleToc.ruleTypes.entries.map(
-            (entry) => MapEntry(entry.key, entry.value.toJson()),
+            (entry) => MapEntry(entry.key.toString(), entry.value.toString()),
           ),
         ),
       ),
     );
-  }
-}
-
-/// 规则类型转为json
-extension RuleTypeEnumToJson on RuleType {
-  String toJson() {
-    switch (this) {
-      case RuleType.jsonPath:
-        return 'jsonPath';
-      case RuleType.regex:
-        return 'regex';
-      case RuleType.jsoupDefault:
-        return 'jsoupDefault';
-      case RuleType.jsoupCss:
-        return 'jsoupCss';
-      case RuleType.js:
-        return 'js';
-      case RuleType.xPath:
-        return 'xPath';
-      case RuleType.unknown:
-        return 'unknown';
-    }
   }
 }

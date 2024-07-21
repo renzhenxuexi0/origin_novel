@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:origin_novel/util/dialog/dialog_utils.dart';
 
 import '../../app/l10n/generated/l10n.dart';
-import '../../widget/gap.dart';
 import 'logic.dart';
 
 const _searchHeight = 30.0;
@@ -102,44 +101,29 @@ class BookSourcePage extends StatelessWidget {
           Row(
             children: [
               // 置顶
-              TextButton(
+              IconButton(
                 onPressed: () => logic.topBookSource(bookSource),
-                child: Row(
-                  children: [
-                    const Icon(Icons.arrow_upward),
-                    const Gap.hs(),
-                    Text(S.of(context).topping),
-                  ],
-                ),
+                icon: const Icon(Icons.arrow_upward),
+                tooltip: S.of(context).topping,
               ),
               // 启用/禁用
               Visibility(
                 visible: bookSource.canEnable,
-                child: TextButton(
+                child: IconButton(
                   onPressed: () => logic.enableOrDisableBookSource(bookSource),
-                  child: Row(
-                    children: [
-                      Icon(bookSource.enabled
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      const Gap.hs(),
-                      Text(bookSource.enabled
-                          ? S.of(context).disabled
-                          : S.of(context).enabled),
-                    ],
-                  ),
+                  icon: Icon(bookSource.enabled
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  tooltip: bookSource.enabled
+                      ? S.of(context).disabled
+                      : S.of(context).enabled,
                 ),
               ),
               // 删除
-              TextButton(
+              IconButton(
                 onPressed: () => logic.deleteBookSource(bookSource),
-                child: Row(
-                  children: [
-                    const Icon(Icons.delete),
-                    const Gap.hs(),
-                    Text(S.of(context).delete),
-                  ],
-                ),
+                icon: const Icon(Icons.delete),
+                tooltip: S.of(context).delete,
               ),
             ],
           )

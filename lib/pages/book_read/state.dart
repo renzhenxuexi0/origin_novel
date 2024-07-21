@@ -11,8 +11,8 @@ class BookReadState {
   /// 拖动总量
   double totalDrag = 0.0;
 
-  /// 小说内容
-  String bookContent = '';
+  /// 当前章节的小说内容
+  String currentChapterContent = '';
 
   /// 是否显示 AppBar
   bool isAppBarVisible = true;
@@ -35,22 +35,27 @@ class BookReadState {
   /// 每章节的分页内容
   late HashMap<ChapterType, List<String>> bookContentMap;
 
-  /// 当前屏幕大小
-  double screenWidth = 0;
-  double screenHeight = 0;
-
   /// 小说字体配置
   late TextStyle contentStyle;
   late BookReadSetting bookReadSetting;
 
-  /// 是否修改了字体大小
-  bool isFontSizeChanged = false;
-
-  /// 每页最多多少行
+  /// 每页多少行
   int lineCount = -1;
 
-  /// 每页最多多少列
+  /// 每行多少个字符
   int charCount = -1;
+
+  /// 字符宽度
+  double charWidth = 0.0;
+
+  /// 字符高度
+  double charHeight = 0.0;
+
+  /// 内容宽度
+  double contentWidth = 0.0;
+
+  /// 内容高度
+  double contentHeight = 0.0;
 
   /// PageController
   late PageController pageController;
