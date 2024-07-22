@@ -17,7 +17,6 @@ class BookReadState {
   /// 对内容分页
   int pageSize = 1;
   int currentPage = 0;
-  List<Map<String, int>> pageOffsets = [];
   List<String> pages = [''];
 
   /// 章节
@@ -35,10 +34,10 @@ class BookReadState {
   late BookReadSetting bookReadSetting;
 
   /// 字符宽度
-  double charWidth = 0.0;
+  double fontWidth = 0.0;
 
   /// 字符高度
-  double charHeight = 0.0;
+  double fontHeight = 0.0;
 
   /// 内容宽度
   double contentWidth = 0.0;

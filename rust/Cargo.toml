@@ -1,13 +1,13 @@
 [package]
 name = "rust_lib_origin_novel"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [lib]
 crate-type = ["lib", "staticlib", "cdylib"]
 
 [dependencies]
-flutter_rust_bridge = { version = "=2.0.0", features = ["chrono"] }
+flutter_rust_bridge = { version = "=2.1.0", features = ["chrono"] }
 # 网络请求
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 # 时间

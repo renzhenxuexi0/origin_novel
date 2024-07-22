@@ -76,8 +76,8 @@ class BookReadPage extends StatelessWidget {
                 height: state.contentHeight,
                 // 间隔1个字符的宽度和高度
                 padding: EdgeInsets.symmetric(
-                  horizontal: state.charWidth,
-                  vertical: state.charHeight,
+                  horizontal: state.fontWidth,
+                  vertical: state.fontHeight,
                 ),
                 child: Text(
                   state.pages[index],

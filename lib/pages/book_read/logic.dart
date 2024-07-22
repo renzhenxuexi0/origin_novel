@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:origin_novel/app/constants/default_setting.dart';
+import 'package:origin_novel/backend/rust/api/helper/content_helper.dart';
+import 'package:origin_novel/util/split_page_util.dart';
 
 import '../../app/constants/assets.dart';
 import '../../app/database/app_database.dart';
@@ -59,7 +61,7 @@ class BookReadLogic extends GetxController {
       letterSpacing: state.bookReadSetting.letterSpacing,
       fontFamily: state.bookReadSetting.fontFamily,
     );
-    // 创建TextPainter
+    // 初始化TextPainter
     _textPainter = TextPainter(
       text: TextSpan(
         text: "测",
@@ -72,6 +74,13 @@ class BookReadLogic extends GetxController {
         maxWidth: (state.contentStyle.fontSize ??
                 DefaultSetting.defaultBookReadSettingFontSize) *
             2);
+    // 计算字符宽高 和 内容宽高
+    state.fontWidth = _textPainter.width;
+    state.fontHeight = _textPainter.height;
+    state.contentWidth = Get.width - 2 * state.fontWidth;
+    state.contentHeight = Get.height - 2 * state.fontHeight;
+    LogUtils.d(
+        'contentHeight: ${state.contentHeight}, contentWidth: ${state.contentWidth}');
     // 创建PageController
     state.pageController = PageController(
       initialPage: 0,
@@ -124,15 +133,23 @@ class BookReadLogic extends GetxController {
         DialogUtils.loading();
         // 重置
         state.currentPage = 0;
-        state.pageOffsets = [];
         state.pageController.jumpToPage(0);
         // 加载章节内容
         state.currentChapterContent =
-            await rootBundle.loadString(state.directory[chapter]!);
+            (await rootBundle.loadString(state.directory[chapter]!));
+        state.currentChapterContent =
+            handleContent(content: state.currentChapterContent);
         // 计算分页
-        _splitBookContent();
+        state.pages = SplitPageUtil.splitContent(
+          content: state.currentChapterContent,
+          style: state.contentStyle,
+          width: state.contentWidth,
+          height: state.contentHeight,
+          fontHeight: state.fontHeight,
+        );
+        state.pageSize = state.pages.length;
         update();
-        LogUtils.d('加载第 $chapter 章节完成');
+        LogUtils.d('加载第 $chapter 章节完成, 总页数: ${state.pages.length}');
       } finally {
         await DialogUtils.dismiss();
       }
@@ -145,7 +162,6 @@ class BookReadLogic extends GetxController {
   Future<void> previousChapter() async {
     try {
       DialogUtils.loading();
-
       if (state.currentChapter < 2) {
         DialogUtils.danger(S.current.thereAreNoChaptersAhead);
         return;
@@ -161,7 +177,6 @@ class BookReadLogic extends GetxController {
   Future<void> nextChapter() async {
     try {
       DialogUtils.loading();
-
       if (state.currentChapter > state.totalChapter + 1) {
         DialogUtils.danger(S.current.thereAreNoMoreChaptersToCome);
         return;
@@ -209,57 +224,5 @@ class BookReadLogic extends GetxController {
     } else {
       nextChapter();
     }
-  }
-
-  /// 将书的内容分页
-  void _splitBookContent() {
-    _calculate();
-    // 1.去除多余的换行和空格
-    state.currentChapterContent = state.currentChapterContent
-        .replaceAll('\r\n', '\n')
-        .replaceAll('\r', '\n')
-        .replaceAll('\n\n', '\n')
-        .replaceAll('\n\n', '\n');
-    String tempStr = state.currentChapterContent;
-    int last = 0;
-    while (true) {
-      Map<String, int> offset = {};
-      offset['start'] = last;
-      TextPainter textPainter = TextPainter(
-        text: TextSpan(
-          text: tempStr,
-          style: state.contentStyle,
-        ),
-        textDirection: TextDirection.ltr,
-        locale: Get.locale,
-      );
-      textPainter.layout(maxWidth: state.contentWidth);
-      var end = textPainter
-          .getPositionForOffset(Offset(state.contentWidth, state.contentHeight))
-          .offset;
-      if (end == 0) {
-        break;
-      }
-      tempStr = tempStr.substring(end, tempStr.length);
-      offset['end'] = last + end;
-      last = last + end;
-      state.pageOffsets.add(offset);
-    }
-    state.pages = state.pageOffsets
-        .map((e) =>
-            state.currentChapterContent.substring(e['start']!, e['end']!))
-        .toList();
-    state.pageSize = state.pages.length;
-    LogUtils.d('pageSize: ${state.pageSize}');
-  }
-
-  /// 计算内容的宽高
-  void _calculate() {
-    state.charWidth = _textPainter.width;
-    state.charHeight = _textPainter.height;
-    state.contentWidth = Get.width - 2 * state.charWidth;
-    state.contentHeight = Get.height - 2 * state.charHeight;
-    LogUtils.d(
-        'contentHeight: ${state.contentHeight}, contentWidth: ${state.contentWidth}');
   }
 }
