@@ -124,7 +124,7 @@ class BookReadLogic extends GetxController {
         DialogUtils.loading();
         // 重置
         state.currentPage = 0;
-        state.currentBookContentPage = [];
+        state.pageOffsets = [];
         state.pageController.jumpToPage(0);
         // 加载章节内容
         state.currentChapterContent =
@@ -220,96 +220,46 @@ class BookReadLogic extends GetxController {
         .replaceAll('\r', '\n')
         .replaceAll('\n\n', '\n')
         .replaceAll('\n\n', '\n');
-    // 2.根据中文习惯分段
-    _splitBookContentByChinese();
-    // 首先对内容分割 分成一段一段
-    final List<String> partList = state.currentChapterContent.split('\n');
-    int partLength = partList.length;
-    // 当前段
-    int currentPart = 0;
-    // 当前页的每段内容
-    List<String> currentPageContent = [];
-    // 当前页的总行数
-    int currentPageLineCount = 0;
-    LogUtils.d('partLength: $partLength');
-    // 遍历每一段
-    while (currentPart < partLength) {
-      // 获取当前段的字符长度
-      String part = partList[currentPart].trim();
-      final strLength = part.length;
-
-      // 计算当前段有多少行
-      final lineCount = (strLength.toDouble() / state.charCount).ceil();
-      currentPageLineCount += lineCount;
-
-      LogUtils.d(
-          'part: $part, strLength: $strLength, lineCount: $lineCount, currentPageLineCount: $currentPageLineCount');
-
-      // 如果长度大于最大长度
-      if (currentPageLineCount > state.lineCount) {
-        // 超过长度对line进行分割 根据超过的行数
-        final splitCharCount =
-            (lineCount - (currentPageLineCount - state.lineCount)) *
-                state.charCount;
-        final splitLine = part.substring(0, splitCharCount);
-        currentPageContent.add(splitLine);
-        currentPageLineCount = state.lineCount;
-        // 多余部分添加到下一页
-        final excessContent = part.substring(splitCharCount);
-        partList.insert(currentPart + 1, excessContent);
-        partLength++;
-      } else {
-        currentPageContent.add(part);
+    String tempStr = state.currentChapterContent;
+    int last = 0;
+    while (true) {
+      Map<String, int> offset = {};
+      offset['start'] = last;
+      TextPainter textPainter = TextPainter(
+        text: TextSpan(
+          text: tempStr,
+          style: state.contentStyle,
+        ),
+        textDirection: TextDirection.ltr,
+        locale: Get.locale,
+      );
+      textPainter.layout(maxWidth: state.contentWidth);
+      var end = textPainter
+          .getPositionForOffset(Offset(state.contentWidth, state.contentHeight))
+          .offset;
+      if (end == 0) {
+        break;
       }
-
-      // 当前页放满后 添加到当前页的文本内容
-      if (currentPageLineCount == state.lineCount) {
-        // 如果当前页的行数等于最大行数
-        // 添加到当前页的文本内容
-        state.currentBookContentPage.add(currentPageContent.join('\n'));
-        LogUtils.d(
-            'currentBookContentPage: ${state.currentBookContentPage}, currentPageLineCount: $currentPageLineCount');
-        // 清空当前页的内容
-        currentPageContent.clear();
-        // 重置当前页的行数
-        currentPageLineCount = 0;
-      }
-      currentPart++;
+      tempStr = tempStr.substring(end, tempStr.length);
+      offset['end'] = last + end;
+      last = last + end;
+      state.pageOffsets.add(offset);
     }
-
-    state.pageSize = state.currentBookContentPage.length;
+    state.pages = state.pageOffsets
+        .map((e) =>
+            state.currentChapterContent.substring(e['start']!, e['end']!))
+        .toList();
+    state.pageSize = state.pages.length;
     LogUtils.d('pageSize: ${state.pageSize}');
   }
 
-  /// 计算页面最多放多少行文字和每行多少个字
+  /// 计算内容的宽高
   void _calculate() {
-    // 一个文字大小
-    state.charHeight = _textPainter.height;
     state.charWidth = _textPainter.width;
-    LogUtils.d(
-        'charHeight: ${state.charHeight}, charWidth: ${state.charWidth}');
-    // 计算每行多少个字
+    state.charHeight = _textPainter.height;
     state.contentWidth = Get.width - 2 * state.charWidth;
     state.contentHeight = Get.height - 2 * state.charHeight;
     LogUtils.d(
-        '减去间距前： contentHeight: ${state.contentHeight}, contentWidth: ${state.contentWidth}');
-    // 向下取整
-    final lineCount = (state.contentHeight / state.charHeight).ceil();
-    final charCount = (state.contentWidth / state.charWidth).ceil();
-    LogUtils.d('减去间距前： lineCount: $lineCount, charCount: $charCount');
-    // 减去行间距再计算
-    state.contentHeight = state.contentHeight -
-        ((state.bookReadSetting.letterSpacing ?? 0) * (lineCount - 2));
-    state.contentWidth = state.contentWidth -
-        ((state.bookReadSetting.wordSpacing ?? 0) * (charCount - 2));
-    LogUtils.d(
-        '减去间距后： contentHeight: ${state.contentHeight}, contentWidth: ${state.contentWidth}');
-    state.lineCount = (state.contentHeight / state.charHeight).ceil();
-    state.charCount = (state.contentWidth / state.charWidth).ceil();
-    LogUtils.d(
-        '减去间距后： lineCount: ${state.lineCount}, charCount: ${state.charCount}');
+        'contentHeight: ${state.contentHeight}, contentWidth: ${state.contentWidth}');
   }
-
-  /// 根据中文习惯分段 例如 。！？” 等 理论上需要后面的符号不是中文符号时才分段
-  void _splitBookContentByChinese() {}
 }
