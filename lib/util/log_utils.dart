@@ -4,17 +4,18 @@ class LogUtils {
   static final Logger _logger = Logger(
     level: Level.debug,
     printer: PrettyPrinter(
-      methodCount: 2,
       // 要显示的方法数
-      errorMethodCount: 8,
+      methodCount: 2,
       // 要显示的错误方法数
-      lineLength: 120,
+      errorMethodCount: 8,
       // 每行的最大长度
-      colors: true,
+      lineLength: 120,
       // 是否显示颜色
-      printEmojis: true,
+      colors: true,
       // 是否显示表情符号
-      printTime: true, // 是否显示时间
+      printEmojis: true,
+      // 时间格式
+      dateTimeFormat: DateTimeFormat.dateAndTime,
     ),
   );
 
