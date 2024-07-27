@@ -18,7 +18,8 @@ use crate::api::util::{jsoup_util, regex_util};
 static REQUEST_CLIENT: Lazy<Client> = Lazy::new(Client::new);
 
 /// 搜索书籍
-pub async fn search_book(book_source: BookSource, keyword: String) -> Vec<SearchBook> {
+pub async fn search_book(book_source_json: String, keyword: String) -> Vec<SearchBook> {
+    let book_source: BookSource = serde_json::from_str(&book_source_json).unwrap();
     if let BookSource {
         book_source_url: Some(book_source_url),
         search_url: Some(search_url),
@@ -286,7 +287,7 @@ async fn send_request(
         _ => REQUEST_CLIENT.get(url),
     }
     .headers(headers.clone())
-        .timeout(std::time::Duration::from_secs(5));
+    .timeout(std::time::Duration::from_secs(5));
 
     let response = if let Some(form_data) = body {
         request_builder.form(form_data).send().await?
@@ -334,7 +335,11 @@ mod tests {
         // 遍历搜索 搜到正确的书籍
         let book_source = vec.get(0).unwrap();
         debug!("[搜索]: 书源: {:?}", book_source.search_url);
-        let result = super::search_book(book_source.clone(), "圣墟".to_string()).await;
+        let result = super::search_book(
+            serde_json::to_string(book_source).unwrap(),
+            "圣墟".to_string(),
+        )
+        .await;
         info!("{:?}", result);
         Ok(())
     }

@@ -24,7 +24,7 @@ pub struct RuleBookInfo {
     pub rule_types: HashMap<RuleBookInfoField, RuleType>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, Serialize, Deserialize, PartialEq, Hash)]
 pub enum RuleBookInfoField {
     Author,
     CoverUrl,

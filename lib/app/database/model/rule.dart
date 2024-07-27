@@ -31,7 +31,7 @@ class RuleBookInfo {
     required this.ruleTypes,
   });
 
-  // 父类转子类
+  /// rust模型转dart模型
   factory RuleBookInfo.fromRustModel(
       rust_rule_book_info.RuleBookInfo? ruleBookInfo) {
     if (ruleBookInfo == null) {
@@ -87,7 +87,7 @@ class RuleContent {
     required this.ruleTypes,
   });
 
-  // 父类转子类
+  /// rust模型转dart模型
   factory RuleContent.fromRustModel(
       rust_rule_content.RuleContent? ruleContent) {
     if (ruleContent == null) {
@@ -141,7 +141,7 @@ class RuleExplore {
     required this.ruleTypes,
   });
 
-  // 父类转子类
+  /// rust模型转dart模型
   factory RuleExplore.fromRustModel(
       rust_rule_explore.RuleExplore? ruleExplore) {
     if (ruleExplore == null) {
@@ -217,7 +217,7 @@ class RuleReview {
     required this.ruleTypes,
   });
 
-  // 父类转子类
+  /// rust模型转dart模型
   factory RuleReview.fromRustModel(rust_rule_review.RuleReview? ruleReview) {
     if (ruleReview == null) {
       return const RuleReview(ruleTypes: '');
@@ -270,7 +270,7 @@ class RuleSearch {
     required this.ruleTypes,
   });
 
-  // 父类转子类
+  // rust模型转dart模型
   factory RuleSearch.fromRustModel(rust_rule_search.RuleSearch? ruleSearch) {
     if (ruleSearch == null) {
       return const RuleSearch(ruleTypes: '');
@@ -325,7 +325,7 @@ class RuleToc {
     required this.ruleTypes,
   });
 
-  // 父类转子类
+  // rust模型转dart模型
   factory RuleToc.fromRustModel(rust_rule_toc.RuleToc? ruleToc) {
     if (ruleToc == null) {
       return const RuleToc(ruleTypes: '');

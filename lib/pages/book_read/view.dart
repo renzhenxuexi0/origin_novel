@@ -95,7 +95,7 @@ class BookReadPage extends StatelessWidget {
         horizontal: state.fontWidth,
         vertical: state.fontHeight,
       ),
-      child: Text(
+      child: SelectableText(
         state.pages[index],
         style: state.contentStyle,
       ),

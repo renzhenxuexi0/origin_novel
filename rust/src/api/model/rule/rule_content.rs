@@ -25,7 +25,7 @@ pub struct RuleContent {
     pub rule_types: HashMap<RuleContentField, RuleType>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Hash)]
 pub enum RuleContentField {
     Content,
     ReplaceRegex,
@@ -46,7 +46,10 @@ impl RuleContent {
             (RuleContentField::Content, self.content.as_ref()),
             (RuleContentField::ReplaceRegex, self.replace_regex.as_ref()),
             (RuleContentField::Title, self.title.as_ref()),
-            (RuleContentField::NextContentUrl, self.next_content_url.as_ref()),
+            (
+                RuleContentField::NextContentUrl,
+                self.next_content_url.as_ref(),
+            ),
             (RuleContentField::WebJs, self.web_js.as_ref()),
             (RuleContentField::SourceRegex, self.source_regex.as_ref()),
             (RuleContentField::ImageStyle, self.image_style.as_ref()),

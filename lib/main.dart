@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'app/database/app_database.dart';
@@ -22,6 +24,10 @@ Future<void> main() async {
   await AppDatabase.init();
   // 初始化rust
   await RustLib.init();
+  // 初始化图片缓存加载器
+  String storageLocation = (await getApplicationDocumentsDirectory()).path;
+  await FastCachedImageConfig.init(
+      subDir: storageLocation, clearCacheAfter: const Duration(days: 15));
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     // 初始化窗口管理器

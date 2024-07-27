@@ -94,11 +94,11 @@ abstract class RustLibApi extends BaseApi {
 
   Future<SearchBook> crateApiModelSearchBookSearchBookDefault();
 
-  Future<List<BookSource>> crateApiParseBookSourceApiParseBookSourceFromUrl(
+  Future<List<BookSourceData>> crateApiParseBookSourceApiParseBookSourceFromUrl(
       {required String url});
 
   Future<List<SearchBook>> crateApiSearchBookApiSearchBook(
-      {required BookSource bookSource, required String keyword});
+      {required String bookSourceJson, required String keyword});
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -303,7 +303,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<BookSource>> crateApiParseBookSourceApiParseBookSourceFromUrl(
+  Future<List<BookSourceData>> crateApiParseBookSourceApiParseBookSourceFromUrl(
       {required String url}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
@@ -313,7 +313,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             funcId: 9, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_list_book_source,
+        decodeSuccessData: sse_decode_list_book_source_data,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiParseBookSourceApiParseBookSourceFromUrlConstMeta,
@@ -331,11 +331,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @override
   Future<List<SearchBook>> crateApiSearchBookApiSearchBook(
-      {required BookSource bookSource, required String keyword}) {
+      {required String bookSourceJson, required String keyword}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_box_autoadd_book_source(bookSource, serializer);
+        sse_encode_String(bookSourceJson, serializer);
         sse_encode_String(keyword, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 10, port: port_);
@@ -345,7 +345,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: null,
       ),
       constMeta: kCrateApiSearchBookApiSearchBookConstMeta,
-      argValues: [bookSource, keyword],
+      argValues: [bookSourceJson, keyword],
       apiImpl: this,
     ));
   }
@@ -353,7 +353,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiSearchBookApiSearchBookConstMeta =>
       const TaskConstMeta(
         debugName: "search_book",
-        argNames: ["bookSource", "keyword"],
+        argNames: ["bookSourceJson", "keyword"],
       );
 
   @protected
@@ -456,15 +456,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool dco_decode_bool(dynamic raw) {
+  BookSourceData dco_decode_book_source_data(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw as bool;
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return BookSourceData(
+      bookSourceJson: dco_decode_String(arr[0]),
+      bookSource: dco_decode_book_source(arr[1]),
+    );
   }
 
   @protected
-  BookSource dco_decode_box_autoadd_book_source(dynamic raw) {
+  bool dco_decode_bool(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_book_source(raw);
+    return raw as bool;
   }
 
   @protected
@@ -528,9 +534,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<BookSource> dco_decode_list_book_source(dynamic raw) {
+  List<BookSourceData> dco_decode_list_book_source_data(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_book_source).toList();
+    return (raw as List<dynamic>).map(dco_decode_book_source_data).toList();
   }
 
   @protected
@@ -1054,15 +1060,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer) {
+  BookSourceData sse_decode_book_source_data(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getUint8() != 0;
+    var var_bookSourceJson = sse_decode_String(deserializer);
+    var var_bookSource = sse_decode_book_source(deserializer);
+    return BookSourceData(
+        bookSourceJson: var_bookSourceJson, bookSource: var_bookSource);
   }
 
   @protected
-  BookSource sse_decode_box_autoadd_book_source(SseDeserializer deserializer) {
+  bool sse_decode_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_book_source(deserializer));
+    return deserializer.buffer.getUint8() != 0;
   }
 
   @protected
@@ -1129,13 +1138,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<BookSource> sse_decode_list_book_source(SseDeserializer deserializer) {
+  List<BookSourceData> sse_decode_list_book_source_data(
+      SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
     var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <BookSource>[];
+    var ans_ = <BookSourceData>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_book_source(deserializer));
+      ans_.add(sse_decode_book_source_data(deserializer));
     }
     return ans_;
   }
@@ -1739,16 +1749,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_bool(bool self, SseSerializer serializer) {
+  void sse_encode_book_source_data(
+      BookSourceData self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putUint8(self ? 1 : 0);
+    sse_encode_String(self.bookSourceJson, serializer);
+    sse_encode_book_source(self.bookSource, serializer);
   }
 
   @protected
-  void sse_encode_box_autoadd_book_source(
-      BookSource self, SseSerializer serializer) {
+  void sse_encode_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_book_source(self, serializer);
+    serializer.buffer.putUint8(self ? 1 : 0);
   }
 
   @protected
@@ -1818,12 +1829,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_book_source(
-      List<BookSource> self, SseSerializer serializer) {
+  void sse_encode_list_book_source_data(
+      List<BookSourceData> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
-      sse_encode_book_source(item, serializer);
+      sse_encode_book_source_data(item, serializer);
     }
   }
 

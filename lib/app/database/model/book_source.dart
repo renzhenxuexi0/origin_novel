@@ -4,9 +4,17 @@ part of 'models.dart';
 @collection
 class BookSource with _$BookSource implements Comparable<BookSource> {
   const factory BookSource({
+    /// 书源id
     required int id,
+
+    /// 书源名称
     required String bookSourceName,
+
+    /// 书源url
     required String bookSourceUrl,
+
+    /// json数据
+    required String bookSourceJson,
 
     /// 书源备注
     String? bookSourceComment,

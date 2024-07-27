@@ -114,7 +114,10 @@ impl<'de> Deserialize<'de> for BookSource {
     }
 }
 
-fn parse_field<T: Deserialize<'static>>(map: &serde_json::Map<String, Value>, key: &str) -> Option<T> {
+fn parse_field<T: Deserialize<'static>>(
+    map: &serde_json::Map<String, Value>,
+    key: &str,
+) -> Option<T> {
     map.get(key).and_then(|v| {
         if v.is_null() || (v.is_array() && v.as_array().unwrap().is_empty()) {
             None
@@ -124,7 +127,10 @@ fn parse_field<T: Deserialize<'static>>(map: &serde_json::Map<String, Value>, ke
     })
 }
 
-fn parse_complex_field<T: Deserialize<'static> + Default>(map: &serde_json::Map<String, Value>, key: &str) -> Option<T> {
+fn parse_complex_field<T: Deserialize<'static> + Default>(
+    map: &serde_json::Map<String, Value>,
+    key: &str,
+) -> Option<T> {
     map.get(key).and_then(|v| {
         if v.is_null() || (v.is_array() && v.as_array().unwrap().is_empty()) {
             Some(T::default())
@@ -143,7 +149,10 @@ impl BookSource {
         debug!("[书源]: 设置书源规则类型 书名 {:?}", self.book_source_name);
         if let Some(rule_book_info) = self.rule_book_info.borrow_mut() {
             rule_book_info.set_rule_types();
-            debug!("[书源]: 书信息规则的规则类型: {:?}", rule_book_info.rule_types);
+            debug!(
+                "[书源]: 书信息规则的规则类型: {:?}",
+                rule_book_info.rule_types
+            );
         }
         if let Some(rule_content) = self.rule_content.borrow_mut() {
             rule_content.set_rule_types();
@@ -187,7 +196,9 @@ impl BookSource {
                 result = result && !url.is_empty();
                 debug!("[书源]: 搜索地址是否为空: {:?}", result);
                 // 如果包含webview则过滤
-                if url.to_ascii_lowercase().contains("webview") || url.to_ascii_lowercase().contains("java") {
+                if url.to_ascii_lowercase().contains("webview")
+                    || url.to_ascii_lowercase().contains("java")
+                {
                     result = false;
                     debug!("[书源]: 搜索地址包含webview");
                 }
@@ -198,12 +209,18 @@ impl BookSource {
             }
         }
         if let Some(rule_book_info) = self.rule_book_info.as_ref() {
-            let support = rule_book_info.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+            let support = rule_book_info
+                .rule_types
+                .iter()
+                .all(|(_, rule)| is_supported_rule(rule.clone()));
             debug!("[书源]: 书籍信息规则是否支持: {:?}", support);
             result = result && support;
         }
         if let Some(rule_content) = self.rule_content.as_ref() {
-            let support = rule_content.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+            let support = rule_content
+                .rule_types
+                .iter()
+                .all(|(_, rule)| is_supported_rule(rule.clone()));
             debug!("[书源]: 正文规则是否支持: {:?}", support);
             result = result && support;
         }
@@ -214,7 +231,10 @@ impl BookSource {
         //     result = result && rule_review.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
         // }
         if let Some(rule_search) = self.rule_search.as_ref() {
-            let support = rule_search.rule_types.iter().all(|(_, rule)| is_supported_rule(rule.clone()));
+            let support = rule_search
+                .rule_types
+                .iter()
+                .all(|(_, rule)| is_supported_rule(rule.clone()));
             debug!("[书源]: 搜索规则是否支持: {:?}", support);
             result = result && support;
         }
@@ -224,4 +244,12 @@ impl BookSource {
         debug!("[书源]: 过滤书源最终结果: {:?}", result);
         result
     }
+}
+
+#[derive(Debug, Clone)]
+pub struct BookSourceData {
+    /// 书源json数据
+    pub book_source_json: String,
+    /// 书源
+    pub book_source: BookSource,
 }

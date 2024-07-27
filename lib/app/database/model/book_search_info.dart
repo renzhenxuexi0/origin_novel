@@ -8,11 +8,13 @@ class BookSearchInfo with _$BookSearchInfo {
   const factory BookSearchInfo({
     required int id,
     required int bookSourceId,
-    required String searchUrl,
-    required String method,
-    required String charset,
-    String? headers,
-    String? body,
+    String? author,
+    String? bookUrl,
+    String? coverUrl,
+    String? intro,
+    String? name,
+    String? wordCount,
+    String? kind,
   }) = _BookSearchInfo;
 
   factory BookSearchInfo.fromJson(Map<String, dynamic> json) =>

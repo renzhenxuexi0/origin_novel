@@ -22,7 +22,7 @@ pub struct RuleExplore {
     pub rule_types: HashMap<RuleExploreField, RuleType>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Hash)]
 pub enum RuleExploreField {
     Author,
     BookList,

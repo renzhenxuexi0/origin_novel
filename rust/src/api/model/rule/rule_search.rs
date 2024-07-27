@@ -21,7 +21,7 @@ pub struct RuleSearch {
     pub rule_types: HashMap<RuleSearchField, RuleType>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, Serialize, Deserialize, PartialEq, Hash)]
 pub enum RuleSearchField {
     Author,
     BookList,

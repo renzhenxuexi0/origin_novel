@@ -170,12 +170,15 @@ class BookSourceLogic extends GetxController {
     }
   }
 
-  BookSource? _convertBookSource(rust_book_source.BookSource bookSource) {
+  BookSource? _convertBookSource(
+      rust_book_source.BookSourceData bookSourceDate) {
     try {
+      final bookSource = bookSourceDate.bookSource;
       return BookSource(
         id: _isar.bookSources.autoIncrement(),
         bookSourceName: bookSource.bookSourceName!,
         bookSourceUrl: bookSource.bookSourceUrl!,
+        bookSourceJson: bookSourceDate.bookSourceJson,
         enabled: bookSource.enabled ?? true,
         canEnable: bookSource.canEnable ?? true,
         exploreUrl: bookSource.exploreUrl,

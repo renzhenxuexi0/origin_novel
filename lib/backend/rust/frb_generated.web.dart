@@ -65,10 +65,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BookSource dco_decode_book_source(dynamic raw);
 
   @protected
-  bool dco_decode_bool(dynamic raw);
+  BookSourceData dco_decode_book_source_data(dynamic raw);
 
   @protected
-  BookSource dco_decode_box_autoadd_book_source(dynamic raw);
+  bool dco_decode_bool(dynamic raw);
 
   @protected
   bool dco_decode_box_autoadd_bool(dynamic raw);
@@ -101,7 +101,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
-  List<BookSource> dco_decode_list_book_source(dynamic raw);
+  List<BookSourceData> dco_decode_list_book_source_data(dynamic raw);
 
   @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
@@ -267,10 +267,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   BookSource sse_decode_book_source(SseDeserializer deserializer);
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
+  BookSourceData sse_decode_book_source_data(SseDeserializer deserializer);
 
   @protected
-  BookSource sse_decode_box_autoadd_book_source(SseDeserializer deserializer);
+  bool sse_decode_bool(SseDeserializer deserializer);
 
   @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
@@ -304,7 +304,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
-  List<BookSource> sse_decode_list_book_source(SseDeserializer deserializer);
+  List<BookSourceData> sse_decode_list_book_source_data(
+      SseDeserializer deserializer);
 
   @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
@@ -483,11 +484,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_book_source(BookSource self, SseSerializer serializer);
 
   @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
+  void sse_encode_book_source_data(
+      BookSourceData self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_book_source(
-      BookSource self, SseSerializer serializer);
+  void sse_encode_bool(bool self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
@@ -526,8 +527,8 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_book_source(
-      List<BookSource> self, SseSerializer serializer);
+  void sse_encode_list_book_source_data(
+      List<BookSourceData> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_prim_u_8_strict(

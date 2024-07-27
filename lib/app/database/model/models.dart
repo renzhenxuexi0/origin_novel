@@ -4,18 +4,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
 import 'package:origin_novel/backend/rust/api/model/rule/rule_toc.dart'
-    as rust_rule_toc;
+as rust_rule_toc;
 import 'package:origin_novel/backend/rust/api/model/rule/rule_content.dart'
-    as rust_rule_content;
+as rust_rule_content;
 import 'package:origin_novel/backend/rust/api/model/rule/rule_book_info.dart'
-    as rust_rule_book_info;
+as rust_rule_book_info;
 import 'package:origin_novel/backend/rust/api/model/rule/rule_search.dart'
-    as rust_rule_search;
+as rust_rule_search;
 import 'package:origin_novel/backend/rust/api/model/rule/rule_explore.dart'
-    as rust_rule_explore;
-import 'package:origin_novel/backend/rust/api/model/rule/rule_type.dart';
+as rust_rule_explore;
+import 'package:origin_novel/backend/rust/api/model/book_source.dart'
+as rust_book_source;
 import 'package:origin_novel/backend/rust/api/model/rule/rule_review.dart'
-    as rust_rule_review;
+as rust_rule_review;
 
 part 'book_info.dart';
 

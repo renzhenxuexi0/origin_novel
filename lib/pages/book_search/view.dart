@@ -1,3 +1,4 @@
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,19 +36,7 @@ class BookSearchPage extends StatelessWidget {
         height: 40,
         child: TextField(
           textInputAction: TextInputAction.search,
-          onSubmitted: (value) async {
-            // TODO 搜索
-            // if (value.isNotEmpty) {
-            //   await logic.search(value);
-            //   if (state.searchBookInfoMap.isEmpty) {
-            //     DialogUtils.waring('没有搜索到相关书籍');
-            //   }
-            // } else {
-            //   DialogUtils.waring('搜索内容不能为空');
-            // }
-            // 模拟
-            logic.search(value);
-          },
+          onSubmitted: logic.bookSearch,
           decoration: const InputDecoration(
             hintText: '请输入书名或作者名',
             contentPadding: EdgeInsets.symmetric(
@@ -64,9 +53,9 @@ class BookSearchPage extends StatelessWidget {
     return GetBuilder<BookSearchLogic>(builder: (logic) {
       return ListView.separated(
         itemBuilder: (context, index) {
-          return _SearchBookItem(searchBook: state.bookInfoList[index]);
+          return _SearchBookItem(searchBook: state.bookSearchInfos[index]);
         },
-        itemCount: logic.state.bookInfoList.length,
+        itemCount: logic.state.bookSearchInfos.length,
         separatorBuilder: (BuildContext context, int index) {
           return const Divider(
             height: 1.0,
@@ -80,7 +69,7 @@ class BookSearchPage extends StatelessWidget {
 class _SearchBookItem extends StatelessWidget {
   const _SearchBookItem({required this.searchBook});
 
-  final BookInfo searchBook;
+  final BookSearchInfo searchBook;
 
   @override
   Widget build(BuildContext context) {
@@ -92,11 +81,7 @@ class _SearchBookItem extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            Image.asset(
-              searchBook.cover ?? Assets.defaultIcon,
-              height: 80,
-              fit: BoxFit.fitHeight,
-            ),
+            _buildCover(searchBook.coverUrl),
             const Gap.hn(),
             Expanded(
               child: Column(
@@ -104,7 +89,7 @@ class _SearchBookItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    searchBook.name,
+                    searchBook.name ?? '未知',
                     style: context.textTheme.titleMedium,
                   ),
                   const Gap.vn(),
@@ -126,5 +111,21 @@ class _SearchBookItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildCover(String? coverUrl) {
+    return coverUrl == null
+        ? Image.asset(
+            Assets.defaultBook,
+            width: 60,
+            height: 80,
+            fit: BoxFit.cover,
+          )
+        : FastCachedImage(
+            width: 60,
+            height: 80,
+            fit: BoxFit.cover,
+            url: coverUrl,
+          );
   }
 }

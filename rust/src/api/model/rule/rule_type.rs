@@ -1,7 +1,8 @@
 use flutter_rust_bridge::frb;
 pub use once_cell::sync::Lazy;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum RuleType {
     /// JSONPATH
     JsonPath,

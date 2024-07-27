@@ -34,7 +34,7 @@ pub struct RuleReview {
     pub rule_types: HashMap<RuleReviewField, RuleType>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, Serialize, Deserialize, PartialEq, Hash)]
 pub enum RuleReviewField {
     ReviewUrl,
     AvatarRule,
@@ -58,10 +58,16 @@ impl RuleReview {
             (RuleReviewField::AvatarRule, self.avatar_rule.as_ref()),
             (RuleReviewField::ContentRule, self.content_rule.as_ref()),
             (RuleReviewField::PostTimeRule, self.post_time_rule.as_ref()),
-            (RuleReviewField::ReviewQuoteUrl, self.review_quote_url.as_ref()),
+            (
+                RuleReviewField::ReviewQuoteUrl,
+                self.review_quote_url.as_ref(),
+            ),
             (RuleReviewField::VoteUpUrl, self.vote_up_url.as_ref()),
             (RuleReviewField::VoteDownUrl, self.vote_down_url.as_ref()),
-            (RuleReviewField::PostReviewUrl, self.post_review_url.as_ref()),
+            (
+                RuleReviewField::PostReviewUrl,
+                self.post_review_url.as_ref(),
+            ),
             (RuleReviewField::PostQuoteUrl, self.post_quote_url.as_ref()),
             (RuleReviewField::DeleteUrl, self.delete_url.as_ref()),
         ]);

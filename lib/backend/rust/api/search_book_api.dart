@@ -4,14 +4,6 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
-import 'model/book_source.dart';
-import 'model/rule/rule_book_info.dart';
-import 'model/rule/rule_content.dart';
-import 'model/rule/rule_explore.dart';
-import 'model/rule/rule_review.dart';
-import 'model/rule/rule_search.dart';
-import 'model/rule/rule_toc.dart';
-import 'model/rule/rule_type.dart';
 import 'model/search_book.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
@@ -20,6 +12,6 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// 搜索书籍
 Future<List<SearchBook>> searchBook(
-        {required BookSource bookSource, required String keyword}) =>
+        {required String bookSourceJson, required String keyword}) =>
     RustLib.instance.api.crateApiSearchBookApiSearchBook(
-        bookSource: bookSource, keyword: keyword);
+        bookSourceJson: bookSourceJson, keyword: keyword);

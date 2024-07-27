@@ -23,7 +23,7 @@ pub struct RuleToc {
     pub rule_types: HashMap<RuleTocField, RuleType>,
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Clone, Eq, Serialize, Deserialize, PartialEq, Hash)]
 pub enum RuleTocField {
     ChapterList,
     ChapterName,

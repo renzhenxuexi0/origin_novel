@@ -15,6 +15,6 @@ import 'model/rule/rule_type.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// 从URL解析书源
-Future<List<BookSource>> parseBookSourceFromUrl({required String url}) =>
+Future<List<BookSourceData>> parseBookSourceFromUrl({required String url}) =>
     RustLib.instance.api
         .crateApiParseBookSourceApiParseBookSourceFromUrl(url: url);

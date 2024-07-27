@@ -373,16 +373,18 @@ fn wire__crate__api__search_book_api__search_book_impl(
             };
             let mut deserializer =
                 flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_book_source =
-                <crate::api::model::book_source::BookSource>::sse_decode(&mut deserializer);
+            let api_book_source_json = <String>::sse_decode(&mut deserializer);
             let api_keyword = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, ()>(
                     (move || async move {
                         let output_ok = Result::<_, ()>::Ok(
-                            crate::api::search_book_api::search_book(api_book_source, api_keyword)
-                                .await,
+                            crate::api::search_book_api::search_book(
+                                api_book_source_json,
+                                api_keyword,
+                            )
+                            .await,
                         )?;
                         Ok(output_ok)
                     })()
@@ -571,6 +573,19 @@ impl SseDecode for crate::api::model::book_source::BookSource {
     }
 }
 
+impl SseDecode for crate::api::model::book_source::BookSourceData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_bookSourceJson = <String>::sse_decode(deserializer);
+        let mut var_bookSource =
+            <crate::api::model::book_source::BookSource>::sse_decode(deserializer);
+        return crate::api::model::book_source::BookSourceData {
+            book_source_json: var_bookSourceJson,
+            book_source: var_bookSource,
+        };
+    }
+}
+
 impl SseDecode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -592,15 +607,13 @@ impl SseDecode for i64 {
     }
 }
 
-impl SseDecode for Vec<crate::api::model::book_source::BookSource> {
+impl SseDecode for Vec<crate::api::model::book_source::BookSourceData> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut len_ = <i32>::sse_decode(deserializer);
         let mut ans_ = vec![];
         for idx_ in 0..len_ {
-            ans_.push(<crate::api::model::book_source::BookSource>::sse_decode(
-                deserializer,
-            ));
+            ans_.push(<crate::api::model::book_source::BookSourceData>::sse_decode(deserializer));
         }
         return ans_;
     }
@@ -1443,6 +1456,27 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::model::book_source::BookSourc
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::model::book_source::BookSourceData {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.book_source_json.into_into_dart().into_dart(),
+            self.book_source.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::model::book_source::BookSourceData
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::model::book_source::BookSourceData>
+    for crate::api::model::book_source::BookSourceData
+{
+    fn into_into_dart(self) -> crate::api::model::book_source::BookSourceData {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::model::rule::rule_book_info::RuleBookInfo {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -1990,6 +2024,14 @@ impl SseEncode for crate::api::model::book_source::BookSource {
     }
 }
 
+impl SseEncode for crate::api::model::book_source::BookSourceData {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.book_source_json, serializer);
+        <crate::api::model::book_source::BookSource>::sse_encode(self.book_source, serializer);
+    }
+}
+
 impl SseEncode for bool {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -2011,12 +2053,12 @@ impl SseEncode for i64 {
     }
 }
 
-impl SseEncode for Vec<crate::api::model::book_source::BookSource> {
+impl SseEncode for Vec<crate::api::model::book_source::BookSourceData> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
-            <crate::api::model::book_source::BookSource>::sse_encode(item, serializer);
+            <crate::api::model::book_source::BookSourceData>::sse_encode(item, serializer);
         }
     }
 }

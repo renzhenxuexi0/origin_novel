@@ -14,7 +14,7 @@ import 'rule/rule_toc.dart';
 import 'rule/rule_type.dart';
 
 // These functions are ignored because they are not marked as `pub`: `parse_complex_field`, `parse_field`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `deserialize`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `deserialize`, `fmt`, `fmt`
 // These functions are ignored (category: IgnoreBecauseExplicitAttribute): `filter_book_source`, `set_rule_types`
 
 /// 书源结构定义
@@ -168,4 +168,28 @@ class BookSource {
           ruleToc == other.ruleToc &&
           searchUrl == other.searchUrl &&
           weight == other.weight;
+}
+
+class BookSourceData {
+  /// 书源json数据
+  final String bookSourceJson;
+
+  /// 书源
+  final BookSource bookSource;
+
+  const BookSourceData({
+    required this.bookSourceJson,
+    required this.bookSource,
+  });
+
+  @override
+  int get hashCode => bookSourceJson.hashCode ^ bookSource.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BookSourceData &&
+          runtimeType == other.runtimeType &&
+          bookSourceJson == other.bookSourceJson &&
+          bookSource == other.bookSource;
 }
