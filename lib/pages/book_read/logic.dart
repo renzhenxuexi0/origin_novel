@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:chinese_font_library/chinese_font_library.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/src/gestures/events.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:origin_novel/app/constants/default_setting.dart';
@@ -116,7 +117,11 @@ class BookReadLogic extends GetxController {
   }
 
   void pageOnPageProcessChange(int value) {
-    state.currentPage = value;
+    if (value < state.pageSize) {
+      state.currentPage = value;
+    } else {
+      nextPage();
+    }
     update();
   }
 
@@ -223,6 +228,40 @@ class BookReadLogic extends GetxController {
       }
     } else {
       nextChapter();
+    }
+  }
+
+  /// 滚轮滑动事件
+  void onPointerSignal(PointerSignalEvent event) {
+    if (event is PointerScrollEvent) {
+      if (event.scrollDelta.dy > 0) {
+        nextPage();
+      } else {
+        previousPage();
+      }
+    }
+  }
+
+  /// 处理键盘事件
+  void onKeyEvent(KeyEvent event) {
+    // 不处理按下事件
+    if (event is KeyDownEvent) {
+      return;
+    }
+    // 根据滑动方向 如果是是左右滑动 那就监听左右按键按下事件
+    if (state.bookReadSetting.pageFlipType == PageFlipType.slideLeftOrRight) {
+      if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        previousPage();
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+        nextPage();
+      }
+    } else {
+      // 如果是上下滑动 那就监听上下按键事件
+      if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+        previousPage();
+      } else if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+        nextPage();
+      }
     }
   }
 }

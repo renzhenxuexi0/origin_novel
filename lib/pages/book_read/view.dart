@@ -60,34 +60,45 @@ class BookReadPage extends StatelessWidget {
   Widget _buildContent() {
     return GetBuilder<BookReadLogic>(
       builder: (logic) {
-        return GestureDetector(
-          onTap: logic.toggleAppBarVisibility,
-          child: PageView.builder(
-            controller: state.pageController,
-            itemCount: state.pageSize,
-            scrollDirection: switch (state.bookReadSetting.pageFlipType) {
-              PageFlipType.slideLeftOrRight => Axis.horizontal,
-              PageFlipType.slideUpAndDown => Axis.vertical,
-            },
-            onPageChanged: logic.pageOnPageProcessChange,
-            itemBuilder: (context, index) {
-              return Container(
-                width: state.contentWidth,
-                height: state.contentHeight,
-                // 间隔1个字符的宽度和高度
-                padding: EdgeInsets.symmetric(
-                  horizontal: state.fontWidth,
-                  vertical: state.fontHeight,
-                ),
-                child: Text(
-                  state.pages[index],
-                  style: state.contentStyle,
-                ),
-              );
-            },
+        return KeyboardListener(
+          focusNode: state.keyboardListenerFocusNode,
+          onKeyEvent: logic.onKeyEvent,
+          child: Listener(
+            onPointerSignal: logic.onPointerSignal,
+            child: GestureDetector(
+              onTap: logic.toggleAppBarVisibility,
+              child: PageView.builder(
+                controller: state.pageController,
+                // 加1用于触发下一章
+                itemCount: state.pageSize + 1,
+                scrollDirection: switch (state.bookReadSetting.pageFlipType) {
+                  PageFlipType.slideLeftOrRight => Axis.horizontal,
+                  PageFlipType.slideUpAndDown => Axis.vertical,
+                },
+                onPageChanged: logic.pageOnPageProcessChange,
+                itemBuilder: _contentPageItemBuilder,
+              ),
+            ),
           ),
         );
       },
+    );
+  }
+
+  /// 内容页
+  Widget? _contentPageItemBuilder(context, index) {
+    return Container(
+      width: state.contentWidth,
+      height: state.contentHeight,
+      // 间隔1个字符的宽度和高度
+      padding: EdgeInsets.symmetric(
+        horizontal: state.fontWidth,
+        vertical: state.fontHeight,
+      ),
+      child: Text(
+        state.pages[index],
+        style: state.contentStyle,
+      ),
     );
   }
 
