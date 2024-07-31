@@ -13,8 +13,8 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: cd ./rust
       - run: cargo check
+        working-directory: ./rust
 
   test:
     name: Test Suite
@@ -26,8 +26,8 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: cd ./rust
       - run: cargo test
+        working-directory: ./rust
 
   fmt:
     name: Rustfmt
@@ -39,9 +39,10 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: cd ./rust
       - run: rustup component add rustfmt
+        working-directory: ./rust
       - run: cargo fmt --all -- --check
+        working-directory: ./rust
 
   clippy:
     name: Clippy
@@ -53,6 +54,7 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-      - run: cd ./rust
       - run: rustup component add clippy
+        working-directory: ./rust
       - run: cargo clippy -- -D warnings
+        working-directory: ./rust
