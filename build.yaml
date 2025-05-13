@@ -1,0 +1,131 @@
+targets:
+  $default:
+    builders:
+      slang_build_runner:
+        options:
+          # 基础语言（默认翻译）
+          base_locale: zh-CN
+
+          # 回退策略：当某个 locale 缺失翻译时的处理方式（none, base_locale, base_locale_empty_string）
+          fallback_strategy: base_locale
+
+          # 输入目录路径，存放翻译文件
+          input_directory: lib/app/i18n
+
+          # 输入文件匹配模式（必须以 .json/.yaml/.csv/.arb 结尾）
+          input_file_pattern: .i18n.json
+
+          # 输出目录路径，生成的 Dart 文件将放在这里
+          output_directory: lib/app/i18n
+
+          # 输出文件名
+          output_file_name: translations.g.dart
+
+          # 是否懒加载翻译资源
+          lazy: true
+
+          # 是否生成与 locale 相关的逻辑代码（如 load、supportedLocales 等）
+          locale_handling: true
+
+          # 是否启用 Flutter 集成功能（如 LocalizationsDelegate）
+          flutter_integration: true
+
+          # 是否使用命名空间（按文件分割翻译）<namespace>_<locale>.<extension>
+          namespaces: false
+
+          # 翻译变量名称（在代码中使用的变量名）
+          translate_var: t
+
+          # 生成的 Locale 枚举类名
+          enum_name: AppLocale
+
+          # 生成的翻译类名
+          class_name: Translations
+
+          # 翻译类的可见性（private/public）
+          translation_class_visibility: private
+
+          # key 的命名风格（null, camel, pascal, snake）
+          key_case: snake
+
+          # map 中 key 的命名风格（null, camel, pascal, snake）
+          key_map_case: camel
+
+          # 参数命名风格（null, camel, pascal, snake）
+          param_case: pascal
+
+          # 启用键值对的清理/转义处理
+          sanitization:
+            enabled: true
+            # 清理后的键前缀
+            prefix: k
+            # 清理后键的命名风格
+            case: camel
+
+          # 字符串插值方式（dart, braces, double_braces）
+          string_interpolation: double_braces
+
+          # 是否生成扁平化的 Map（适用于某些特定场景）
+          flat_map: false
+
+          # 是否启用翻译覆盖功能
+          translation_overrides: false
+
+          # 是否输出构建时间戳
+          timestamp: true
+
+          # 是否输出统计信息（语言数量、字符串总数等）
+          statistics: true
+
+          # 指定某些字段应通过 key 来访问（而非直接属性）
+          maps:
+            - error.codes
+            - category
+            - iconNames
+
+          # 自动检测复数形式
+          pluralization:
+            auto: cardinal
+            # 默认的复数参数名
+            default_parameter: n
+            # 使用基数复数的字段列表
+            cardinal:
+              - someKey.apple
+            # 使用序数复数的字段列表
+            ordinal:
+              - someKey.place
+
+          # 上下文支持（例如性别）
+          contexts:
+            GenderContext:
+              # 默认上下文参数名
+              default_parameter: gender
+              # 是否为此上下文生成枚举
+              generate_enum: true
+
+          # 接口映射（用于自动生成数据模型类）
+          interfaces:
+            PageData: onboarding.pages.*
+            PageData2:
+              paths:
+                - my.path
+                - cool.pages.*
+              attributes:
+                - String title
+                - String? content
+
+          # 混淆配置（暂未启用）
+          obfuscation:
+            enabled: false
+            secret: my_secret
+
+          # 格式化设置
+          format:
+            enabled: true
+            width: 150
+
+          # 添加额外导入语句
+          imports:
+
+          # 是否全局生成枚举
+          generate_enum: true
