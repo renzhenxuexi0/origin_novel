@@ -1,8 +1,9 @@
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
+import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:origin_novel/app/extensions/extensions.dart';
 import 'package:origin_novel/app/talker/global_talker.dart';
+import 'package:origin_novel/widget/platform/base/platform_widget.dart';
 
 /// 导航项配置
 class NavigationItemInfo {
@@ -31,47 +32,123 @@ class NavigationConfig {
 }
 
 /// 导航适配器
-class PlatformNavigation extends PlatformWidget {
+class PlatformNavigation extends StatefulWidget {
   final NavigationConfig config;
 
-  PlatformNavigation(this.config, {super.key});
+  const PlatformNavigation(this.config, {super.key});
 
   @override
-  Widget buildDesktop(BuildContext context) {
-    final navigationShell = config.navigationShell;
-    final int currentIndex = navigationShell.currentIndex;
+  State<PlatformNavigation> createState() => _PlatformNavigationState();
+}
 
-    return fluent.NavigationView(
-      appBar: fluent.NavigationAppBar(
-        title: Text(config.title ?? ''),
-        automaticallyImplyLeading: false,
-      ),
-      pane: fluent.NavigationPane(
-        selected: currentIndex,
-        onChanged: (index) => _onNavigate(navigationShell, index),
-        displayMode: fluent.PaneDisplayMode.compact,
-        items:
-            config.items.asMap().entries.map((entry) {
-              int index = entry.key;
-              var item = entry.value;
-              return fluent.PaneItem(
-                icon: Icon(
-                  currentIndex == index ? item.selectedIcon : item.icon,
-                ),
-                title: Text(item.label),
-              );
-            }).toList(),
-      ),
-      content: fluent.NavigationBody(
-        index: currentIndex,
-        children: [navigationShell],
+class _PlatformNavigationState extends State<PlatformNavigation> {
+  final SideMenuController _sideMenuController = SideMenuController();
+
+  @override
+  void initState() {
+    super.initState();
+    // 确保初始选中项与当前导航索引一致
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _sideMenuController.changePage(
+        widget.config.navigationShell.currentIndex,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatformWidget(
+      desktopBuilder: buildDesktop,
+      mobileBuilder: buildMobile,
+    );
+  }
+
+  Widget buildDesktop(BuildContext context) {
+    final navigationShell = widget.config.navigationShell;
+    final String title = widget.config.title ?? '应用';
+    final theme = context.theme;
+
+    // 创建侧边菜单项
+    final List<SideMenuItem> sideMenuItems = [];
+    for (int i = 0; i < widget.config.items.length; i++) {
+      final item = widget.config.items[i];
+      sideMenuItems.add(
+        SideMenuItem(
+          title: item.label,
+          icon: Icon(item.icon),
+          onTap:
+              (index, _) => {
+                _onNavigate(navigationShell, index),
+                _sideMenuController.changePage(index),
+              },
+        ),
+      );
+    }
+
+    return Scaffold(
+      body: Row(
+        children: [
+          // 侧边菜单
+          SideMenu(
+            controller: _sideMenuController,
+            style: SideMenuStyle(
+              displayMode: SideMenuDisplayMode.auto,
+              decoration: BoxDecoration(),
+              openSideMenuWidth: 200,
+              compactSideMenuWidth: 40,
+              // 使用主题颜色
+              hoverColor: theme.colorScheme.primaryContainer.withOpacity(0.7),
+              selectedColor: theme.colorScheme.primary,
+              selectedIconColor: theme.colorScheme.onPrimary,
+              unselectedIconColor: theme.colorScheme.onSurfaceVariant,
+              // 使用合适的背景色
+              backgroundColor: theme.colorScheme.surfaceContainerLowest,
+              // 使用主题文字样式
+              selectedTitleTextStyle: TextStyle(
+                color: theme.colorScheme.onPrimary,
+              ),
+              unselectedTitleTextStyle: TextStyle(
+                color: theme.colorScheme.onSurface,
+              ),
+              iconSize: 20,
+              itemBorderRadius: const BorderRadius.all(
+                Radius.circular(6.0),
+              ), // 使用主题默认圆角
+              showTooltip: true,
+              showHamburger: true,
+              itemHeight: 50.0,
+              itemInnerSpacing: 8.0,
+              itemOuterPadding: const EdgeInsets.symmetric(horizontal: 5.0),
+              toggleColor: theme.colorScheme.onSurfaceVariant,
+
+              // 可展开项的样式也使用主题颜色
+              selectedTitleTextStyleExpandable: TextStyle(
+                color: theme.colorScheme.onPrimary,
+              ),
+              unselectedTitleTextStyleExpandable: TextStyle(
+                color: theme.colorScheme.onSurface,
+              ),
+              selectedIconColorExpandable: theme.colorScheme.onPrimary,
+              unselectedIconColorExpandable: theme.colorScheme.onSurfaceVariant,
+              arrowCollapse: theme.colorScheme.primary.withOpacity(0.7),
+              arrowOpen: theme.colorScheme.secondary,
+              iconSizeExpandable: 20.0,
+            ),
+            items: sideMenuItems,
+            footer: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text('© 2025 Origin Novel'),
+            ),
+          ),
+          // 内容区域
+          Expanded(child: navigationShell),
+        ],
       ),
     );
   }
 
-  @override
   Widget buildMobile(BuildContext context) {
-    final navigationShell = config.navigationShell;
+    final navigationShell = widget.config.navigationShell;
     final int currentIndex = navigationShell.currentIndex;
 
     return Scaffold(
@@ -80,7 +157,7 @@ class PlatformNavigation extends PlatformWidget {
         selectedIndex: currentIndex,
         onDestinationSelected: (index) => _onNavigate(navigationShell, index),
         destinations:
-            config.items
+            widget.config.items
                 .map(
                   (item) => NavigationDestination(
                     icon: Icon(item.icon),
