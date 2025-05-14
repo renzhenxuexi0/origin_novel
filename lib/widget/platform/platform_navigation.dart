@@ -65,7 +65,6 @@ class _PlatformNavigationState extends State<PlatformNavigation> {
 
   Widget buildDesktop(BuildContext context) {
     final navigationShell = widget.config.navigationShell;
-    final String title = widget.config.title ?? '应用';
     final theme = context.theme;
 
     // 创建侧边菜单项
@@ -97,7 +96,9 @@ class _PlatformNavigationState extends State<PlatformNavigation> {
               openSideMenuWidth: 200,
               compactSideMenuWidth: 40,
               // 使用主题颜色
-              hoverColor: theme.colorScheme.primaryContainer.withOpacity(0.7),
+              hoverColor: theme.colorScheme.primaryContainer.withValues(
+                alpha: 0.7 * 255,
+              ),
               selectedColor: theme.colorScheme.primary,
               selectedIconColor: theme.colorScheme.onPrimary,
               unselectedIconColor: theme.colorScheme.onSurfaceVariant,
@@ -130,7 +131,9 @@ class _PlatformNavigationState extends State<PlatformNavigation> {
               ),
               selectedIconColorExpandable: theme.colorScheme.onPrimary,
               unselectedIconColorExpandable: theme.colorScheme.onSurfaceVariant,
-              arrowCollapse: theme.colorScheme.primary.withOpacity(0.7),
+              arrowCollapse: theme.colorScheme.primary.withValues(
+                alpha: 0.7 * 255,
+              ),
               arrowOpen: theme.colorScheme.secondary,
               iconSizeExpandable: 20.0,
             ),
