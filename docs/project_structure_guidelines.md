@@ -114,7 +114,9 @@ lib/
     ├── exceptions/ # 自定义异常类
     ├── localization/ # 国际化资源
     ├── routing/ # 路由定义
-    └── utils/ # 通用工具函数
+    ├── utils/ # 通用工具函数
+    ├── app.dart # 应用入口
+    └── ... # 其他公共代码
 main.dart
 ```
 
