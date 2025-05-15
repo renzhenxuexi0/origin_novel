@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:origin_novel/app/constant/app_preference_keys.dart'
-    show AppPreferenceKeys;
-import 'package:origin_novel/app/preference/app_preference.dart'
-    show AppPreferences;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../constant/app_preference_keys.dart'
+    show AppPreferenceKeys;
+import '../preference/app_preference.dart'
+    show AppPreferences;
 
 part 'theme_provider.g.dart';
 

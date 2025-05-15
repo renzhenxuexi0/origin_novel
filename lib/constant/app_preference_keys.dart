@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart' show ThemeMode;
-import 'package:origin_novel/app/preference/app_preference.dart' show PreferenceKey;
+import '../preference/app_preference.dart' show PreferenceKey;
 
 /// 应用偏好设置键定义
 class AppPreferenceKeys {

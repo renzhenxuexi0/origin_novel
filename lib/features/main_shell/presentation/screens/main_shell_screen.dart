@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:origin_novel/widget/platform/platform_navigation.dart';
+import '../../../../common_widgets/platform/platform_navigation.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.navigationShell});
+class MainShellScreen extends StatefulWidget {
+  const MainShellScreen({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MainShellScreen> createState() => _MainShellScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainShellScreenState extends State<MainShellScreen> {
   @override
   Widget build(BuildContext context) {
     return PlatformNavigation(

@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:origin_novel/app/preference/app_preference.dart';
-import 'package:origin_novel/app/provider/theme_provider.dart';
-import 'package:origin_novel/app/router/router.dart';
-import 'package:origin_novel/app/theme/app_theme.dart';
 
-import 'app/i18n/strings.g.dart';
+import 'global_providers/theme_provider.dart';
+import 'localization/strings.g.dart';
+import 'preference/app_preference.dart';
+import 'routing/router.dart';
+import 'theme/app_theme.dart';
 
 Future<void> main() async {
   // 初始化Flutter引擎

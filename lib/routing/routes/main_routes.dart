@@ -2,7 +2,7 @@ part of 'routes.dart';
 
 @TypedStatefulShellRoute<MainShellRoute>(
   branches: [
-    TypedStatefulShellBranch<HomeShellBranch>(
+    TypedStatefulShellBranch<BookshelfShellBranch>(
       routes: <TypedRoute<RouteData>>[
         TypedGoRoute<BookshelfRoute>(path: '/bookshelf'),
       ],
@@ -26,12 +26,12 @@ class MainShellRoute extends StatefulShellRouteData {
     BuildContext context,
     GoRouterState state,
     StatefulNavigationShell navigationShell,
-  ) => HomePage(navigationShell: navigationShell);
+  ) => MainShellScreen(navigationShell: navigationShell);
 }
 
 @immutable
-class HomeShellBranch extends StatefulShellBranchData {
-  const HomeShellBranch();
+class BookshelfShellBranch extends StatefulShellBranchData {
+  const BookshelfShellBranch();
 }
 
 @immutable
@@ -46,7 +46,7 @@ class BookshelfRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const BookshelfPage();
+      const BookshelfScreen();
 }
 
 /// 设置的页面
@@ -56,5 +56,5 @@ class SettingsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const SettingsPage();
+      const SettingsScreen();
 }

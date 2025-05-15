@@ -1,6 +1,9 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
   plugins:
     - custom_lint
   errors:
@@ -8,3 +11,5 @@ analyzer:
 
 linter:
   rules:
+    prefer_relative_imports: true
+    directives_ordering: true

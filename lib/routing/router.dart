@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:origin_novel/app/constant/instances.dart';
-import 'package:origin_novel/app/router/routes/routes.dart';
-import 'package:origin_novel/app/talker/global_talker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+
+import '../constant/instances.dart';
+import '../talker/global_talker.dart';
+import 'routes/routes.dart';
 
 part 'router.g.dart';
 

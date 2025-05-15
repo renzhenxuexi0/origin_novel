@@ -10,13 +10,13 @@ targets:
           fallback_strategy: base_locale
 
           # 输入目录路径，存放翻译文件
-          input_directory: lib/app/i18n
+          input_directory: lib/localization
 
           # 输入文件匹配模式（必须以 .json/.yaml/.csv/.arb 结尾）
           input_file_pattern: .i18n.json
 
           # 输出目录路径，生成的 Dart 文件将放在这里
-          output_directory: lib/app/i18n
+          output_directory: lib/localization
 
           # 输出文件名
           output_file_name: translations.g.dart

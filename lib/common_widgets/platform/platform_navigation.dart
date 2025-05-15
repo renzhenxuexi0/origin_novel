@@ -1,9 +1,10 @@
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:origin_novel/app/extensions/extensions.dart';
-import 'package:origin_novel/app/talker/global_talker.dart';
-import 'package:origin_novel/widget/platform/base/platform_widget.dart';
+
+import '../../extensions/extensions.dart';
+import '../../talker/global_talker.dart';
+import 'base/platform_widget.dart';
 
 /// 导航项配置
 class NavigationItemInfo {
