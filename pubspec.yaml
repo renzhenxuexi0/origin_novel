@@ -37,8 +37,12 @@ dependencies:
   json_annotation: ^4.9.0
   # 路由
   go_router: ^15.1.2
+  # 侧边栏
   easy_sidemenu: ^0.6.1
+  # 本地偏好存储
   shared_preferences: ^2.5.3
+  # 本地数据库
+  realm: ^20.1.1
 
 dev_dependencies:
   flutter_test:

@@ -7,6 +7,7 @@
 > - [Flutter App Architecture: The Domain Model](https://codewithandrea.com/articles/flutter-app-architecture-domain-model/)
 > - [Flutter App Architecture: The Application Layer](https://codewithandrea.com/articles/flutter-app-architecture-application-layer/)
 > - [Flutter App Architecture: The Presentation Layer](https://codewithandrea.com/articles/flutter-presentation-layer/)
+> - [Scripts for Building a Riverpod Clean Architecture Feature Generator for Flutter Projects](https://medium.com/@nahroaso100/scripts-for-building-a-riverpod-clean-architecture-feature-generator-for-flutter-projects-d5551f6fcf5a)
 
 本规范基于 Andrea Bizzotto 的 Flutter 架构系列文章，旨在为 Flutter 项目提供一套清晰、可维护、易扩展的项目结构建议。本文档主要关注如何组织代码结构和分层架构，以确保代码易于理解、测试和维护。
 
@@ -83,9 +84,9 @@ lib/
 **优点**：相关代码放在一起，易于维护和扩展
 **缺点**：需要明确定义"特性"的边界
 
-### 推荐使用特性优先 + 分层结构
+### 推荐使用特性优先 + Riverpod Clean Architecture 结构
 
-特性优先方法更适合中大型应用，因为它能更好地隔离功能，便于团队协作和代码维护。推荐的项目结构如下：
+特性优先方法更适合中大型应用，因为它能更好地隔离功能，便于团队协作和代码维护。结合Riverpod状态管理，推荐的项目结构如下：
 
 ```
 lib/
@@ -94,64 +95,87 @@ lib/
     │   ├── authentication/ # 认证功能
     │   │   ├── presentation/
     │   │   │   ├── widgets/ # 特定于此功能的小部件
-    │   │   │   ├── controllers/ # 控制器或视图模型
-    │   │   │   └── screens/ # 页面
-    │   │   ├── application/
-    │   │   │   └── services/ # 业务服务
+    │   │   │   ├── pages/ # 页面组件
+    │   │   │   └── providers/ # Riverpod providers
     │   │   ├── domain/
-    │   │   │   └── models/ # 领域模型
+    │   │   │   ├── entities/ # 领域实体
+    │   │   │   ├── repositories/ # 抽象仓库接口
+    │   │   │   └── usecases/ # 用例实现 - 业务逻辑
     │   │   └── data/
     │   │       ├── repositories/ # 仓库实现
-    │   │       └── data_sources/ # 远程或本地数据源
+    │   │       ├── datasources/ # 远程或本地数据源
+    │   │       └── models/ # 数据模型 (DTOs)
     │   ├── products/
     │   │   ├── presentation/
-    │   │   ├── application/
     │   │   ├── domain/
     │   │   └── data/
     │   └── ...
-    ├── common_widgets/ # 可复用的通用小部件
-    ├── constants/ # 应用常量
-    ├── exceptions/ # 自定义异常类
-    ├── localization/ # 国际化资源
-    ├── routing/ # 路由定义
-    ├── utils/ # 通用工具函数
+    ├── core/ # 核心功能和通用代码
+    │   ├── api/ # API客户端和网络相关
+    │   ├── theme/ # 应用主题
+    │   ├── enums/ # 全局枚举
+    │   ├── errors/ # 错误处理
+    │   ├── utils/ # 通用工具函数
+    │   ├── constants/ # 应用常量
+    │   ├── routes/ # 路由定义
+    │   ├── extensions/ # Dart扩展方法
+    │   └── widgets/ # 可复用的通用小部件
     ├── app.dart # 应用入口
-    └── ... # 其他公共代码
+    └── injector.dart # 依赖注入设置
 main.dart
 ```
+
+### 与传统分层架构的主要区别
+
+此结构基于Clean Architecture并针对Riverpod进行了优化：
+
+1. **移除了应用层**：用例(Usecases)直接在domain层中实现，简化了架构
+2. **Providers作为粘合剂**：Riverpod providers负责连接UI和业务逻辑
+3. **更精简的领域层**：包含entities、repositories接口和usecases
+4. **核心模块集中化**：通用功能统一放在core目录下
 
 ### 各层职责说明
 
 #### 1. 表现层 (Presentation Layer)
-- 负责 UI 渲染、用户交互、状态管理。
-- 包含：
-  - **Widgets**：UI 组件。
-  - **Controllers/ViewModels**：管理状态、处理用户输入，与应用层或数据层交互。
-  - **Screens/Pages**：顶级页面组件。
-- 依赖：可依赖应用层和领域层。
+- **Pages**：完整的页面组件
+- **Widgets**：特定功能的UI组件
+- **Providers**：
+  - 状态管理 (StateNotifierProvider, StateProvider等)
+  - 连接UI与用例 (UseCases)
+  - 处理状态转换并提供给UI消费
 
-#### 2. 应用层 (Application Layer)
-- 负责编排领域对象，处理应用用例。
-- 包含：
-  - **Services**：封装应用场景逻辑，协调多个仓库或领域对象。
-- 依赖：领域层、数据层。
-- 说明：如无复杂业务流程，可省略应用层，控制器可直接调用仓库。
+#### 2. 领域层 (Domain Layer)
+- **Entities**：纯粹的业务对象，不依赖于数据层
+- **Repositories**：定义数据操作的抽象接口
+- **UseCases**：封装单一业务逻辑或流程，每个用例处理特定业务场景
 
-#### 3. 领域层 (Domain Layer)
-- 负责核心业务逻辑和规则。
-- 包含：
-  - **Models/Entities**：业务模型，包含业务逻辑。
-  - **Value Objects**：值对象，如 Email、Money。
-  - **(可选) Domain Services**：不适合放在实体中的业务逻辑。
-- 依赖：不依赖其他层。
+#### 3. 数据层 (Data Layer)
+- **Models**：数据传输对象(DTOs)，用于序列化/反序列化
+- **Repositories实现**：实现领域层定义的仓库接口
+- **DataSources**：处理具体数据源(API、本地数据库等)
 
-#### 4. 数据层 (Data Layer)
-- 负责数据持久化、检索。
-- 包含：
-  - **Repositories**：定义数据操作契约（接口/抽象类），实现与数据源的解耦。
-  - **Data Sources**：与外部数据源（API、数据库等）交互。
-  - **DTOs**：数据传输对象，负责序列化/反序列化。
-- 依赖：可依赖外部库和领域层模型。
+#### 4. 核心层 (Core)
+- 包含跨功能的通用代码，如导航、主题、工具函数等
+- 所有功能模块都可以依赖此层
+
+## Riverpod与Clean Architecture的结合
+
+Riverpod提供了灵活的状态管理方案，便于实现Clean Architecture:
+
+- **Providers作为用例的入口点**：表现层通过Provider调用用例
+- **StateNotifierProvider**：管理复杂状态，如API调用的加载/成功/错误状态
+- **Provider依赖注入**：通过ref轻松注入仓库和服务
+- **Immutable State**：状态不可变，通过state类表示不同状态
+
+## 功能生成建议
+
+考虑使用脚本或工具(如riverpod_clean_arch_generator)自动生成符合此结构的功能模板：
+
+- 一键创建完整的feature目录结构
+- 自动生成必要的state类、providers、repositories和usecases
+- 确保一致的代码组织和命名约定
+
+通过此结构，可以充分利用Riverpod的灵活性和Clean Architecture的可测试性与可维护性。
 
 ## 仓库模式（Repository Pattern）
 

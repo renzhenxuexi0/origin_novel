@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../common_widgets/platform/platform_navigation.dart';
+import '../widgets/platform_navigation.dart';
 
 class MainShellScreen extends StatefulWidget {
   const MainShellScreen({super.key, required this.navigationShell});
