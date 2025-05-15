@@ -6,15 +6,14 @@ generate_notifier() {
   local provider_name="$3"
 
   create_file "lib/features/$feature_name/presentation/providers/${feature_name}_notifier.dart" \
-    "import 'package:hooks_riverpod/hooks_riverpod.dart';
+    "import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/usecases/get_${feature_name}_use_case.dart';
 
-final ${provider_name}NotifierProvider = AsyncNotifierProvider<${capitalized_feature_name}Notifier, ${capitalized_feature_name}Entity>(
-  () => ${capitalized_feature_name}Notifier(),
-);
+part '${feature_name}_notifier.g.dart';
 
-class ${capitalized_feature_name}Notifier extends AsyncNotifier<${capitalized_feature_name}Entity> {
+@riverpod
+class ${capitalized_feature_name}Notifier extends _\$${capitalized_feature_name}Notifier {
   late final Get${capitalized_feature_name}UseCase _useCase;
 
   @override

@@ -10,7 +10,7 @@ generate_repository() {
 import '../../data/repositories/${feature_name}_repository_impl.dart';
 import '../../data/sources/remote/${feature_name}_remote_data_source.dart';
 
-part '${feature_name}_repository.dart.g.dart';
+part '${feature_name}_repository.g.dart';
 
 abstract class ${capitalized_feature_name}Repository {
   // TODO: Add repository methods

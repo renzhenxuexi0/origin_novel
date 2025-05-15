@@ -10,7 +10,7 @@ generate_page() {
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/${feature_name}_notifier.dart';
 
-class ${capitalized_feature_name}Page extends ConsumerWidget {
+class ${capitalized_feature_name}Page extends HookConsumerWidget {
   const ${capitalized_feature_name}Page({super.key});
 
   @override

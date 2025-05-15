@@ -9,7 +9,7 @@ generate_use_case() {
     "import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../repositories/${feature_name}_repository.dart';
 
-part '${feature_name}_use_case.g.dart';
+part 'get_${feature_name}_use_case.g.dart';
 
 class Get${capitalized_feature_name}UseCase {
   final ${capitalized_feature_name}Repository repository;
