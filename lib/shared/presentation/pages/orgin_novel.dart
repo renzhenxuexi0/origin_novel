@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../core/localization/strings.g.dart';
-import '../../core/router/router.dart';
-import '../../core/theme/app_theme.dart';
-import 'providers/app_theme_mode_provider.dart';
+import '../../../core/localization/strings.g.dart';
+import '../../../core/router/router.dart';
+import '../../../core/theme/app_theme.dart';
+import '../providers/app_theme_mode_provider.dart';
 
 class OrginNovel extends HookConsumerWidget {
   const OrginNovel({super.key});
@@ -22,6 +22,7 @@ class OrginNovel extends HookConsumerWidget {
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       theme: AppTheme.light,
+      debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.dark,
       themeMode: themeMode.when(
         data: (mode) => mode,

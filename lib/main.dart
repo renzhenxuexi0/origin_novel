@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'core/localization/strings.g.dart';
-import 'shared/presentation/orgin_novel.dart';
+import 'shared/presentation/pages/orgin_novel.dart';
 
 Future<void> main() async {
   // 初始化Flutter引擎
