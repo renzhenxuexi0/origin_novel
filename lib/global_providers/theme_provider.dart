@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../constant/app_preference_keys.dart'
-    show AppPreferenceKeys;
-import '../preference/app_preference.dart'
-    show AppPreferences;
+import '../constant/app_preference_keys.dart' show AppPreferenceKeys;
+import '../preference/app_preference.dart' show AppPreferences;
 
 part 'theme_provider.g.dart';
 

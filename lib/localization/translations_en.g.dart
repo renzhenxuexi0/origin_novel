@@ -18,7 +18,10 @@ class TranslationsEn extends Translations {
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
     TranslationMetadata<AppLocale, Translations>? meta,
-  }) : assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
+  }) : assert(
+         overrides == null,
+         'Set "translation_overrides: true" in order to enable this feature.',
+       ),
        $meta =
            meta ??
            TranslationMetadata(
@@ -27,7 +30,10 @@ class TranslationsEn extends Translations {
              cardinalResolver: cardinalResolver,
              ordinalResolver: ordinalResolver,
            ),
-       super(cardinalResolver: cardinalResolver, ordinalResolver: ordinalResolver);
+       super(
+         cardinalResolver: cardinalResolver,
+         ordinalResolver: ordinalResolver,
+       );
 
   /// Metadata for the translations of <en>.
   @override
@@ -36,7 +42,9 @@ class TranslationsEn extends Translations {
   late final TranslationsEn _root = this; // ignore: unused_field
 
   @override
-  TranslationsEn $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsEn(meta: meta ?? this.$meta);
+  TranslationsEn $copyWith({
+    TranslationMetadata<AppLocale, Translations>? meta,
+  }) => TranslationsEn(meta: meta ?? this.$meta);
 
   // Translations
 }

@@ -42,9 +42,10 @@ class AppPreferences {
       PreferenceType.double => _prefs.getDouble(key.name) as T?,
       PreferenceType.string => _prefs.getString(key.name) as T?,
       PreferenceType.stringList => _prefs.getStringList(key.name) as T?,
-      PreferenceType.enumType => key.converter != null
-          ? key.converter!(_prefs.getInt(key.name) ?? 0) as T?
-          : key.defaultValue,
+      PreferenceType.enumType =>
+        key.converter != null
+            ? key.converter!(_prefs.getInt(key.name) ?? 0) as T?
+            : key.defaultValue,
     };
   }
 
