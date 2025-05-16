@@ -9,7 +9,8 @@ export def main [
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../providers/($feature_name)_notifier.dart';
+import '../providers/($feature_name)_provider.dart';
+import '../states/($feature_name)_state.dart';
 
 /// ($capitalized_feature_name)功能的主页面
 class ($capitalized_feature_name)Page extends HookConsumerWidget {
@@ -18,10 +19,10 @@ class ($capitalized_feature_name)Page extends HookConsumerWidget {
   @override
   Widget build\(BuildContext context, WidgetRef ref\) {
     // 监听($capitalized_feature_name)状态
-    final ($provider_name)State = ref.watch\(($provider_name)NotifierProvider\);
+    final ($provider_name)State = ref.watch\(($provider_name)Provider\);
     
     // 获取notifier以便调用方法
-    final ($provider_name)Notifier = ref.read\(($provider_name)NotifierProvider.notifier\);
+    final ($provider_name)Notifier = ref.read\(($provider_name)Provider.notifier\);
     
     // 在页面加载时获取数据
     useEffect\(\(\) {

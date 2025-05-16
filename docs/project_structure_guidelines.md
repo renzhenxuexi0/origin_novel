@@ -96,14 +96,16 @@ lib/
     │   │   ├── presentation/
     │   │   │   ├── widgets/ # 特定于此功能的小部件
     │   │   │   ├── pages/ # 页面组件
-    │   │   │   └── providers/ # Riverpod providers
+    │   │   │   ├── states/ # 页面状态
+    │   │   │   └── providers/ # 状态管理
     │   │   ├── domain/
     │   │   │   ├── entities/ # 领域实体
     │   │   │   ├── repositories/ # 抽象仓库接口
-    │   │   │   └── usecases/ # 用例实现 - 业务逻辑
+    │   │   │   └── use_cases/ # 用例实现 - 业务逻辑 (可选)
     │   │   └── data/
     │   │       ├── repositories/ # 仓库实现
-    │   │       ├── datasources/ # 远程或本地数据源
+    │   │       ├── mappers/ # 数据转换器
+    │   │       ├── sources/ # 远程或本地数据源(可选)
     │   │       └── models/ # 数据模型 (DTOs)
     │   ├── products/
     │   │   ├── presentation/
@@ -139,20 +141,23 @@ main.dart
 #### 1. 表现层 (Presentation Layer)
 - **Pages**：完整的页面组件
 - **Widgets**：特定功能的UI组件
-- **Providers**：
-  - 状态管理 (StateNotifierProvider, StateProvider等)
+- **States**：页面状态
+  - 页面需要的状态
+- **Providers**：有具体的UI逻辑
+  - 管理state中的状态
   - 连接UI与用例 (UseCases)
   - 处理状态转换并提供给UI消费
 
 #### 2. 领域层 (Domain Layer)
 - **Entities**：纯粹的业务对象，不依赖于数据层
 - **Repositories**：定义数据操作的抽象接口
-- **UseCases**：封装单一业务逻辑或流程，每个用例处理特定业务场景
+- **UseCases**：封装单一业务逻辑或流程，每个用例处理特定业务场景。可选，如果没有业务逻辑的话可以省略
 
 #### 3. 数据层 (Data Layer)
 - **Models**：数据传输对象(DTOs)，用于序列化/反序列化
+- **Mappers**：将DTO转换为领域实体的转换器
 - **Repositories实现**：实现领域层定义的仓库接口
-- **DataSources**：处理具体数据源(API、本地数据库等)
+- **DataSources**：处理具体数据源(API、本地数据库等)，如果只有一个数据源，可以不需要这个文件夹，直接在Repository实现中处理数据源的逻辑
 
 #### 4. 核心层 (Core)
 - 包含跨功能的通用代码，如导航、主题、工具函数等

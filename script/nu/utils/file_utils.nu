@@ -26,8 +26,9 @@ export def create_base_directories [
         $"lib/features/($feature_name)/data/sources/local"
         $"lib/features/($feature_name)/domain/entities"
         $"lib/features/($feature_name)/domain/repositories"
-        $"lib/features/($feature_name)/domain/usecases"
+        $"lib/features/($feature_name)/domain/use_cases"
         $"lib/features/($feature_name)/presentation/providers"
+        $"lib/features/($feature_name)/presentation/states"
         $"lib/features/($feature_name)/presentation/pages"
         $"lib/features/($feature_name)/presentation/widgets"
     ]

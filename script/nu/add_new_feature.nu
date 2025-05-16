@@ -16,9 +16,9 @@ use generators/data/generate_repository_impl.nu
 use generators/domain/generate_entity.nu
 use generators/domain/generate_repository.nu
 use generators/domain/generate_use_case.nu
-use generators/presentation/generate_notifier.nu
+use generators/presentation/generate_provider.nu
+use generators/presentation/generate_state.nu
 use generators/presentation/generate_page.nu
-use generators/generate_barrel_files.nu
 
 # 创建特性的函数
 def create_feature [
@@ -68,14 +68,10 @@ def create_feature [
     
     print "  📝 Generating Presentation Layer..."
     # 生成Presentation层文件
-    generate_notifier $feature_name $capitalized_feature_name $provider_name
+    generate_state $feature_name $capitalized_feature_name
+    generate_provider $feature_name $capitalized_feature_name $provider_name
     generate_page $feature_name $capitalized_feature_name $provider_name
     print "  ✅ Presentation Layer complete"
-    
-    print "  📝 Generating Barrel Files..."
-    # 生成Barrel文件
-    generate_barrel_files $feature_name
-    print "  ✅ Barrel Files complete"
     
     print "  🔨 Running build_runner to generate code..."
     # 运行build_runner生成代码
@@ -120,7 +116,7 @@ lib/features/($feature_name)/
 ├── domain/
 │   ├── entities/
 │   ├── repositories/
-│   └── usecases/
+│   └── use_cases/
 └── presentation/
     ├── pages/
     ├── providers/

@@ -47,5 +47,5 @@ class ($capitalized_feature_name)UseCase {
   }
 }"
     
-    create_file $"lib/features/($feature_name)/domain/usecases/($feature_name)_use_case.dart" $content
+    create_file $"lib/features/($feature_name)/domain/use_cases/($feature_name)_use_case.dart" $content
 }
