@@ -1,4 +1,4 @@
-# 生成DTO代码 (使用freezed)
+# 生成model代码 (使用freezed)
 
 export def main [
     feature_name: string           # 特性名称
@@ -12,7 +12,7 @@ part '($feature_name)_dto.g.dart';
 @freezed
 sealed class ($capitalized_feature_name)Dto with _$($capitalized_feature_name)Dto {
   const factory ($capitalized_feature_name)Dto\({
-    required String id,
+    required int id,
     // TODO: Add more DTO properties
   }\) = _($capitalized_feature_name)Dto;
 
@@ -20,5 +20,6 @@ sealed class ($capitalized_feature_name)Dto with _$($capitalized_feature_name)Dt
       _$($capitalized_feature_name)DtoFromJson\(json\);
 }"
     
-    create_file $"lib/features/($feature_name)/data/dto/($feature_name)_dto.dart" $content
+    create_file $"lib/features/($feature_name)/data/dtos/($feature_name)_dto.dart" $content
+
 }

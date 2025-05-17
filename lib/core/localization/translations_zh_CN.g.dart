@@ -42,4 +42,22 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
   Translations $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => Translations(meta: meta ?? this.$meta);
 
   // Translations
+  late final TranslationsSettingsZhCn settings = TranslationsSettingsZhCn.internal(_root);
+}
+
+// Path: settings
+class TranslationsSettingsZhCn {
+  TranslationsSettingsZhCn.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+  String get title => '设置';
+  String get language => '语言';
+  String get theme => '主题';
+  String get dark_mode => '深色模式';
+  String get light_mode => '浅色模式';
+  String get system_default => '系统默认';
+  String get chinese => '中文';
+  String get english => '英文';
 }

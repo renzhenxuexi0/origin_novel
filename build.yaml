@@ -30,7 +30,8 @@ targets:
           # 是否启用 Flutter 集成功能（如 LocalizationsDelegate）
           flutter_integration: true
 
-          # 是否使用命名空间（按文件分割翻译）<namespace>_<locale>.<extension>
+          # 是否使用命名空间（按文件分割翻译）<namespace>_<locale>.<extension> 或 目录 <namespace>/<locale>.<extension>
+          # 文档：https://pub.dev/packages/slang#-namespaces
           namespaces: false
 
           # 翻译变量名称（在代码中使用的变量名）
@@ -78,41 +79,41 @@ targets:
           statistics: true
 
           # 指定某些字段应通过 key 来访问（而非直接属性）
-          maps:
-            - error.codes
-            - category
-            - iconNames
+          # maps:
+          #   - error.codes
+          #   - category
+          #   - iconNames
 
           # 自动检测复数形式
-          pluralization:
-            auto: cardinal
-            # 默认的复数参数名
-            default_parameter: n
-            # 使用基数复数的字段列表
-            cardinal:
-              - someKey.apple
-            # 使用序数复数的字段列表
-            ordinal:
-              - someKey.place
+          # pluralization:
+          #   auto: cardinal
+          #   # 默认的复数参数名
+          #   default_parameter: n
+          #   # 使用基数复数的字段列表
+          #   cardinal:
+          #     - someKey.apple
+          #   # 使用序数复数的字段列表
+          #   ordinal:
+          #     - someKey.place
 
           # 上下文支持（例如性别）
-          contexts:
-            GenderContext:
-              # 默认上下文参数名
-              default_parameter: gender
-              # 是否为此上下文生成枚举
-              generate_enum: true
+          # contexts:
+          #   GenderContext:
+          #     # 默认上下文参数名
+          #     default_parameter: gender
+          #     # 是否为此上下文生成枚举
+          #     generate_enum: true
 
           # 接口映射（用于自动生成数据模型类）
-          interfaces:
-            PageData: onboarding.pages.*
-            PageData2:
-              paths:
-                - my.path
-                - cool.pages.*
-              attributes:
-                - String title
-                - String? content
+          # interfaces:
+          #   PageData: onboarding.pages.*
+          #   PageData2:
+          #     paths:
+          #       - my.path
+          #       - cool.pages.*
+          #     attributes:
+          #       - String title
+          #       - String? content
 
           # 混淆配置（暂未启用）
           obfuscation:

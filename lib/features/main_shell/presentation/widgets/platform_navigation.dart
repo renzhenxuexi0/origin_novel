@@ -94,8 +94,8 @@ class _PlatformNavigationState extends State<PlatformNavigation> {
             style: SideMenuStyle(
               displayMode: SideMenuDisplayMode.auto,
               decoration: BoxDecoration(),
-              openSideMenuWidth: 200,
-              compactSideMenuWidth: 40,
+              openSideMenuWidth: 160,
+              compactSideMenuWidth: 60,
               // 使用主题颜色
               hoverColor: theme.colorScheme.primaryContainer.withValues(
                 alpha: 0.7 * 255,
@@ -118,8 +118,8 @@ class _PlatformNavigationState extends State<PlatformNavigation> {
               ), // 使用主题默认圆角
               showTooltip: true,
               showHamburger: true,
-              itemHeight: 50.0,
-              itemInnerSpacing: 8.0,
+              itemHeight: 40.0,
+              itemInnerSpacing: 4.0,
               itemOuterPadding: const EdgeInsets.symmetric(horizontal: 5.0),
               toggleColor: theme.colorScheme.onSurfaceVariant,
 

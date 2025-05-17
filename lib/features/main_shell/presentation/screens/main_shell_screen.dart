@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/localization/translations.g.dart';
 import '../widgets/platform_navigation.dart';
 
 class MainShellScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class MainShellScreen extends StatefulWidget {
 class _MainShellScreenState extends State<MainShellScreen> {
   @override
   Widget build(BuildContext context) {
+    final t = context.t;
     return PlatformNavigation(
       NavigationConfig(
         navigationShell: widget.navigationShell,
@@ -24,7 +26,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
             selectedIcon: Icons.book_outlined,
           ),
           NavigationItemInfo(
-            label: 'Settings',
+            label: t.settings.title,
             icon: Icons.settings,
             selectedIcon: Icons.settings_outlined,
           ),

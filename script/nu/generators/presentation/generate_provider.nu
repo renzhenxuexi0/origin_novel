@@ -1,11 +1,11 @@
 # 生成Provider代码
 
 export def main [
-    feature_name: string           # 特性名称
-    capitalized_feature_name: string # 首字母大写的特性名称
-    provider_name: string           # 驼峰式命名的特性名
+  feature_name: string           # 特性名称
+  capitalized_feature_name: string # 首字母大写的特性名称
+  provider_name: string           # 驼峰式命名的特性名
 ] {
-    let content = $"import 'package:riverpod_annotation/riverpod_annotation.dart';
+  let content = $"import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/entities/($feature_name)_entity.dart';
 import '../../domain/use_cases/($feature_name)_use_case.dart';
@@ -20,30 +20,30 @@ class ($capitalized_feature_name) extends _$($capitalized_feature_name) {
 
   @override
   ($capitalized_feature_name)State build\(\) {
-    // 初始状态
-    return const ($capitalized_feature_name)State\(\);
+  // 初始状态
+  return const ($capitalized_feature_name)State\(\);
   }
 
-  /// 加载($capitalized_feature_name)
-  Future<void> load\({bool forceRefresh = false}\) async {
-    state = ($capitalized_feature_name)State.loading\(\);
-    
-    try {
-      final data = await _useCase.get\(forceRefresh: forceRefresh\);
-      state = ($capitalized_feature_name)State\(data: data\);
-    } catch \(e\) {
-      state = ($capitalized_feature_name)State.error\('加载失败: ${e.toString\(\)}'\);
-    }
+  /// 加载所有($capitalized_feature_name)
+  Future<void> loadAll\({bool forceRefresh = false}\) async {
+  state = ($capitalized_feature_name)State.loading\(\);
+  
+  try {
+    final data = await _useCase.getAll\(forceRefresh: forceRefresh\);
+    state = ($capitalized_feature_name)State\(items: data\);
+  } catch \(e\) {
+    state = ($capitalized_feature_name)State.error\('加载失败: ${e.toString\(\)}'\);
   }
-
-  /// 创建新的($capitalized_feature_name)
-  Future<void> create\(($capitalized_feature_name)Entity entity\) async {
-    state = state.copyWith\(isLoading: true\);
-    
-    try {
-      final created = await _useCase.create\(entity\);
-      state = ($capitalized_feature_name)State\(data: created\);
-    } catch \(e\) {
+  }
+  
+  /// 加载单个($capitalized_feature_name)
+  Future<void> loadById\(int id, {bool forceRefresh = false}\) async {
+  state = ($capitalized_feature_name)State.loading\(\);
+  
+  try {
+    final data = await _useCase.getById\(id, forceRefresh: forceRefresh\);
+    state = ($capitalized_feature_name)State\(selectedItem: data\);
+  } catch \(e\) {
       state = ($capitalized_feature_name)State.error\('创建失败: ${e.toString()}'\);
     }
   }
@@ -61,7 +61,7 @@ class ($capitalized_feature_name) extends _$($capitalized_feature_name) {
   }
 
   /// 删除($capitalized_feature_name)
-  Future<void> delete\(String id\) async {
+  Future<void> delete\(int id\) async {
     state = state.copyWith\(isLoading: true\);
     
     try {

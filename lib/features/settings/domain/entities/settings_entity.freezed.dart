@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SettingsEntity {
 
- String get id;
+ int get id;
 /// Create a copy of SettingsEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $SettingsEntityCopyWith<$Res>  {
   factory $SettingsEntityCopyWith(SettingsEntity value, $Res Function(SettingsEntity) _then) = _$SettingsEntityCopyWithImpl;
 @useResult
 $Res call({
- String id
+ int id
 });
 
 
@@ -66,7 +66,7 @@ class _$SettingsEntityCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,
+as int,
   ));
 }
 
@@ -80,7 +80,7 @@ class _SettingsEntity implements SettingsEntity {
   const _SettingsEntity({required this.id});
   
 
-@override final  String id;
+@override final  int id;
 
 /// Create a copy of SettingsEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -112,7 +112,7 @@ abstract mixin class _$SettingsEntityCopyWith<$Res> implements $SettingsEntityCo
   factory _$SettingsEntityCopyWith(_SettingsEntity value, $Res Function(_SettingsEntity) _then) = __$SettingsEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id
+ int id
 });
 
 
@@ -132,7 +132,7 @@ class __$SettingsEntityCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
   return _then(_SettingsEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,
+as int,
   ));
 }
 

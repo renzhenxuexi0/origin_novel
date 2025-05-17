@@ -1,20 +1,20 @@
 import '../../domain/entities/settings_entity.dart';
-import '../dto/settings_dto.dart';
+import '../models/settings_model.dart';
 
-/// 将SettingsDto与SettingsEntity相互转换的映射器
+/// 将Settings的不同数据表示形式(DTO、Model、Entity)相互转换的映射器
 class SettingsMapper {
-  /// 将DTO转换为实体
-  static SettingsEntity toEntity(SettingsDto dto) {
+  /// 将Model转换为实体
+  static SettingsEntity modelToEntity(SettingsModel model) {
     return SettingsEntity(
-      id: dto.id,
+      id: model.id,
       // TODO: Map other properties
     );
   }
 
-  /// 将实体转换为DTO
-  static SettingsDto toDto(SettingsEntity entity) {
-    return SettingsDto(
-      id: entity.id,
+  /// 将实体转换为Model
+  static SettingsModel entityToModel(SettingsEntity entity) {
+    return SettingsModel(
+      entity.id,
       // TODO: Map other properties
     );
   }

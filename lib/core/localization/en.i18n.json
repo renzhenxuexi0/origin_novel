@@ -1,1 +1,12 @@
-{}
+{
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "theme": "Theme",
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode",
+        "systemDefault": "System Default",
+        "chinese": "Chinese",
+        "english": "English"
+    }
+}

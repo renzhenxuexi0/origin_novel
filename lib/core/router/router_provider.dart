@@ -9,7 +9,7 @@ import '../constant/instances.dart';
 import '../talker/global_talker.dart';
 import 'routes/routes.dart';
 
-part 'router.g.dart';
+part 'router_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 GoRouter router(Ref ref) {

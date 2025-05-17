@@ -50,7 +50,7 @@ final class SettingsRepositoryProvider
 }
 
 String _$settingsRepositoryHash() =>
-    r'eb6a30258692c70763588ad2a9f241d6d6c16c3d';
+    r'bbec4e7a2e3fe3120f20e5d6f976710b5f26497a';
 
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

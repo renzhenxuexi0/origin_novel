@@ -3,10 +3,18 @@ import '../../domain/entities/settings_entity.dart';
 /// SettingsProvider的状态
 class SettingsState {
   final SettingsEntity? data;
+  final List<SettingsEntity>? items;
+  final SettingsEntity? selectedItem;
   final bool isLoading;
   final String? errorMessage;
 
-  const SettingsState({this.data, this.isLoading = false, this.errorMessage});
+  const SettingsState({
+    this.data,
+    this.items,
+    this.selectedItem,
+    this.isLoading = false,
+    this.errorMessage,
+  });
 
   // 用于显示加载状态的工厂方法
   factory SettingsState.loading() => const SettingsState(isLoading: true);

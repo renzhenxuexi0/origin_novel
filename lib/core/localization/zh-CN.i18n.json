@@ -1,1 +1,12 @@
-{}
+{
+    "settings": {
+        "title": "设置",
+        "language": "语言",
+        "theme": "主题",
+        "darkMode": "深色模式",
+        "lightMode": "浅色模式",
+        "systemDefault": "系统默认",
+        "chinese": "中文",
+        "english": "英文"
+    }
+}

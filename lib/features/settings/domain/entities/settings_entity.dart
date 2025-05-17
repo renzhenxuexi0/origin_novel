@@ -5,7 +5,7 @@ part 'settings_entity.freezed.dart';
 @freezed
 sealed class SettingsEntity with _$SettingsEntity {
   const factory SettingsEntity({
-    required String id,
+    required int id,
     // TODO: Add more entity properties
   }) = _SettingsEntity;
 }

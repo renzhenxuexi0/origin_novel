@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../core/localization/strings.g.dart';
-import '../../../core/router/router.dart';
+import '../../../core/localization/translations.g.dart';
+import '../../../core/router/router_provider.dart';
 import '../../../core/theme/app_theme.dart';
 import '../providers/app_theme_mode_provider.dart';
 
@@ -30,9 +30,7 @@ class OrginNovel extends HookConsumerWidget {
         error: (_, __) => ThemeMode.system,
       ),
       localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+        ...GlobalMaterialLocalizations.delegates,
         DefaultMaterialLocalizations.delegate,
         DefaultWidgetsLocalizations.delegate,
         DefaultCupertinoLocalizations.delegate,

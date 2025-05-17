@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../../core/localization/translations.g.dart';
+import '../../../../shared/presentation/providers/app_language_provider.dart';
+import '../../../../shared/presentation/providers/app_theme_mode_provider.dart';
 import '../providers/settings_provider.dart';
 import '../states/settings_state.dart';
 
@@ -11,42 +13,24 @@ class SettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 监听Settings状态
     final settingsState = ref.watch(settingsProvider);
-
-    // 获取notifier以便调用方法
-    final settingsNotifier = ref.read(settingsProvider.notifier);
-
-    // 在页面加载时获取数据
-    useEffect(() {
-      // 延迟执行以避免在构建过程中调用setState
-      Future.microtask(() => settingsNotifier.load());
-      return null;
-    }, const []);
+    final appLanguage = ref.watch(appLanguageProvider);
+    final appThemeMode = ref.watch(appThemeModeProvider);
+    final t = context.t;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-        actions: [
-          // 刷新按钮
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => settingsNotifier.load(forceRefresh: true),
-          ),
-        ],
-      ),
-      body: _buildBody(settingsState),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // 添加新项目的操作
-          // TODO: 实现添加逻辑
-        },
-        child: const Icon(Icons.add),
-      ),
+      appBar: AppBar(title: Text(t.settings.title)),
+      body: _buildBody(context, ref, settingsState, appLanguage, appThemeMode),
     );
   }
 
-  Widget _buildBody(SettingsState state) {
+  Widget _buildBody(
+    BuildContext context,
+    WidgetRef ref,
+    SettingsState state,
+    AsyncValue<AppLocale> appLanguage,
+    AsyncValue<ThemeMode> appThemeMode,
+  ) {
     if (state.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -57,29 +41,140 @@ class SettingsPage extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '出错了!',
+              state.errorMessage!,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(state.errorMessage!),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: 实现重试逻辑
-              },
-              child: const Text('重试'),
             ),
           ],
         ),
       );
     }
 
-    final data = state.data;
-    if (data == null) {
-      return const Center(child: Text('没有数据'));
-    }
+    return ListView(
+      children: [
+        _buildThemeSettings(context, ref, appThemeMode),
+        const Divider(),
+        _buildLanguageSettings(context, ref, appLanguage),
+      ],
+    );
+  }
 
-    // TODO: 显示实际数据
-    return Center(child: Text('ID: ${data.id}'));
+  Widget _buildThemeSettings(
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<ThemeMode> themeMode,
+  ) {
+    final t = context.t;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.settings.theme,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          themeMode.when(
+            data:
+                (mode) => Column(
+                  children: [
+                    RadioListTile<ThemeMode>(
+                      title: Text(t.settings.system_default),
+                      value: ThemeMode.system,
+                      groupValue: mode,
+                      onChanged: (ThemeMode? value) async {
+                        if (value != null) {
+                          await ref
+                              .read(appThemeModeProvider.notifier)
+                              .setTheme(value);
+                        }
+                      },
+                    ),
+                    RadioListTile<ThemeMode>(
+                      title: Text(t.settings.light_mode),
+                      value: ThemeMode.light,
+                      groupValue: mode,
+                      onChanged: (ThemeMode? value) async {
+                        if (value != null) {
+                          await ref
+                              .read(appThemeModeProvider.notifier)
+                              .setTheme(value);
+                        }
+                      },
+                    ),
+                    RadioListTile<ThemeMode>(
+                      title: Text(t.settings.dark_mode),
+                      value: ThemeMode.dark,
+                      groupValue: mode,
+                      onChanged: (ThemeMode? value) async {
+                        if (value != null) {
+                          await ref
+                              .read(appThemeModeProvider.notifier)
+                              .setTheme(value);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (_, __) => const Text('无法加载主题设置'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageSettings(
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<AppLocale> appLanguage,
+  ) {
+    final t = context.t;
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            t.settings.language,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          appLanguage.when(
+            data:
+                (lang) => Column(
+                  children: [
+                    RadioListTile<AppLocale>(
+                      title: Text(t.settings.chinese),
+                      value: AppLocale.zhCn,
+                      groupValue: lang,
+                      onChanged: (AppLocale? value) async {
+                        if (value != null) {
+                          await ref
+                              .read(appLanguageProvider.notifier)
+                              .setLanguage(value);
+                        }
+                      },
+                    ),
+                    RadioListTile<AppLocale>(
+                      title: Text(t.settings.english),
+                      value: AppLocale.en,
+                      groupValue: lang,
+                      onChanged: (AppLocale? value) async {
+                        if (value != null) {
+                          await ref
+                              .read(appLanguageProvider.notifier)
+                              .setLanguage(value);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (_, __) => const Text('无法加载语言设置'),
+          ),
+        ],
+      ),
+    );
   }
 }

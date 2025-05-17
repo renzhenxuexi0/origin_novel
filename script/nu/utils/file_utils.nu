@@ -21,7 +21,8 @@ export def create_base_directories [
     let base_dirs = [
         $"lib/features/($feature_name)/data/mappers"
         $"lib/features/($feature_name)/data/repositories"
-        $"lib/features/($feature_name)/data/dto"
+        $"lib/features/($feature_name)/data/models"
+        $"lib/features/($feature_name)/data/dtos"
         $"lib/features/($feature_name)/data/sources/remote"
         $"lib/features/($feature_name)/data/sources/local"
         $"lib/features/($feature_name)/domain/entities"

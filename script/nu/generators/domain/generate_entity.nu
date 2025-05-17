@@ -11,7 +11,7 @@ part '($feature_name)_entity.freezed.dart';
 @freezed
 sealed class ($capitalized_feature_name)Entity with _$($capitalized_feature_name)Entity {
   const factory ($capitalized_feature_name)Entity\({
-  required String id,
+  required int id,
   // TODO: Add more entity properties
   }\) = _($capitalized_feature_name)Entity;
 }"

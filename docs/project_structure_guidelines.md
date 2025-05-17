@@ -106,7 +106,8 @@ lib/
     │   │       ├── repositories/ # 仓库实现
     │   │       ├── mappers/ # 数据转换器
     │   │       ├── sources/ # 远程或本地数据源(可选)
-    │   │       └── models/ # 数据模型 (DTOs)
+    │   │       ├── models/ # 本地数据模型
+    │   │       └── dtos/ # 数据传输对象
     │   ├── products/
     │   │   ├── presentation/
     │   │   ├── domain/
@@ -154,7 +155,8 @@ main.dart
 - **UseCases**：封装单一业务逻辑或流程，每个用例处理特定业务场景。可选，如果没有业务逻辑的话可以省略
 
 #### 3. 数据层 (Data Layer)
-- **Models**：数据传输对象(DTOs)，用于序列化/反序列化
+- **Models**：本地数据库等的模型类
+- **DTOs**：数据传输对象，通常用于API请求和响应
 - **Mappers**：将DTO转换为领域实体的转换器
 - **Repositories实现**：实现领域层定义的仓库接口
 - **DataSources**：处理具体数据源(API、本地数据库等)，如果只有一个数据源，可以不需要这个文件夹，直接在Repository实现中处理数据源的逻辑

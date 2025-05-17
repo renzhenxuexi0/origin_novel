@@ -6,6 +6,7 @@ use utils/string_utils.nu *
 use utils/file_utils.nu *
 
 # 导入所有生成器模块
+use generators/data/generate_model.nu
 use generators/data/generate_dto.nu
 use generators/data/generate_mapper.nu
 use generators/data/generate_remote_data_source.nu
@@ -50,12 +51,13 @@ def create_feature [
     
     print "  📝 Generating Data Layer..."
     # 生成Data层文件
-    generate_repository $feature_name $capitalized_feature_name $provider_name
+    generate_repository $feature_name $capitalized_feature_name
     generate_repository_impl $feature_name $capitalized_feature_name $provider_name
     generate_abstract_remote_data_source $feature_name $capitalized_feature_name $provider_name
     generate_abstract_local_data_source $feature_name $capitalized_feature_name $provider_name
     generate_remote_data_source $feature_name $capitalized_feature_name $provider_name
     generate_local_data_source $feature_name $capitalized_feature_name $provider_name
+    generate_model $feature_name $capitalized_feature_name
     generate_dto $feature_name $capitalized_feature_name
     generate_mapper $feature_name $capitalized_feature_name
     print "  ✅ Data Layer complete"
@@ -107,19 +109,21 @@ def main [feature_name: string = ""] {
 📁 Generated structure:
 lib/features/($feature_name)/
 ├── data/
-│   ├── dto/
-│   ├── mappers/
-│   ├── repositories/
-│   └── sources/
-│       ├── local/
-│       └── remote/
+│   ├── dtos/ # 数据传输对象
+│   ├── models/ # 本地数据模型
+│   ├── mappers/ # 数据转换器
+│   ├── repositories/ # 仓库实现
+│   └── sources/ # 数据源
+│       ├── local/ # 本地数据源
+│       └── remote/ # 远程数据源
 ├── domain/
-│   ├── entities/
-│   ├── repositories/
-│   └── use_cases/
+│   ├── entities/ # 领域实体
+│   ├── repositories/ # 抽象仓库接口
+│   └── use_cases/ # 用例实现 - 业务逻辑
 └── presentation/
-    ├── pages/
-    ├── providers/
-    └── widgets/
+    ├── pages/ # 页面组件
+    ├── states/ # 页面状态
+    ├── providers/ # 状态管理
+    └── widgets/ # 特定于此功能的小部件
 "
 }

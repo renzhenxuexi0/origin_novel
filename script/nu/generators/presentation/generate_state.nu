@@ -9,11 +9,15 @@ export def main [
 /// ($capitalized_feature_name)Provider的状态
 class ($capitalized_feature_name)State {
   final ($capitalized_feature_name)Entity? data;
+  final List<($capitalized_feature_name)Entity>? items;
+  final ($capitalized_feature_name)Entity? selectedItem;
   final bool isLoading;
   final String? errorMessage;
 
   const ($capitalized_feature_name)State\({
     this.data,
+    this.items,
+    this.selectedItem,
     this.isLoading = false,
     this.errorMessage,
   }\);

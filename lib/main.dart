@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'core/localization/strings.g.dart';
+import 'core/localization/translations.g.dart';
 import 'shared/presentation/pages/orgin_novel.dart';
 
 Future<void> main() async {

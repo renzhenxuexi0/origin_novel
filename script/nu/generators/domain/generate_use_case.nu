@@ -1,11 +1,11 @@
 # 生成用例代码
 
 export def main [
-    feature_name: string           # 特性名称
-    capitalized_feature_name: string # 首字母大写的特性名称
-    provider_name: string           # 驼峰式命名的特性名
+  feature_name: string           # 特性名称
+  capitalized_feature_name: string # 首字母大写的特性名称
+  provider_name: string           # 驼峰式命名的特性名
 ] {
-    let content = $"import 'package:riverpod_annotation/riverpod_annotation.dart';
+  let content = $"import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/repositories/($feature_name)_repository_impl.dart';
 import '../entities/($feature_name)_entity.dart';
@@ -26,26 +26,31 @@ class ($capitalized_feature_name)UseCase {
 
   const ($capitalized_feature_name)UseCase\(this._repository\);
 
-  /// 获取($capitalized_feature_name)
-  Future<($capitalized_feature_name)Entity> get\({bool forceRefresh = false}\) async {
-    return _repository.get($capitalized_feature_name)\(forceRefresh: forceRefresh\);
+  /// 获取所有($capitalized_feature_name)
+  Future<List<($capitalized_feature_name)Entity>> getAll\({bool forceRefresh = false}\) async {
+  return _repository.getAll\(forceRefresh: forceRefresh\);
+  }
+
+  /// 根据ID获取($capitalized_feature_name)
+  Future<($capitalized_feature_name)Entity?> getById\(int id, {bool forceRefresh = false}\) async {
+  return _repository.getById\(id, forceRefresh: forceRefresh\);
   }
 
   /// 创建新的($capitalized_feature_name)
   Future<($capitalized_feature_name)Entity> create\(($capitalized_feature_name)Entity entity\) async {
-    return _repository.create($capitalized_feature_name)\(entity\);
+  return _repository.create\(entity\);
   }
 
   /// 更新($capitalized_feature_name)
   Future<($capitalized_feature_name)Entity> update\(($capitalized_feature_name)Entity entity\) async {
-    return _repository.update($capitalized_feature_name)\(entity\);
+  return _repository.update\(entity\);
   }
 
   /// 删除($capitalized_feature_name)
-  Future<void> delete\(String id\) async {
-    return _repository.delete($capitalized_feature_name)\(id\);
+  Future<void> delete\(int id\) async {
+  return _repository.delete\(id\);
   }
 }"
-    
-    create_file $"lib/features/($feature_name)/domain/use_cases/($feature_name)_use_case.dart" $content
+  
+  create_file $"lib/features/($feature_name)/domain/use_cases/($feature_name)_use_case.dart" $content
 }
